@@ -3,7 +3,13 @@ import './RegionsPage.css'
 
 const RegionsPage: FC = () => {
     return (
-        <h1>Страница с разными районами</h1>
+        <div>
+            <form method="GET" action="region" name="search">
+            <label htmlFor="region_name">Введите название:</label>
+            <input type="text" id="region_name" name="region_name"/>
+            <input type="submit" className="button" value="Поиск" ></input>
+            </form>
+        </div>
     )
 }
 

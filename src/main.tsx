@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider, Link} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,7 +21,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RegionsPage />
+      <div>
+        <h1> Заявки контроля маршрута БПЛА </h1>
+      </div>
     <RouterProvider router={router} />
   </React.StrictMode>,
 )

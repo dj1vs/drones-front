@@ -7,6 +7,11 @@ const RegionsPage: FC = () => {
 
     const [loading, setLoading] = useState(false)
 
+    const handleSearch = async () => {
+        await setLoading(true)
+        
+    }
+
 
     return (
         <h1>Тест</h1>

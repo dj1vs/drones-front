@@ -1,9 +1,22 @@
-import {FC} from 'react'
+import {FC, useState} from 'react'
 import './RegionPage.css'
+import {Region, getRegionByName } from './modules/get-region-by-name'
 
 const RegionPage: FC = () => {
+
+    const [region, setRegion] = useState<Region>()
+    
+    const test = async () => {
+        const result = await getRegionByName('Кузьминки')
+        setRegion(result)
+    }
+
+    test()
+    
     return (
-        <h1>Страница района</h1>
+        <div>
+            <h2> Округ: {region?.Name} </h2>
+        </div>
     )
 }
 

@@ -1,28 +1,25 @@
 export interface Region {
-    id: number,
-    district: string,
-    name: string,
-    details: string,
-    status: string,
-    areaKm: string,
-    population: number,
-    headName: string,
-    headEmail: string,
-    headPhone: string,
+    ID: number,
+    District: string,
+    Name: string,
+    Details: string,
+    Status: string,
+    AreaKm: string,
+    Population: number,
+    HeadName: string,
+    HeadEmail: string,
+    HeadPhone: string,
     AverageHeightM: number,
-    image: string 
+    Image: string 
 }
 
-export interface RegionResult {
-    resultCount: number
-    results: Region[]
-}
-
-export const getRegionByName = async  (name = ''): Promise<RegionResult> => {
-    return fetch('127.0.0.1:8000/region', {
+export const getRegionByName = async  (regionName = ''): Promise<Region> => {
+    return fetch('/api/region/' + String(regionName),{
         method: 'GET',
-        body: JSON.stringify({name: {name}})
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
     })
-           .then((response) => response.json())
-           .catch(() => ({resultCount:0, results:[]}))
+        .then((response) => response.json());
 }

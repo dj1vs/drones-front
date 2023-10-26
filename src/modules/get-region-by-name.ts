@@ -1,17 +1,4 @@
-export interface Region {
-    ID: number,
-    District: string,
-    Name: string,
-    Details: string,
-    Status: string,
-    AreaKm: string,
-    Population: number,
-    HeadName: string,
-    HeadEmail: string,
-    HeadPhone: string,
-    AverageHeightM: number,
-    Image: string 
-}
+import {Region} from './ds'
 
 export const getRegionByName = async  (regionName = ''): Promise<Region> => {
     return fetch('/api/region/' + String(regionName),{

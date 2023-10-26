@@ -1,6 +1,7 @@
 import {FC, useEffect, useState} from 'react'
 import './RegionPage.css'
-import {Region, getRegionByName } from './modules/get-region-by-name'
+import {getRegionByName } from './modules/get-region-by-name'
+import {Region} from './modules/ds'
 
 const RegionPage: FC = () => {
 
@@ -11,13 +12,13 @@ const RegionPage: FC = () => {
         const urlParams = new URLSearchParams(queryString)
         const regionName = urlParams.get('region_name')
     
-        const getRegion = async () => {
+        const loadRegion = async () => {
             const result = await getRegionByName(String(regionName))
             console.log(result)
             setRegion(result)
         }
     
-        getRegion()
+        loadRegion()
 
     }, []);
     
@@ -33,10 +34,6 @@ const RegionPage: FC = () => {
             <p className="region_line"> Телефон главы управы: {region?.HeadPhone}</p>
             <p className="region_line"> Средняя высота: {region?.AverageHeightM}</p>
             <p className="region_line">Описание района: {region?.Details}</p>
-            <form method="POST" action="delete_region/{{ .Name }}" name="delete_region">
-                <input type="hidden" name="card_title" id="card_title" value="{{ .Name }}" />
-                <input type="submit" className="button page_button" value="Сменить статус" />
-            </form>
             <a className="button page_button" href="..">Домой</a>
         </div>
     )

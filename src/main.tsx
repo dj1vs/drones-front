@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RegionsPage from './RegionsPage'
 import RegionPage from './RegionPage'
+import NavigationPage from './NavigationPage'
 
 const router = createBrowserRouter([
   {
@@ -21,9 +22,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-      <div>
+      {/* <div>
         <h1> Заявки контроля маршрута БПЛА </h1>
       </div>
+    <RouterProvider router={router} /> */}
+    <NavigationPage />
     <RouterProvider router={router} />
   </React.StrictMode>,
 )

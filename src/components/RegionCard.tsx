@@ -10,7 +10,7 @@ interface Props {
 
 const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl }) => (
     <Card className='card'>
-        <Card.Img className="cardImage" variant="top" src={"data:image/jpg;base64, " + {imageUrl}} height = {100} width = {100} />
+        <Card.Img className="cardImage" variant="top" src={"data:image/jpg;base64, " + imageUrl}/>
         <Card.Body>
             <div className='textStyle'>
                 <Card.Title> {regionName} </Card.Title>

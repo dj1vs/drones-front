@@ -30,15 +30,11 @@ const RegionsPage: FC = () => {
 
     }, []);
 
-    let regionCards = []
-
     let i = 0
     while (i < regions.length) {
-        regionCards.push(RegionCard({
-            imageUrl: regions[i].Image,
-            regionName: regions[i].Name,
-            pageUrl: window.location.href + "/region?region_name=" + regions[i].Name
-        }));
+        console.log(regions[i].Image)
+
+        i = i + 1;
     }
 
     return (
@@ -50,6 +46,19 @@ const RegionsPage: FC = () => {
                 <input type="submit" className="button" value="Поиск" ></input>
                 </form>
             </div>
+
+            <Row xs={4} md={4} className='g-4'>
+                {regions.map((item, index) => (
+                    <Col key={index}>
+                        <RegionCard {...{
+                             imageUrl: item.Image,
+                             regionName: item.Name,
+                             pageUrl: window.location.href + "region?region_name=" + item.Name
+                        }}></RegionCard>
+                    </Col>
+                ))}
+            </Row>
+            
             
 
         </div>

@@ -11,7 +11,7 @@ import Breadcrumbs from './components/Breadcrumbs';
 
 const router = createBrowserRouter([
   {
-    path: '/drones-front/',
+    path: '/drones-front',
     element: <RegionsPage />
   },
   {

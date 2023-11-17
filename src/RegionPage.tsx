@@ -42,7 +42,7 @@ const RegionPage: FC = () => {
                     <p>Описание района: {region?.Details}</p>
                 </Card.Body>
                 <Card.Footer>
-                    <Button href="..">Домой</Button>
+                    <Button href="/drones-front/">Домой</Button>
                 </Card.Footer>
             </Card>
         </div>

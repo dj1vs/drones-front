@@ -23,6 +23,7 @@ const RegionsPage: FC = () => {
 
         const loadRegions = async()  => {
             const result = await getRegions(String(regionName))
+            console.log(result)
             setRegions(result)
 
         }
@@ -42,7 +43,7 @@ const RegionsPage: FC = () => {
 
             <Row xs={5} md={5} className='g-5' >
                 {regions.map((item, index) => (
-                    <Col key={index}>
+                    <Col key={index}> 
                         <RegionCard {...{
                              imageUrl: (item.Image == '' ? defaultImage?.toString() : "data:image/jpg;base64, " + item.Image),
                              regionName: item.Name,

@@ -9,5 +9,19 @@ export const getRegionByName = async  (regionName = ''): Promise<Region> => {
         }
     })
         .then((response) => response.json())
-        .catch(() => ({Name: 'testregion'}));
+        .catch(() => (
+            {
+                "ID": 1,
+                "District": "",
+                "Name": "пусто",
+                "Details": "Пустой район. Связи с бэкендом нет.",
+                "Status": "Действует",
+                "AreaKm": 0,
+                "Population": 0,
+                "HeadName": "",
+                "HeadEmail": "",
+                "HeadPhone": "",
+                "AverageHeightM": 0,
+                "Image": ""
+            }));
 }

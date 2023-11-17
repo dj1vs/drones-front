@@ -16,6 +16,6 @@ export default defineConfig({
        }
       }
   },
-  base: "/",
+  base: "/drones-front",
   plugins: [react()],
 })

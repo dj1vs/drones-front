@@ -14,7 +14,6 @@ const RegionPage: FC = () => {
     
         const loadRegion = async () => {
             const result = await getRegionByName(String(regionName))
-            console.log(result)
             setRegion(result)
         }
     
@@ -24,7 +23,7 @@ const RegionPage: FC = () => {
     
     return (
         <div>
-            <img src={"data:image/jpg;base64, " + region?.Image} className="card_image" />
+            <img src={"data:image/jpg;base64, " + region?.Image} className="card-img-top" />
             <p>{region?.Details}</p>
             <p className="region_line"><b>Статус района: {region?.Status}</b></p>
             <p className="region_line"> Площадь: {region?.AreaKm} км^2</p>

@@ -4,7 +4,7 @@ import './RegionsPage.css'
 import { Region } from './modules/ds'
 import { getRegions } from './modules/get-regions';
 
-import { Card, Col, Row} from 'react-bootstrap'
+import { Col, Row} from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
 
 
@@ -30,13 +30,6 @@ const RegionsPage: FC = () => {
 
     }, []);
 
-    let i = 0
-    while (i < regions.length) {
-        console.log(regions[i].Image)
-
-        i = i + 1;
-    }
-
     return (
         <div>
             <div>
@@ -47,7 +40,7 @@ const RegionsPage: FC = () => {
                 </form>
             </div>
 
-            <Row xs={4} md={4} className='g-4'>
+            <Row xs={4} md={4} className='g-4' >
                 {regions.map((item, index) => (
                     <Col key={index}>
                         <RegionCard {...{

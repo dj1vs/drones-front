@@ -11,7 +11,7 @@ function Breadcrumbs() {
 
     return (
         <Breadcrumb>
-            <Breadcrumb.Item href="/">Домашняя страница</Breadcrumb.Item>
+            <Breadcrumb.Item href="/drones-front/">Домашняя страница</Breadcrumb.Item>
             {(region_name != null && name_pattern === null) && 
                 <>
                     <Breadcrumb.Item active> Район </Breadcrumb.Item>

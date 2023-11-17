@@ -16,7 +16,7 @@ const RegionsPage: FC = () => {
     useEffect(() => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
-        var regionName = urlParams.get('region_name')
+        var regionName = urlParams.get('name_pattern')
         if (regionName == null) {
             regionName = "";
         }
@@ -36,7 +36,7 @@ const RegionsPage: FC = () => {
         <div>
             <div>
                 <form method="GET" action="" name="search">
-                <input type="text" id="region_search" name="region_name"/>
+                <input type="text" id="region_search" name="name_pattern"/>
                 <input type="submit" className="button" value="Поиск" ></input>
                 </form>
             </div>
@@ -47,7 +47,7 @@ const RegionsPage: FC = () => {
                         <RegionCard {...{
                              imageUrl: (item.Image == '' ? defaultImage?.toString() : "data:image/jpg;base64, " + item.Image),
                              regionName: item.Name,
-                             pageUrl: window.location.href + "region?region_name=" + item.Name
+                             pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
                         }}></RegionCard>
                     </Col>
                 ))}

@@ -6,12 +6,12 @@ function Navigation() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Маршруты БПЛА</Navbar.Brand>
+        <Navbar.Brand href="/drones-front/">Маршруты БПЛА</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/account">Личный кабинет</Nav.Link>
-            <Nav.Link href="/contacts">Контакты</Nav.Link>
+            <Nav.Link href="/drones-front/account/">Личный кабинет</Nav.Link>
+            <Nav.Link href="/drones-front/contacts/">Контакты</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

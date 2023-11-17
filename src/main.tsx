@@ -12,7 +12,7 @@ import Breadcrumbs from './components/Breadcrumbs';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/drones-front'>
       <Navigation />
       <Breadcrumbs />
       <Routes>

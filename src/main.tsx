@@ -6,8 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RegionsPage from './RegionsPage'
 import RegionPage from './RegionPage'
-import NavigationPage from './NavigationPage'
-import BreadcrumbPage from './BreadcrumbPage';
+import Navigation from './components/Navigation'
+import Breadcrumbs from './components/Breadcrumbs';
 
 const router = createBrowserRouter([
   {
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <NavigationPage />
-    <BreadcrumbPage />
+    <Navigation />
+    <Breadcrumbs />
     <RouterProvider router={router} />
   </React.StrictMode>,
 )

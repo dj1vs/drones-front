@@ -1,7 +1,12 @@
 import {FC, useEffect, useState} from 'react'
+import {Button, Card} from 'react-bootstrap'
+
 import './RegionPage.css'
+
 import {getRegionByName } from './modules/get-region-by-name'
 import {Region} from './modules/ds'
+
+import defaultImage from './assets/react.svg'
 
 const RegionPage: FC = () => {
 
@@ -22,19 +27,27 @@ const RegionPage: FC = () => {
     }, []);
     
     return (
-        <div>
-            <img src={"data:image/jpg;base64, " + region?.Image} className="card-img-top" />
-            <p>{region?.Details}</p>
-            <p className="region_line"><b>Статус района: {region?.Status}</b></p>
-            <p className="region_line"> Площадь: {region?.AreaKm} км^2</p>
-            <p className="region_line"> Население: {region?.Population} чел.</p>
-            <p className="region_line"> Глава управы: {region?.HeadName}</p>
-            <p className="region_line"> Email главы управы: {region?.HeadEmail}</p>
-            <p className="region_line"> Телефон главы управы: {region?.HeadPhone}</p>
-            <p className="region_line"> Средняя высота: {region?.AverageHeightM}</p>
-            <p className="region_line">Описание района: {region?.Details}</p>
-            <a className="button page_button" href="..">Домой</a>
+        <div className='card_container'>
+            <Card className='page_card'>
+                <Card.Img src={(region?.Image == '' ? defaultImage?.toString() : "data:image/jpg;base64, " + region?.Image)} className="card-img-top" variant="top" />
+                <Card.Body>
+                    <p>{region?.Details}</p>
+                    <p> <b>Статус района: {region?.Status}</b></p>
+                    <p> Площадь: {region?.AreaKm} км^2</p>
+                    <p> Население: {region?.Population} чел.</p>
+                    <p> Глава управы: {region?.HeadName}</p>
+                    <p> Email главы управы: {region?.HeadEmail}</p>
+                    <p> Телефон главы управы: {region?.HeadPhone}</p>
+                    <p> Средняя высота: {region?.AverageHeightM}</p>
+                    <p>Описание района: {region?.Details}</p>
+                </Card.Body>
+                <Card.Footer>
+                    <Button href="..">Домой</Button>
+                </Card.Footer>
+            </Card>
         </div>
+       
+        
     )
 }
 

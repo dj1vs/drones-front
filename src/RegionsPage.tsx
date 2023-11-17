@@ -7,6 +7,7 @@ import { getRegions } from './modules/get-regions';
 import { Col, Row} from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
 
+import defaultImage from './assets/react.svg'
 
 const RegionsPage: FC = () => {
 
@@ -34,17 +35,16 @@ const RegionsPage: FC = () => {
         <div>
             <div>
                 <form method="GET" action="" name="search">
-                <label htmlFor="">Введите название:</label>
                 <input type="text" id="region_search" name="region_name"/>
                 <input type="submit" className="button" value="Поиск" ></input>
                 </form>
             </div>
 
-            <Row xs={4} md={4} className='g-4' >
+            <Row xs={5} md={5} className='g-5' >
                 {regions.map((item, index) => (
                     <Col key={index}>
                         <RegionCard {...{
-                             imageUrl: item.Image,
+                             imageUrl: (item.Image == '' ? defaultImage?.toString() : "data:image/jpg;base64, " + item.Image),
                              regionName: item.Name,
                              pageUrl: window.location.href + "region?region_name=" + item.Name
                         }}></RegionCard>

@@ -41,7 +41,7 @@ const RegionsPage: FC = () => {
                 </form>
             </div>
 
-            <Row xs={5} md={5} className='g-5' >
+            <Row xs={4} md={4} className='g-4' >
                 {regions.map((item, index) => (
                     <Col key={index}> 
                         <RegionCard {...{

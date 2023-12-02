@@ -12,6 +12,7 @@ function Navigation() {
           <Nav className="me-auto">
             <Nav.Link href="/drones-front/account/">Личный кабинет</Nav.Link>
             <Nav.Link href="/drones-front/contacts/">Контакты</Nav.Link>
+            <Nav.Link href="/drones-front/auth">Вход</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

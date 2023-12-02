@@ -29,7 +29,7 @@ const RegionPage: FC = () => {
     return (
         <div className='card_container'>
             <Card className='page_card'>
-                <Card.Img src={(region?.Image == '' ? defaultImage?.toString() : "data:image/jpg;base64, " + region?.Image)} className="card-img-top" variant="top" />
+                <Card.Img src={(region?.ImageName == '' ? defaultImage?.toString() : "http://127.0.0.1:9000/regionimages/" + region?.ImageName)} className="card-img-top" variant="top" />
                 <Card.Body>
                     <p>{region?.Details}</p>
                     <p> <b>Статус района: {region?.Status}</b></p>

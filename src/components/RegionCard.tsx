@@ -17,7 +17,7 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
             method: 'PUT'
         });
         window.location.replace('/')
-    } 
+    }
 
     return (
         <Card>

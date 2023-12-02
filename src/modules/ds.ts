@@ -10,5 +10,5 @@ export interface Region {
     HeadEmail: string,
     HeadPhone: string,
     AverageHeightM: number,
-    Image: string 
+    ImageName: string 
 }

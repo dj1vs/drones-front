@@ -9,6 +9,7 @@ import RegionsPage from './RegionsPage'
 import RegionPage from './RegionPage'
 import Navigation from './components/Navigation'
 import Breadcrumbs from './components/Breadcrumbs';
+import AuthPage from './AuthPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/drones-front" Component={RegionsPage} />
         <Route path="/drones-front/region" Component={RegionPage} />
+        <Route path="/drones-front/auth" Component={AuthPage}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

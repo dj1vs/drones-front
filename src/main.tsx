@@ -13,6 +13,7 @@ import store from './store/store';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
+import AccountPage from './AccountPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/drones-front" Component={RegionsPage} />
           <Route path="/drones-front/region" Component={RegionPage} />
           <Route path="/drones-front/auth" Component={AuthPage}></Route>
+          <Route path="/drones-front/account" Component={AccountPage}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

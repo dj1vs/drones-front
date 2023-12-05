@@ -49,8 +49,8 @@ export const loginUser = createAsyncThunk(
         credentials,
         config
       )
-  
-      localStorage.setItem('userToken', data.userToken)
+      localStorage.setItem('userName', data.login)
+      localStorage.setItem('userToken', data.access_token)
       return data
     } catch (error) {
       if (!axios.isAxiosError(error)) {
@@ -63,8 +63,38 @@ export const loginUser = createAsyncThunk(
         return rejectWithValue(error.message)
       }
     }
+  });
 
-   
+  export const logoutUser = createAsyncThunk(
+    '/auth/logout',
+    async(userToken: string, {rejectWithValue}) => {
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userToken,
+          },
+        }
+        const {data} = await axios.post(
+          `/api/logout`,
+          {},
+          config
+        )
+        localStorage.setItem('userToken', '')
+        localStorage.setItem('userName', '')
+
+
+        return data;
+      } catch (error) {
+        if (!axios.isAxiosError(error)) {
+          return;
+        }
+  
+        if (error.response && error.response.data.message) {
+          return rejectWithValue(error.response.data.message)
+        } else {
+          return rejectWithValue(error.message)
+        }
+    }
   }
-
-)
+  );

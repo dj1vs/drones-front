@@ -1,3 +1,7 @@
+# minio cache
+start/.minio.sys/*
+start/regionimages/*
+
 # Logs
 logs
 *.log

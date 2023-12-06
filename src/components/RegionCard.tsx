@@ -8,8 +8,6 @@ interface Props {
     pageUrl: string
 }
 
-
-
 const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
 
     const deleteRestoreRegion = async () => {

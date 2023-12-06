@@ -12,6 +12,15 @@ function Breadcrumbs() {
     return (
         <Breadcrumb>
             <Breadcrumb.Item href="/drones-front/">Домашняя страница</Breadcrumb.Item>
+            {window.location.pathname == '/drones-front/auth' &&
+                <Breadcrumb.Item>Вход</Breadcrumb.Item>
+            }
+            {window.location.pathname == '/drones-front/account' &&
+                <Breadcrumb.Item>Аккаунт</Breadcrumb.Item>
+            }
+            {window.location.pathname == '/drones-front/flights' &&
+                <Breadcrumb.Item>Полёты</Breadcrumb.Item>
+            }
             {(region_name != null && name_pattern === null) && 
                 <>
                     <Breadcrumb.Item active> Район </Breadcrumb.Item>

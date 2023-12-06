@@ -51,6 +51,7 @@ export const loginUser = createAsyncThunk(
       )
       localStorage.setItem('userName', data.login)
       localStorage.setItem('userToken', data.access_token)
+      localStorage.setItem('userRole', data.role)
       return data
     } catch (error) {
       if (!axios.isAxiosError(error)) {
@@ -68,6 +69,8 @@ export const loginUser = createAsyncThunk(
   export const logoutUser = createAsyncThunk(
     '/auth/logout',
     async(userToken: string, {rejectWithValue}) => {
+      localStorage.setItem('userToken', '')
+      localStorage.setItem('userName', '')
       try {
         const config = {
           headers: {
@@ -80,8 +83,6 @@ export const loginUser = createAsyncThunk(
           {},
           config
         )
-        localStorage.setItem('userToken', '')
-        localStorage.setItem('userName', '')
 
 
         return data;

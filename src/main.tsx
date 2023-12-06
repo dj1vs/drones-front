@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import RegionsPage from './RegionsPage'
 import RegionPage from './RegionPage'
+import FlightsPage from './FlightsPage'
 import Navigation from './components/Navigation'
 import Breadcrumbs from './components/Breadcrumbs';
 import AuthPage from './AuthPage';
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Navigation />
         <Breadcrumbs />
         <Routes>
+          <Route path="/drones-front/flights" Component={FlightsPage}></Route>
           <Route path="/drones-front" Component={RegionsPage} />
           <Route path="/drones-front/region" Component={RegionPage} />
           <Route path="/drones-front/auth" Component={AuthPage}></Route>
@@ -29,5 +31,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </Routes>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

@@ -13,6 +13,13 @@ export default defineConfig({
            ws: true,
            rewrite: (path) => path.replace(/^\/api/, ''),
 
+       },
+       '/region_image': {
+        target: 'http://127.0.0.1:9000/regionimages/',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+        rewrite: (path) => path.replace(/^\/region_image/, ''),
        }
       }
   },

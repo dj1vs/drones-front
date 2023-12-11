@@ -7,8 +7,6 @@ import { getRegions } from './modules/get-regions';
 import { Col, Row} from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
 
-import defaultImage from './assets/react.svg'
-
 const RegionsPage: FC = () => {
 
     const [regions, setRegions] = useState<Region[]>([])
@@ -41,11 +39,11 @@ const RegionsPage: FC = () => {
                 </form>
             </div>
 
-            <Row xs={4} md={4} className='g-4' >
+            <Row xs={4} md={4} className='row row-cols-3 g-4'>
                 {regions.map((item, index) => (
-                    <Col key={index}> 
+                    <Col key={index} > 
                         <RegionCard {...{
-                             imageUrl: (item.ImageName == '' ? defaultImage?.toString() : "http://127.0.0.1:9000/regionimages/" + item.ImageName?.toString()),
+                             imageUrl: (item.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + item.ImageName?.toString()),
                              regionName: item.Name,
                              pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
                         }}></RegionCard>

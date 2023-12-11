@@ -49,9 +49,11 @@ export const loginUser = createAsyncThunk(
         credentials,
         config
       )
+
       localStorage.setItem('userName', data.login)
       localStorage.setItem('userToken', data.access_token)
       localStorage.setItem('userRole', data.role)
+
       return data
     } catch (error) {
       if (!axios.isAxiosError(error)) {

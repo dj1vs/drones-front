@@ -1,3 +1,6 @@
+# github pages
+dist/*
+
 # minio cache
 start/.minio.sys/*
 start/regionimages/*

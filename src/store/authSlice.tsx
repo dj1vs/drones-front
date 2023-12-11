@@ -9,10 +9,15 @@ const userName = localStorage.getItem('userName')
     ? localStorage.getItem('userName')
     : '';
 
+const userRole = localStorage.getItem('userRole')
+    ? localStorage.getItem('userRole')?.toString()
+    : '0';
+
 const initialState = {
     loading: false,
     userToken,
     userName,
+    userRole,
     userInfo: {},
     error: null,
     success: false,

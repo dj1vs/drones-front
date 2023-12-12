@@ -1,10 +1,10 @@
 import {FC} from 'react'
 import { useSelector } from 'react-redux'
 import {Button, ButtonGroup, Card} from 'react-bootstrap'
-import store from '../store/store'
+import store, { useAppDispatch } from '../store/store'
 
 import './RegionCard.css'
-
+import cartSlice from '../store/cartSlice'
 interface Props {
     imageUrl: string
     regionName: string
@@ -12,7 +12,14 @@ interface Props {
 }
 
 const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
+    const dispatch = useAppDispatch()
+
     const {userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+
+    const addRegionToCard = () => {
+        dispatch(cartSlice.actions.addRegion(regionName))
+    }
+
 
     const deleteRestoreRegion = async () => {
         await fetch('/api/region/delete_restore/' + regionName, {
@@ -31,7 +38,7 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
                     {((userRole?.toString() == '2') || (userRole?.toString() == '3')) && 
                         <Button variant="warning" onClick={deleteRestoreRegion}>Удалить</Button>
                     }
-                    <Button variant="success">Бронь</Button>
+                    <Button variant="success" onClick={addRegionToCard}>В полёт</Button>
                 </ButtonGroup>
             </Card.Body>
         </Card>

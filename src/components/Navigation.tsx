@@ -19,7 +19,10 @@ const Navigation: FC = () => {
               <Nav.Link href="/drones-front/auth">Вход</Nav.Link>
             }
             {userToken &&
-              <Nav.Link href="/drones-front/account">Аккаунт</Nav.Link>
+              <>
+                <Nav.Link href="/drones-front/account">Аккаунт</Nav.Link>
+                <Nav.Link href="/drones-front/book">Бронирование</Nav.Link>
+              </>
             }
           </Nav>
         </Navbar.Collapse>

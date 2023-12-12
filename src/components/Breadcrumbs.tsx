@@ -33,6 +33,9 @@ function Breadcrumbs() {
                     <Breadcrumb.Item href = {window.location.search}>{name_pattern}</Breadcrumb.Item>
                 </>
             }
+            {window.location.pathname == '/drones-front/book' &&
+                <Breadcrumb.Item>Бронирование</Breadcrumb.Item>
+            }
         </Breadcrumb>
     );
 }

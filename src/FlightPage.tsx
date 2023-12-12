@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { useEffect, useState } from "react";
 
-import { Form, FormControl, FormGroup, Button } from "react-bootstrap";
+import { Form, FormControl, FormGroup, Button, FormSelect } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
@@ -37,8 +37,13 @@ const FlightPage: FC = () => {
         <Form>
             <FormGroup>
                 <label htmlFor="statusInput">Статус</label>
-                <FormControl type='text' id="statusInput" defaultValue={flight?.Status}></FormControl>
-                <small id="statusHelp">Возможные статусы: Черновик, Удалён, Сформирован, Завершён, Отклонён</small>
+                <FormSelect id="statusInput" defaultValue={flight?.Status}>
+                    <option>Черновик</option>
+                    <option>Удалён</option>
+                    <option>Сформирован</option>
+                    <option>Завершён</option>
+                    <option>Отклонён</option>
+                </FormSelect>
             </FormGroup>
             <FormGroup>
                 <label htmlFor="dateCreatedInput">Дата создания</label>

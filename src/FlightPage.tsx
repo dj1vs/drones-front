@@ -1,39 +1,38 @@
 import { FC } from "react";
 
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import { Form, FormControl, FormGroup, Button, FormSelect } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
+import { getFlightRegions } from "./modules/get-flight-regions";
+import store from "./store/store";
 
 const FlightPage: FC = () => {
-
-    const [flightId, setFlightId] = useState(0)
     const [flight, setFlight] = useState<Flight>()
 
     useEffect(() => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
         const flightIdString = urlParams.get('flight_id')
-        if (flightIdString != null) {
-            setFlightId(+flightIdString)
-        }
 
         const loadFlight = async () => {
-            const flight = await getFlight(flightId)
+            if (flightIdString === null) {
+                return
+            }
+            const flight = await getFlight(+flightIdString)
             setFlight(flight)
         }
 
         loadFlight()
-
-
-    })
+    }, [])
 
 
     return(
         <>
-        <h1>Редактирование полёта #{flightId}</h1>
+        <h1>Редактирование полёта #{flight?.ID}</h1>
         <Form>
             <FormGroup>
                 <label htmlFor="statusInput">Статус</label>

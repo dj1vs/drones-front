@@ -4,6 +4,7 @@ import { Table, Button} from 'react-bootstrap'
 
 import store from './store/store'
 import { getFlights } from './modules/get-flights'
+import { getFlightRegions } from './modules/get-flight-regions'
 import { Flight } from './modules/ds'
 
 const FlightsPage: FC = () => {
@@ -16,17 +17,29 @@ const FlightsPage: FC = () => {
         const loadFlights = async()  => {
             if (userToken !== undefined) {
                 flights = await getFlights(userToken?.toString(), '')
+
+                if (!userToken) {
+                    return
+                }
+
                 var arr: string[][] = []
                 for (let flight of flights) {
+                    const regions = await getFlightRegions(flight.ID, userToken)
+                    const region_names = []
+                    for (let region of regions) {
+                        region_names.push(region.Name)
+                    }
+
+
                     var flightArray:string[] = []
                     flightArray.push(flight.ID.toString())
                     flightArray.push(flight.Status)
+                    flightArray.push(region_names.toString().replace(new RegExp(',', 'g'), '\n'))
                     flightArray.push(flight.DateCreated)
                     flightArray.push(flight.DateProcessed)
                     flightArray.push(flight.DateFinished)
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
-                
                     arr.push(flightArray)
                 }
                 setFlightsArray(arr);
@@ -35,10 +48,6 @@ const FlightsPage: FC = () => {
         }
 
         loadFlights()
-        console.log(userRole?.toString() == '2')
-
-        
-
     }, []);
 
     return (
@@ -52,10 +61,11 @@ const FlightsPage: FC = () => {
                 <h3> Полёты не найдены.</h3>
             }
             <Table>
-                <thead>
+                <thead className='thead-dark'>
                     <tr>
                         <th scope='col'>ID</th>
                         <th scope='col'>Статус</th>
+                        <th scope='col'>Регионы</th>
                         <th scope='col'>Дата создания</th>
                         <th scope='col'>Дата обработки</th>
                         <th scope='col'>Дата завершения</th>
@@ -65,17 +75,19 @@ const FlightsPage: FC = () => {
                             <th scope='col'></th>
                         }
                     </tr>
-                    
                 </thead>
                 <tbody>
                     {flightsArray.map((rowContent, rowID) => (
                         <tr key={rowID}>
                             {rowContent.map((val, rowID) => (
+
                                 <td key={rowID}>{val}</td>
                             ))
                             }
                             {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
-                                <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Изменить</Button>
+                                <td>
+                                    <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Изменить</Button>
+                                </td>
                             }
                         </tr>
                     ))}

@@ -3,7 +3,7 @@ import {Button, Card} from 'react-bootstrap'
 
 import './RegionPage.css'
 
-import {getRegionByName } from './modules/get-region-by-name'
+import {getRegionByName } from './modules/get-region'
 import {Region} from './modules/ds'
 
 const RegionPage: FC = () => {

@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const book = async(regions: string[], userToken: string,
-    arrivalDate: string, takeoffDate: string, dateFinished: string,
-    dateCreated: string, dateProcessed: string): Promise<string> => {
+export const book = async(regions: string[], userToken: string, arrivalDate: string, takeoffDate: string): Promise<string> => {
     const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -10,12 +8,10 @@ export const book = async(regions: string[], userToken: string,
         },
       }
     return axios.put(
-        '/api/flight/edit',
+        '/api/book',
         {
+          'regions': regions,
           'arrivalDate': arrivalDate,
-          'dateCreated': dateCreated,
-          'dateFinished': dateFinished,
-          'dateProcessed': dateProcessed,
           'takeoffDate': takeoffDate,
         },
         config

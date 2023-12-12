@@ -1,4 +1,4 @@
-import { configureStore, createReducer } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import authReducer from './authSlice'
 import cartSlice from './cartSlice'

@@ -48,7 +48,7 @@ const AuthPage: FC = () => {
         setShowRegisterModal(true)
         dispatch(registerUser({login: login, password: password}));0
     }
-
+ 
     useEffect(() => {
         if (userToken && userName) {
             navigate('/drones-front/account')

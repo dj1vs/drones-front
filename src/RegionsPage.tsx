@@ -1,15 +1,21 @@
 import {FC, useEffect, useState} from 'react'
+import { useSelector } from 'react-redux'
 import './RegionsPage.css'
 
 import { Region } from './modules/ds'
 import { getRegions } from './modules/get-regions';
 
-import { Col, Row} from 'react-bootstrap'
+import { Col, Row, Modal, Button } from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
 
+import store, { useAppDispatch } from './store/store';
+import cartSlice from './store/cartSlice';
+
 const RegionsPage: FC = () => {
+    const dispatch = useAppDispatch()
 
     const [regions, setRegions] = useState<Region[]>([])
+    const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -31,7 +37,19 @@ const RegionsPage: FC = () => {
     }, []);
 
     return (
+
         <div>
+            <Modal show = {booked} onHide={() => {dispatch(cartSlice.actions.disableBooked())}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Регион добавлен в корзину</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => {dispatch(cartSlice.actions.disableBooked())}}>
+                      Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
             <div>
                 <form method="GET" action="" name="search">
                 <input type="text" id="region_search" name="name_pattern"/>

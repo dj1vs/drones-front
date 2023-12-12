@@ -46,7 +46,7 @@ const BookPage: FC = () => {
             }
             <ListGroup style={{width: '500px'}}>
                 {regions?.map((regionName, regionID) => (
-                    <ListGroupItem> {regionName}
+                    <ListGroupItem key={regionID}> {regionName}
                         <span className="pull-right button-group" style={{float: 'right'}}>
                             <Button variant="danger" onClick={deleteFromCart(regionName)}>Удалить</Button>
                         </span>

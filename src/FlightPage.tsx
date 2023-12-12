@@ -1,17 +1,27 @@
 import { FC } from "react";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
-import { Form, FormControl, FormGroup, Button, FormSelect } from "react-bootstrap";
+import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, FormLabel } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
-import { Flight } from "./modules/ds";
+import { Flight, Region } from "./modules/ds";
 import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
 
+interface InputChangeInterface {
+    target: HTMLInputElement;
+  }
+
 const FlightPage: FC = () => {
+    const newRegionInputRef = useRef<any>(null)
+
+    const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+
     const [flight, setFlight] = useState<Flight>()
+    const [regionNames, setRegionNames] = useState<string[]>()
+    const [newRegion, setNewRegion] = useState('')
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -24,15 +34,73 @@ const FlightPage: FC = () => {
             }
             const flight = await getFlight(+flightIdString)
             setFlight(flight)
+
+            if (userToken === null) {
+                return
+            }
+
+            const regions = await getFlightRegions(+flightIdString, userToken)
+            var regionNames: string[] = []
+            for (let region of regions) {
+                regionNames.push(region.Name)
+            }
+            setRegionNames(regionNames)
         }
 
         loadFlight()
     }, [])
 
+    const removeRegion = (removedRegionName: string) => {
+        return (event: React.MouseEvent) => {
+            if (!regionNames) {
+                return
+            }
+    
+            setRegionNames(regionNames.filter(function(regionName) {
+                return regionName !== removedRegionName
+            }))
+
+            event.preventDefault()
+        }
+    }
+
+    const addRegion = () => {
+        if (!regionNames || !newRegion) {
+            return
+        }
+
+        setRegionNames(regionNames.concat([newRegion]))
+        setNewRegion('')
+
+        if (newRegionInputRef.current != null) {
+            newRegionInputRef.current.value = ""
+        }
+    }
+
+    const handleNewRegionChange = (event: InputChangeInterface) => {
+        setNewRegion(event.target.value)
+    }
+
 
     return(
         <>
         <h1>Редактирование полёта #{flight?.ID}</h1>
+        <h4>Регионы:</h4>
+        <ListGroup style={{width: '500px'}}>
+            {regionNames?.map((regionName, regionID) => (
+                <ListGroupItem key={regionID}> {regionName}
+                    <span className="pull-right button-group" style={{float: 'right'}}>
+                        <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
+                    </span>
+                </ListGroupItem>
+            ))
+            }
+        </ListGroup>
+        <span>
+            <input ref={newRegionInputRef} onChange={handleNewRegionChange}></input>
+            <Button onClick={addRegion}>Добавить</Button>
+        </span>
+        <h4>Характеристики:</h4>
         <Form>
             <FormGroup>
                 <label htmlFor="statusInput">Статус</label>

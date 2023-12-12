@@ -12,6 +12,7 @@ const FlightsPage: FC = () => {
 
     const [flightsArray, setFlightsArray] = useState<string[][]>([])
 
+
     useEffect(() => {
         var flights: Flight[] = []
         const loadFlights = async()  => {

@@ -20,12 +20,5 @@ export const editFlight = async(userToken = '', flight: Flight): Promise<string>
         config
 
     )
-    // return fetch('/api/flight.edit' + String(id),{
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     }
-    // })
-    //     .then((response) => response.json());
+    .then((response) => response.data);
 }

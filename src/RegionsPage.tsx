@@ -36,16 +36,20 @@ const RegionsPage: FC = () => {
 
     }, []);
 
+    const handleModalClose= () => {
+        dispatch(cartSlice.actions.disableBooked())
+    }
+
     return (
 
         <div>
-            <Modal show = {booked} onHide={() => {dispatch(cartSlice.actions.disableBooked())}}>
+            <Modal show = {booked} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Регион добавлен в корзину</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => {dispatch(cartSlice.actions.disableBooked())}}>
-                      Закрыть
+                    <Button variant="success" onClick={() => {dispatch(cartSlice.actions.disableBooked())}}>
+                      Ок
                     </Button>
                 </Modal.Footer>
             </Modal>

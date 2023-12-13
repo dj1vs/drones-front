@@ -9,6 +9,8 @@ import { getFlight } from "./modules/get-flight";
 import { Flight, Region } from "./modules/ds";
 import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
+import { setFlightRegions } from "./modules/set-flight-regions";
+import { editFlight } from "./modules/edit-flight";
 
 interface InputChangeInterface {
     target: HTMLInputElement;
@@ -16,6 +18,9 @@ interface InputChangeInterface {
 
 const FlightPage: FC = () => {
     const newRegionInputRef = useRef<any>(null)
+    const takeoffDateRef = useRef<any>(null)
+    const arrivalDateRef = useRef<any>(null)
+    const statusRef = useRef<any>(null)
 
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
@@ -49,6 +54,46 @@ const FlightPage: FC = () => {
 
         loadFlight()
     }, [])
+
+    const sendChanges = async() => {
+        if (!userToken) {
+            return;
+        }
+
+        var flight_id = 0
+        var takeoffDate = ''
+        var arrivalDate = ''
+        var status = ''
+
+        if (flight?.ID !== undefined) {
+            flight_id = flight?.ID
+        }
+        if (takeoffDateRef.current != null) {
+            takeoffDate = takeoffDateRef.current.value
+        }
+        if (arrivalDateRef.current != null) {
+            arrivalDate = arrivalDateRef.current.value
+        }
+        if (statusRef.current != null) {
+            status = statusRef.current.value
+        }
+
+        const editResult = await editFlight(userToken, {
+            ID: flight_id,
+            TakeoffDate: takeoffDate,
+            ArrivalDate: arrivalDate,
+            Status: status,
+        })
+        console.log(editResult)
+
+
+        if (!regionNames || !userToken) {
+            return;
+        }
+        const regionsResult = await setFlightRegions(flight?.ID, regionNames, userToken)
+        console.log(regionsResult)
+
+    }
 
     const removeRegion = (removedRegionName: string) => {
         return (event: React.MouseEvent) => {
@@ -104,7 +149,7 @@ const FlightPage: FC = () => {
         <Form>
             <FormGroup>
                 <label htmlFor="statusInput">Статус</label>
-                <FormSelect id="statusInput" defaultValue={flight?.Status}>
+                <FormSelect id="statusInput" defaultValue={flight?.Status} ref={statusRef}>
                     <option>Черновик</option>
                     <option>Удалён</option>
                     <option>Сформирован</option>
@@ -113,27 +158,15 @@ const FlightPage: FC = () => {
                 </FormSelect>
             </FormGroup>
             <FormGroup>
-                <label htmlFor="dateCreatedInput">Дата создания</label>
-                <FormControl id="dateCreatedInput" defaultValue={flight?.DateCreated}></FormControl>
-            </FormGroup>
-            <FormGroup>
-                <label htmlFor="dateProcessedInput">Дата обработки</label>
-                <FormControl id="dateProcessedInput" defaultValue={flight?.DateProcessed}></FormControl>
-            </FormGroup>
-            <FormGroup>
-                <label htmlFor="dateFinishedInput">Дата завершения</label>
-                <FormControl id="dateFinishedInput" defaultValue={flight?.DateFinished}></FormControl>
-            </FormGroup>
-            <FormGroup>
                 <label htmlFor="takeoffDate">Время взлёта</label>
-                <FormControl id="takeoffDate" defaultValue={flight?.TakeoffDate}></FormControl>
+                <FormControl id="takeoffDate" defaultValue={flight?.TakeoffDate} ref={takeoffDateRef}></FormControl>
             </FormGroup>
             <FormGroup>
                 <label htmlFor="arrivalDate">Время прибытия</label>
-                <FormControl id="arrivalDate" defaultValue={flight?.ArrivalDate}></FormControl>
+                <FormControl id="arrivalDate" defaultValue={flight?.ArrivalDate} ref={arrivalDateRef}></FormControl>
             </FormGroup>
         </Form>
-        <Button>Сохранить изменения</Button>
+        <Button onClick={sendChanges}>Сохранить изменения</Button>
         <p></p>
         <Button href='/drones-front/flights'>К полётам</Button>
         <p></p>

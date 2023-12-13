@@ -36,9 +36,15 @@ const FlightsPage: FC = () => {
                     flightArray.push(flight.ID.toString())
                     flightArray.push(flight.Status)
                     flightArray.push(region_names.toString().replace(new RegExp(',', 'g'), '\n'))
-                    flightArray.push(flight.DateCreated)
-                    flightArray.push(flight.DateProcessed)
-                    flightArray.push(flight.DateFinished)
+                    if (flight.DateCreated) {
+                        flightArray.push(flight.DateCreated)
+                    }
+                    if (flight.DateProcessed) {
+                        flightArray.push(flight.DateProcessed)
+                    }
+                    if (flight.DateFinished) {
+                        flightArray.push(flight.DateFinished)
+                    }
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
                     arr.push(flightArray)

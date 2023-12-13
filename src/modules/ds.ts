@@ -24,13 +24,13 @@ export interface User {
 export interface Flight {
     ID: number,
     Status: string,
-    DateCreated: string,
-    DateProcessed: string,
-    DateFinished: string,
+    DateCreated?: string,
+    DateProcessed?: string,
+    DateFinished?: string,
     TakeoffDate: string,
     ArrivalDate: string,
-    ModeratorRefer: string,
-    UserRefer: string,
-    Moderator: User,
-    User: User 
+    ModeratorRefer?: string,
+    UserRefer?: string,
+    Moderator?: User,
+    User?: User 
 }

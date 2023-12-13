@@ -26,20 +26,18 @@ const RegionPage: FC = () => {
     
     return (
         <div className='card_container'>
-            <Card className='h-1'>
+            <Card style={{width: '300px'}}>
                 <Card.Img src={(region?.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + region?.ImageName)} className="card_image" variant="top" />
                 <Card.Body>
-                    <Card.Text>
-                        <p>{region?.Details}</p>
-                        <p> <b>Статус: {region?.Status}</b></p>
-                        <p> Площадь: {region?.AreaKm} км^2</p>
-                        <p> Население: {region?.Population} чел.</p>
-                        <p> Глава управы: {region?.HeadName}</p>
-                        <p> Email главы управы: {region?.HeadEmail}</p>
-                        <p> Телефон главы управы: {region?.HeadPhone}</p>
-                        <p> Средняя высота: {region?.AverageHeightM}</p>
-                        <p>Описание района: {region?.Details}</p>
-                    </Card.Text> 
+                    <p>{region?.Details}</p>
+                    <p> <b>Статус: {region?.Status}</b></p>
+                    <p> Площадь: {region?.AreaKm} км^2</p>
+                    <p> Население: {region?.Population} чел.</p>
+                    <p> Глава управы: {region?.HeadName}</p>
+                    <p> Email главы управы: {region?.HeadEmail}</p>
+                    <p> Телефон главы управы: {region?.HeadPhone}</p>
+                    <p> Средняя высота: {region?.AverageHeightM}</p>
+                    <p>Описание района: {region?.Details}</p>
                 </Card.Body>
                 <Card.Footer>
                     <Button href="/drones-front/">Домой</Button>

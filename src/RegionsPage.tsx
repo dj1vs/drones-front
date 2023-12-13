@@ -7,6 +7,7 @@ import { getRegions } from './modules/get-regions';
 
 import { Col, Row, Modal, Button } from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
+import RegionsFilter from './components/RegionsFilter';
 
 import store, { useAppDispatch } from './store/store';
 import cartSlice from './store/cartSlice';
@@ -54,12 +55,8 @@ const RegionsPage: FC = () => {
                 </Modal.Footer>
             </Modal>
 
-            <div>
-                <form method="GET" action="" name="search">
-                <input type="text" id="region_search" name="name_pattern"/>
-                <input type="submit" className="button" value="Поиск" ></input>
-                </form>
-            </div>
+            <RegionsFilter></RegionsFilter>
+            <p></p>
 
             <Row xs={4} md={4} className='row row-cols-3 g-4'>
                 {regions.map((item, index) => (

@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
-import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, FormLabel } from "react-bootstrap";
+import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight, Region } from "./modules/ds";
@@ -28,6 +28,9 @@ const FlightPage: FC = () => {
     const [regionNames, setRegionNames] = useState<string[]>()
     const [newRegion, setNewRegion] = useState('')
 
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [showError, setShowError] = useState(false)
+
     useEffect(() => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
@@ -46,10 +49,13 @@ const FlightPage: FC = () => {
 
             const regions = await getFlightRegions(+flightIdString, userToken)
             var regionNames: string[] = []
-            for (let region of regions) {
-                regionNames.push(region.Name)
+            if (regions) {
+                for (let region of regions) {
+                    regionNames.push(region.Name)
+                }
+                setRegionNames(regionNames)
             }
-            setRegionNames(regionNames)
+            
         }
 
         loadFlight()
@@ -91,7 +97,11 @@ const FlightPage: FC = () => {
             return;
         }
         const regionsResult = await setFlightRegions(flight?.ID, regionNames, userToken)
-        console.log(regionsResult)
+        if (regionsResult.status == 201) {
+            setShowSuccess(true)
+        } else {
+            setShowError(true)
+        }
 
     }
 
@@ -110,8 +120,16 @@ const FlightPage: FC = () => {
     }
 
     const addRegion = () => {
-        if (!regionNames || !newRegion) {
+        if (!newRegion) {
             return
+        }
+
+        if (!regionNames) {
+            setRegionNames([newRegion.toString()]);
+        }
+
+        if (regionNames === undefined) {
+            return;
         }
 
         setRegionNames(regionNames.concat([newRegion]))
@@ -126,52 +144,79 @@ const FlightPage: FC = () => {
         setNewRegion(event.target.value)
     }
 
+    const handleErrorClose= () => {
+        setShowError(false)
+    }
+    const handleSuccessClose = () => {
+        setShowSuccess(false)
+    }
+
 
     return(
         <>
-        <h1>Редактирование полёта #{flight?.ID}</h1>
-        <h4>Регионы:</h4>
-        <ListGroup style={{width: '500px'}}>
-            {regionNames?.map((regionName, regionID) => (
-                <ListGroupItem key={regionID}> {regionName}
-                    <span className="pull-right button-group" style={{float: 'right'}}>
-                        <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
-                    </span>
-                </ListGroupItem>
-            ))
-            }
-        </ListGroup>
-        <span>
-            <input ref={newRegionInputRef} onChange={handleNewRegionChange}></input>
-            <Button onClick={addRegion}>Добавить</Button>
-        </span>
-        <h4>Характеристики:</h4>
-        <Form>
-            <FormGroup>
-                <label htmlFor="statusInput">Статус</label>
-                <FormSelect id="statusInput" defaultValue={flight?.Status} ref={statusRef}>
-                    <option>Черновик</option>
-                    <option>Удалён</option>
-                    <option>Сформирован</option>
-                    <option>Завершён</option>
-                    <option>Отклонён</option>
-                </FormSelect>
-            </FormGroup>
-            <FormGroup>
-                <label htmlFor="takeoffDate">Время взлёта</label>
-                <FormControl id="takeoffDate" defaultValue={flight?.TakeoffDate} ref={takeoffDateRef}></FormControl>
-            </FormGroup>
-            <FormGroup>
-                <label htmlFor="arrivalDate">Время прибытия</label>
-                <FormControl id="arrivalDate" defaultValue={flight?.ArrivalDate} ref={arrivalDateRef}></FormControl>
-            </FormGroup>
-        </Form>
-        <Button onClick={sendChanges}>Сохранить изменения</Button>
-        <p></p>
-        <Button href='/drones-front/flights'>К полётам</Button>
-        <p></p>
-        <Button href='/drones-front/'>Домой</Button>
-        <p></p>
+            <Modal show = {showError} onHide={handleErrorClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Произошла ошибка, полёт не был обновлён</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleErrorClose}>
+                      Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show = {showSuccess} onHide={handleSuccessClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Обновление полёта прошло успешно!</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="success" onClick={handleSuccessClose}>
+                      Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <h1>Редактирование полёта #{flight?.ID}</h1>
+            <h4>Регионы:</h4>
+            <ListGroup style={{width: '500px'}}>
+                {regionNames?.map((regionName, regionID) => (
+                    <ListGroupItem key={regionID}> {regionName}
+                        <span className="pull-right button-group" style={{float: 'right'}}>
+                            <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
+                        </span>
+                    </ListGroupItem>
+                ))
+                }
+            </ListGroup>
+            <span>
+                <input ref={newRegionInputRef} onChange={handleNewRegionChange}></input>
+                <Button onClick={addRegion}>Добавить</Button>
+            </span>
+            <h4>Характеристики:</h4>
+            <Form>
+                <FormGroup>
+                    <label htmlFor="statusInput">Статус</label>
+                    <FormSelect id="statusInput" defaultValue={flight?.Status} ref={statusRef}>
+                        <option>Черновик</option>
+                        <option>Удалён</option>
+                        <option>Сформирован</option>
+                        <option>Завершён</option>
+                        <option>Отклонён</option>
+                    </FormSelect>
+                </FormGroup>
+                <FormGroup>
+                    <label htmlFor="takeoffDate">Время взлёта</label>
+                    <FormControl id="takeoffDate" defaultValue={flight?.TakeoffDate} ref={takeoffDateRef}></FormControl>
+                </FormGroup>
+                <FormGroup>
+                    <label htmlFor="arrivalDate">Время прибытия</label>
+                    <FormControl id="arrivalDate" defaultValue={flight?.ArrivalDate} ref={arrivalDateRef}></FormControl>
+                </FormGroup>
+            </Form>
+            <Button onClick={sendChanges}>Сохранить изменения</Button>
+            <p></p>
+            <Button href='/drones-front/flights'>К полётам</Button>
+            <p></p>
+            <Button href='/drones-front/'>Домой</Button>
+            <p></p>
         </>
     )
 

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import {useSelector } from "react-redux/es/hooks/useSelector";
-import { Button, ListGroup, ListGroupItem, Form, FormGroup, FormSelect, FormControl } from "react-bootstrap";
+import { Button, ListGroup, ListGroupItem, Form, FormGroup, Modal, FormControl } from "react-bootstrap";
 import cartSlice from "./store/cartSlice";
 
 import store, { useAppDispatch } from "./store/store";
@@ -13,6 +13,10 @@ interface InputChangeInterface {
 const BookPage: FC = () => {
     const [arrivalDate, setArrivalDate] = useState('')
     const [takeoffDate, setTakeoffDate] = useState('')
+
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [showError, setShowError] = useState(false)
+    const [showDatesInvalid, setShowDatesInvalid] = useState(false)
     
     const dispatch = useAppDispatch()
     
@@ -31,12 +35,61 @@ const BookPage: FC = () => {
             return
         }
 
+        if (arrivalDate.match("\\d\\d\\d\\d-\\d\\d-\\d\\d") == null || takeoffDate.match("dddd-dd-dd")) {
+            setShowDatesInvalid(true)
+            return
+        }
+
         const result = await book(regions, userToken, arrivalDate, takeoffDate)
-        console.log(result)
+        if (result.status == 201) {
+            setShowSuccess(true)
+        } else {
+            setShowError(true)
+        }
+    }
+
+    const handleErrorClose = () => {
+        setShowError(false)
+    }
+    const handleSuccessClose = () => {
+        setShowSuccess(false)
+    }
+    const handleDatesInvalidClose = () => {
+        setShowDatesInvalid(false)
     }
 
     return (
         <>
+            <Modal show = {showError} onHide={handleErrorClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Ошибка! Не получилось осуществить бронь.</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleErrorClose}>
+                      Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show = {showSuccess} onHide={handleSuccessClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Забронировано!</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="success" onClick={handleSuccessClose}>
+                      Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show = {showDatesInvalid} onHide={handleDatesInvalidClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Даты записаны не в том формате. Нужный формат: YYYY-MM-DD</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleDatesInvalidClose}>
+                      Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <h1>Бронирование полёта</h1>
             {regions?.length !== 0 &&
                 <h3>Выбранные регионы:</h3>
@@ -58,7 +111,7 @@ const BookPage: FC = () => {
             <Form style={{width: '500px'}}>
                 <FormGroup>
                     <label htmlFor="takeoffDate">Время взлёта</label>
-                    <FormControl 
+                    <FormControl
                         onChange={e => setTakeoffDate(e.target.value)}
                     />
                 </FormGroup>
@@ -67,6 +120,7 @@ const BookPage: FC = () => {
                     <FormControl
                         onChange={e => setArrivalDate(e.target.value)}
                     />
+                    <small>Формат даты: YYYY-MM-DD</small>
                 </FormGroup>
             </Form>
             <p></p>

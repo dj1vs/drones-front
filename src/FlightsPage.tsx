@@ -25,17 +25,21 @@ const FlightsPage: FC = () => {
 
                 var arr: string[][] = []
                 for (let flight of flights) {
-                    const regions = await getFlightRegions(flight.ID, userToken)
-                    const region_names = []
-                    for (let region of regions) {
-                        region_names.push(region.Name)
-                    }
-
-
                     var flightArray:string[] = []
                     flightArray.push(flight.ID.toString())
                     flightArray.push(flight.Status)
-                    flightArray.push(region_names.toString().replace(new RegExp(',', 'g'), '\n'))
+
+                    const regions = await getFlightRegions(flight.ID, userToken)
+                    if (regions) {
+                        const region_names = []
+                        for (let region of regions) {
+                            region_names.push(region.Name)
+                        }
+                        flightArray.push(region_names.toString().replace(new RegExp(',', 'g'), '\n'))
+                    } else {
+                        flightArray.push('')
+                    }
+
                     if (flight.DateCreated) {
                         flightArray.push(flight.DateCreated)
                     }
@@ -47,6 +51,9 @@ const FlightsPage: FC = () => {
                     }
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
+
+
+                    
                     arr.push(flightArray)
                 }
                 setFlightsArray(arr);

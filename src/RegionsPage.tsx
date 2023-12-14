@@ -32,7 +32,6 @@ const RegionsPage: FC = () => {
 
         const loadRegions = async()  => {
             const result = await getRegions(String(regionName), String(status))
-            console.log(result)
             setRegions(result)
 
         }

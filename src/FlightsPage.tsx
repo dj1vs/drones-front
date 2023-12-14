@@ -6,6 +6,7 @@ import store from './store/store'
 import { getFlights } from './modules/get-flights'
 import { getFlightRegions } from './modules/get-flight-regions'
 import { Flight } from './modules/ds'
+import FlightsFilter from './components/FlightsFilter'
 
 const FlightsPage: FC = () => {
     const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
@@ -17,7 +18,11 @@ const FlightsPage: FC = () => {
         var flights: Flight[] = []
         const loadFlights = async()  => {
             if (userToken !== undefined) {
-                flights = await getFlights(userToken?.toString(), '')
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString)
+                var status = urlParams.get('status')
+
+                flights = await getFlights(userToken?.toString(), status?.toString())
 
                 if (!userToken) {
                     return
@@ -64,16 +69,25 @@ const FlightsPage: FC = () => {
         loadFlights()
     }, []);
 
+    if (!userToken) {
+        return (
+            <>
+                <h3> Для просмотра полётов вам необходимо войти в систему!</h3>
+            </>
+        )
+    } else if (flightsArray.length == 0) {
+        return (
+            <>
+                <h1>Полёты</h1>
+                <h3> Полёты не найдены.</h3>
+            </>
+        )
+    }
+
     return (
         <>
             <h1>Полёты</h1>
-            {!userToken &&
-                <h3> Вам необходимо войти в систему! </h3>
-
-            }
-            {userToken && flightsArray.length == 0 &&
-                <h3> Полёты не найдены.</h3>
-            }
+            <FlightsFilter></FlightsFilter>
             <Table>
                 <thead className='thead-dark'>
                     <tr>

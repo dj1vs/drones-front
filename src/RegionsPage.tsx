@@ -22,12 +22,16 @@ const RegionsPage: FC = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
         var regionName = urlParams.get('name_pattern')
+        var status = urlParams.get('status')
         if (regionName == null) {
             regionName = "";
         }
+        if (status == null) {
+            status = "";
+        }
 
         const loadRegions = async()  => {
-            const result = await getRegions(String(regionName))
+            const result = await getRegions(String(regionName), String(status))
             console.log(result)
             setRegions(result)
 

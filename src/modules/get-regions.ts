@@ -1,7 +1,8 @@
 import {Region} from './ds'
+import axios from 'axios';
 
-export const getRegions = async (namePattern = '') : Promise<Region[]> => {
-    return fetch('/api/regions?name_pattern=' + String(namePattern))
+export const getRegions = async (namePattern = '', status='') : Promise<Region[]> => {
+    return axios.get('/api/regions?name_pattern=' + String(namePattern) + '&status=' + String(status))
         .then((response) => response.json())
         .catch(() => ([
             {

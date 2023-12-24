@@ -90,7 +90,6 @@ const FlightPage: FC = () => {
             ArrivalDate: arrivalDate,
             Status: status,
         })
-        console.log(editResult)
 
 
         if (!regionNames || !userToken) {

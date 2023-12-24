@@ -20,14 +20,6 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
         dispatch(cartSlice.actions.addRegion(regionName))
     }
 
-
-    const deleteRestoreRegion = async () => {
-        await fetch('/api/region/delete_restore/' + regionName, {
-            method: 'PUT'
-        });
-        window.location.replace('/')
-    }
-
     return (
         <Card className='w-70 h-100'>
             <Card.Img variant="top" src={imageUrl}/>
@@ -36,7 +28,7 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
                 <ButtonGroup className='text-center'>
                     <Button variant="info" href={pageUrl}>Подробнее</Button>
                     {((userRole?.toString() == '2') || (userRole?.toString() == '3')) && 
-                        <Button variant="warning" onClick={deleteRestoreRegion}>Удалить</Button>
+                        <Button variant="warning" href={"/drones-front/region_edit?name=" + regionName}>Изменить</Button>
                     }
                     <Button variant="success" onClick={addRegionToCard}>В полёт</Button>
                 </ButtonGroup>

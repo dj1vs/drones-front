@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import {Flight} from './ds'
 
-export const getFlights = async (userToken = '', status = ''): Promise<Flight[]> => {
+export const getFlights = async (userToken = '', status = '', startDate = '', endDate = ''): Promise<Flight[]> => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ export const getFlights = async (userToken = '', status = ''): Promise<Flight[]>
         },
     }
     return axios.get(
-        `/api/flights?status=` + status,
+        `/api/flights?status=` + status + '&startDate=' + startDate + '&endDate=' + endDate,
         config,
     )
     .then((response) => response.data) 

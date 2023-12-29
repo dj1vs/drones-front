@@ -20,9 +20,12 @@ const FlightsPage: FC = () => {
             if (userToken !== undefined) {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString)
-                var status = urlParams.get('status')
+                let status = urlParams.get('status')
+                let startDate = urlParams.get('startDate')
+                let endDate = urlParams.get('endDate')
 
-                flights = await getFlights(userToken?.toString(), status?.toString())
+
+                flights = await getFlights(userToken?.toString(), status?.toString(), startDate?.toString(), endDate?.toString())
 
                 if (!userToken) {
                     return

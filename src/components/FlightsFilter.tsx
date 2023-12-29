@@ -12,19 +12,40 @@ const FlightsFilter: FC = () => {
     const dispatch = useAppDispatch()
 
     const statusRef = useRef<any>(null)
+    const startDateRef = useRef<any>(null)
+    const endDateRef = useRef<any>(null)
 
-    const {flightStatus} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
+    const {flightStatus, startDate, endDate} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
 
     const applyFilters = () => {
         let status = statusRef.current.value
+        let startDate = startDateRef.current.value
+        let endDate = endDateRef.current.value
+
+        if (startDate) {
+            startDate += ':00Z';
+        }
+
+        if (endDate) {
+            endDate += ':00Z'
+        }
+
+
         dispatch(filtersSlice.actions.setFlightStatus(status))
+        dispatch(filtersSlice.actions.setStartDate(startDate))
+        dispatch(filtersSlice.actions.setEndDate(endDate))
         
         if (status == "Все") {
             status = ""
         }
-        navigate('/drones-front/flights/?status=' + status)
+
+        let url = '/drones-front/flights?status=' + status;
+        url += '&startDate=' + startDate + '&endDate=' + endDate
+
+        navigate(url)
         window.location.reload()
     }
+
 
     return (
         <div style={{border: '1px solid black'}}>
@@ -42,6 +63,27 @@ const FlightsFilter: FC = () => {
                             <option>Отклонён</option>
                             <option>Все</option>
                         </FormSelect>
+                    </Col>
+                    <Col>
+                        <FormLabel>Сформировано с:</FormLabel>
+                    </Col>
+                    <Col>
+                        <input
+                            type="datetime-local"
+                            defaultValue={startDate?.toString().slice(0, -4)}
+                            ref={startDateRef}
+                        />
+                    </Col>
+                    <Col>
+                        <FormLabel>По:</FormLabel>
+                    </Col>
+                    <Col>
+                        <FormLabel></FormLabel>
+                        <input
+                            type="datetime-local"
+                            defaultValue={endDate?.toString().slice(0, -4)}
+                            ref={endDateRef}
+                        />
                     </Col>
                 </Row>
                 <Button onClick={applyFilters}>Применить</Button>

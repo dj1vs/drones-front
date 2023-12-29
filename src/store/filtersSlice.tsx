@@ -11,10 +11,22 @@ const flightStatus = localStorage.getItem('flightStatus')
     ? localStorage.getItem('flightStatus')
     : '';
 
+const startDate = localStorage.getItem('startDate')
+    ? localStorage.getItem('startDate')
+    : '';
+
+const endDate = localStorage.getItem('endDate')
+    ? localStorage.getItem('endDate')
+    : '';
+
+
+
 const initialState = {
     regionStatus,
     regionName,
     flightStatus,
+    startDate,
+    endDate
 }
 
 const filtersSlice = createSlice({
@@ -33,6 +45,14 @@ const filtersSlice = createSlice({
         setFlightStatus(state, {payload}) {
             state.flightStatus = payload
             localStorage.setItem('flightStatus', payload)
+        },
+        setStartDate(state, {payload}) {
+            state.startDate = payload
+            localStorage.setItem('startDate', payload)
+        },
+        setEndDate(state, {payload}) {
+            state.endDate = payload
+            localStorage.setItem('endDate', payload)
         }
     }
 })

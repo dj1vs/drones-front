@@ -13,10 +13,6 @@ export const getFlights = async (userToken = '', status = ''): Promise<Flight[]>
         `/api/flights?status=` + status,
         config,
     )
-    .then((response) => {
-        const { data } = response
-
-        return data;
-    }) 
+    .then((response) => response.data) 
 
 }

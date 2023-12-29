@@ -1,14 +1,16 @@
 import {Region} from './ds'
+import axios from 'axios';
 
 export const getRegionByName = async  (regionName = ''): Promise<Region> => {
-    return fetch('/api/region/' + String(regionName),{
-        method: 'GET',
+    const config = {
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    })
-        .then((response) => response.json())
+    }
+    return axios.get(
+        '/api/region/' + String(regionName),
+        config)
+        .then((response) => response.data)
         .catch(() => (
             {
                 "ID": 1,

@@ -1,12 +1,15 @@
 import {Flight} from './ds'
+import axios from 'axios';
 
 export const getFlight = async  (id = 1): Promise<Flight> => {
-    return fetch('/api/flight?flight_id=' + String(id),{
-        method: 'GET',
+    const config = {
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-        .then((response) => response.json());
+            'Content-Type': 'application/json',
+        },
+    }
+
+    return axios.get(
+        '/api/flight?flight_id=' + String(id),
+        config)
+        .then((response) => response.data);
 }

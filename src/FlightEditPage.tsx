@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
-import { Flight, Region } from "./modules/ds";
+import { Flight } from "./modules/ds";
 import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
 import { setFlightRegions } from "./modules/set-flight-regions";
@@ -16,7 +16,7 @@ interface InputChangeInterface {
     target: HTMLInputElement;
   }
 
-const FlightPage: FC = () => {
+const FlightEditPage: FC = () => {
     const newRegionInputRef = useRef<any>(null)
     const takeoffDateRef = useRef<any>(null)
     const arrivalDateRef = useRef<any>(null)
@@ -84,7 +84,7 @@ const FlightPage: FC = () => {
             status = statusRef.current.value
         }
 
-        const editResult = await editFlight(userToken, {
+        await editFlight(userToken, {
             ID: flight_id,
             TakeoffDate: takeoffDate,
             ArrivalDate: arrivalDate,
@@ -221,4 +221,4 @@ const FlightPage: FC = () => {
 
 }
 
-export default FlightPage;
+export default FlightEditPage;

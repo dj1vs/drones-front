@@ -12,7 +12,11 @@ import RegionsFilter from './components/RegionsFilter';
 import store, { useAppDispatch } from './store/store';
 import cartSlice from './store/cartSlice';
 
+import ModRegionsPage from './ModRegionsPage';
+
 const RegionsPage: FC = () => {
+    const {userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+
     const dispatch = useAppDispatch()
 
     const [regions, setRegions] = useState<Region[]>([])
@@ -42,6 +46,12 @@ const RegionsPage: FC = () => {
 
     const handleModalClose= () => {
         dispatch(cartSlice.actions.disableBooked())
+    }
+
+    if (userRole?.toString() == '2' || userRole?.toString() == '3') {
+        return (
+            <ModRegionsPage></ModRegionsPage>
+        )
     }
 
     return (

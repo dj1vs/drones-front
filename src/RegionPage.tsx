@@ -31,6 +31,7 @@ const RegionPage: FC = () => {
                 <Card.Body>
                     <p>{region?.Details}</p>
                     <p> <b>Статус: {region?.Status}</b></p>
+                    <p>Округ: {region?.District}</p>
                     <p> Площадь: {region?.AreaKm} км^2</p>
                     <p> Население: {region?.Population} чел.</p>
                     <p> Глава управы: {region?.HeadName}</p>

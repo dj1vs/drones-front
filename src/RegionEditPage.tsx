@@ -1,10 +1,11 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef, ChangeEvent } from "react";
 import { Card, Form, FormGroup, FormSelect, FormControl, Button, Modal, Row, Col } from "react-bootstrap";
 import { Region } from "./modules/ds";
 import { getRegionByName } from "./modules/get-region";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import store from "./store/store";
 import { editRegion } from "./modules/edit-region";
+import { sendImage } from "./modules/send-image";
 
 const RegionEditPage: FC = () =>{
     const districtRef = useRef<any>(null)
@@ -16,7 +17,9 @@ const RegionEditPage: FC = () =>{
     const headEmailRef = useRef<any>(null)
     const headPhoneRef = useRef<any>(null)
     const averageHeightRef = useRef<any>(null)
-    const imageNameRef = useRef<any>(null)
+
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 
     const [region, setRegion] = useState<Region>()
 
@@ -52,7 +55,6 @@ const RegionEditPage: FC = () =>{
         var headPhone = headPhoneRef.current.value
         var headEmail = headEmailRef.current.value
         var averageHeight = averageHeightRef.current.value
-        var imageName = imageNameRef.current.value
         var status = statusRef.current.value
 
         const editResult = await editRegion(userToken,
@@ -66,16 +68,31 @@ const RegionEditPage: FC = () =>{
                 HeadPhone: headPhone ? headPhone : region?.HeadPhone,
                 HeadEmail: headEmail ? headEmail : region?.HeadEmail,
                 AverageHeightM: averageHeight ? averageHeight : region?.AverageHeightM,
-                ImageName: imageName ? imageName : region?.ImageName,
+                ImageName: region?.ImageName,
                 Name: region?.Name,
                 Status: status ? status : region?.Status
             });
+
         if (editResult.status == 201) {
             setShowSuccess(true);
         } else {
             setShowError(true);
         }
+
+        if (selectedFile) {
+            const imageResult = await sendImage(userToken, String(region?.ID), selectedFile);
+
+            console.log(imageResult.status)
+        }
+
+
     }
+
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] || null;
+        setSelectedFile(file);
+      };
+    
 
     const handleErrorClose= () => {
         setShowError(false)
@@ -160,7 +177,7 @@ const RegionEditPage: FC = () =>{
                             <label htmlFor="imageName">Изображение</label>
                         </Col>
                         <Col>
-                            <input id="imageName" defaultValue={region?.ImageName} ref={imageNameRef} type="file"  accept="image/*"></input>
+                            <input id="imageName" defaultValue={region?.ImageName} onChange={handleFileChange} type="file"  accept="image/*"></input>
                         </Col>
                     </Row>
                 </FormGroup>

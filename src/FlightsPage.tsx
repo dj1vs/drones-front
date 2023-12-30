@@ -102,9 +102,7 @@ const FlightsPage: FC = () => {
                         <th scope='col'>Дата завершения</th>
                         <th scope='col'>Время взлёта</th>
                         <th scope='col'>Время прибытия</th>
-                        {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
-                            <th scope='col'></th>
-                        }
+                        <th scope='col'></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,7 +115,12 @@ const FlightsPage: FC = () => {
                             }
                             {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
                                 <td>
-                                    <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Изменить</Button>
+                                    <Button href={'/drones-front/flight_edit?flight_id=' + flightsArray[rowID][0]}>Изменить</Button>
+                                </td>
+                            }
+                            {(userRole?.toString() == '1') && 
+                                <td>
+                                    <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Просмотр</Button>
                                 </td>
                             }
                         </tr>

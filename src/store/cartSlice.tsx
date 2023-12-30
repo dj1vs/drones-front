@@ -4,8 +4,21 @@ const regions = localStorage.getItem('regions')
     ? localStorage.getItem('regions')?.split(',')
     : [];
 
+const takeoffDate = localStorage.getItem('takeoffDate')
+    ? localStorage.getItem('takeoffDate')
+    : '';
+
+const arrivalDate = localStorage.getItem('arrivalDate')
+    ? localStorage.getItem('arrivalDate')
+    : '';
+const draftID = localStorage.getItem('draftID')
+    ? localStorage.getItem('draftID')
+    : '';
 const initialState = {
     regions,
+    takeoffDate,
+    arrivalDate,
+    draftID,
     booked: false
 }
 
@@ -39,6 +52,18 @@ const cartSlice = createSlice({
                 state.regions.splice(regionIndex, 1)
                 localStorage.setItem('regions', state.regions.toString())
             }
+        },
+        setTakeoffDate(state, {payload}) {
+            state.takeoffDate = payload
+            localStorage.setItem('takeoffDate', payload)
+        },
+        setArrivalDate(state, {payload}) {
+            state.arrivalDate = payload,
+            localStorage.setItem('arrivalDate', payload)
+        },
+        setDraftID(state, {payload}) {
+            state.draftID = payload,
+            localStorage.setItem('draftID', payload)
         },
         disableBooked(state) {
             state.booked = false

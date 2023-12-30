@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-export const book = async(regions: string[], userToken: string, arrivalDate: string, takeoffDate: string): Promise<AxiosResponse> => {
+export const book = async(regions: string[], userToken: string, arrivalDate: string, takeoffDate: string, status: string): Promise<AxiosResponse> => {
     const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -13,6 +13,7 @@ export const book = async(regions: string[], userToken: string, arrivalDate: str
           'regions': regions,
           'arrivalDate': arrivalDate,
           'takeoffDate': takeoffDate,
+          'status': status,
         },
         config
 

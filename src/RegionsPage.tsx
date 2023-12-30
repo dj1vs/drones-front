@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import './RegionsPage.css'
 
 import { Region } from './modules/ds'
-import { getRegions } from './modules/get-regions';
+import { GetRegionsResponse, getRegions } from './modules/get-regions';
 
-import { Col, Row, Modal, Button } from 'react-bootstrap'
+import { Row, Modal, Button } from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
 import RegionsFilter from './components/RegionsFilter';
 
@@ -15,7 +15,7 @@ import cartSlice from './store/cartSlice';
 import ModRegionsPage from './ModRegionsPage';
 
 const RegionsPage: FC = () => {
-    const {userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const dispatch = useAppDispatch()
 
@@ -38,8 +38,12 @@ const RegionsPage: FC = () => {
             if (district == null) {
                 district = "";
             }
-            const result = await getRegions(String(regionName), String(status), String(district))
-            setRegions(result)
+            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(status), String(district))
+            setRegions(result.regions)
+            dispatch(cartSlice.actions.setTakeoffDate(result.draft_flight.TakeoffDate))
+            dispatch(cartSlice.actions.setArrivalDate(result.draft_flight.ArrivalDate))
+            dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
+            
 
         }
 

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { Card, Form, FormGroup, FormSelect, FormControl, Button, Modal } from "react-bootstrap";
+import { Card, Form, FormGroup, FormSelect, FormControl, Button, Modal, Row, Col } from "react-bootstrap";
 import { Region } from "./modules/ds";
 import { getRegionByName } from "./modules/get-region";
 import { useSelector } from "react-redux/es/hooks/useSelector";
@@ -155,8 +155,14 @@ const RegionEditPage: FC = () =>{
                     <FormControl id="averageHeight" defaultValue={region?.AverageHeightM} ref={averageHeightRef}></FormControl>
                 </FormGroup>
                 <FormGroup>
-                    <label htmlFor="imageName">Название изображения</label>
-                    <FormControl id="imageName" defaultValue={region?.ImageName} ref={imageNameRef}></FormControl>
+                    <Row>
+                        <Col>
+                            <label htmlFor="imageName">Изображение</label>
+                        </Col>
+                        <Col>
+                            <input id="imageName" defaultValue={region?.ImageName} ref={imageNameRef} type="file"  accept="image/*"></input>
+                        </Col>
+                    </Row>
                 </FormGroup>
             </Form>
             <Button onClick={sendChanges}>Сохранить изменения</Button>

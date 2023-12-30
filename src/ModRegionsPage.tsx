@@ -33,16 +33,15 @@ const ModRegionsPage : FC = () => {
             if (district == null) {
                 district = "";
             }
-            const regions = await getRegions(String(regionName), String(status), String(district))
+            const result = await getRegions(String(regionName), String(status), String(district))
 
             var arr: string[][] = []
-            for (let region of regions) {
+            for (let region of result.regions) {
                 var regionArray:string[] = []
                 regionArray.push(region.ImageName.toString())
                 regionArray.push(region.ID.toString())
                 regionArray.push(region.Name)
                 regionArray.push(region.Status)
-
 
                 arr.push(regionArray)
             }

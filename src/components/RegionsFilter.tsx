@@ -17,11 +17,6 @@ const RegionsFilter: FC = () => {
 
     const {regionName, regionStatus, regionDistrict} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
 
-
-    useEffect(() => {
-        console.log('Filters page got regionName: ' + regionName)
-    }, [])
-
     const applyFilters = () => {
         let name = nameRef.current.value
         let status = statusRef.current.value

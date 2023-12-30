@@ -6,10 +6,7 @@ import { useRef } from "react";
 
 import store, { useAppDispatch } from "./store/store";
 import { book } from "./modules/book";
-
-interface InputChangeInterface {
-    target: HTMLInputElement;
-}
+import { editFlight } from "./modules/edit-flight";
 
 const BookPage: FC = () => {
     const arrivalDateRef = useRef<any>(null)
@@ -17,12 +14,11 @@ const BookPage: FC = () => {
 
     const [showSuccess, setShowSuccess] = useState(false)
     const [showError, setShowError] = useState(false)
-    const [showDatesInvalid, setShowDatesInvalid] = useState(false)
     
     const dispatch = useAppDispatch()
     
     const {userToken} = useSelector((state: ReturnType<typeof store.getState> ) => state.auth)
-    const {regions} = useSelector((state: ReturnType<typeof store.getState>) => state.cart)
+    const {arrivalDate, takeoffDate, regions, draftID} = useSelector((state: ReturnType<typeof store.getState>) => state.cart)
 
     const deleteFromCart = (regionName = '') => {
         return (event: React.MouseEvent) => {
@@ -45,12 +41,35 @@ const BookPage: FC = () => {
             takeoffDate += ":00Z"
         }
 
-        const result = await book(regions, userToken, arrivalDate, takeoffDate)
+        const result = await book(regions, userToken, arrivalDate, takeoffDate, "Сформирован")
         if (result.status == 201) {
             setShowSuccess(true)
         } else {
             setShowError(true)
         }
+    }
+
+    const saveDraft = async () => {
+        if (regions === undefined || userToken === null) {
+            return
+        }
+
+        let arrivalDate = arrivalDateRef.current.value
+        let takeoffDate = takeoffDateRef.current.value
+        if (arrivalDate) {
+            arrivalDate + ":00Z"
+        }
+        if (takeoffDate) {
+            takeoffDate += ":00Z"
+        }
+
+        const result = await book(regions, userToken, arrivalDate, takeoffDate, "Черновик")
+        if (result.status == 201) {
+            setShowSuccess(true)
+        } else {
+            setShowError(true)
+        }
+
     }
 
     const handleErrorClose = () => {
@@ -59,8 +78,18 @@ const BookPage: FC = () => {
     const handleSuccessClose = () => {
         setShowSuccess(false)
     }
-    const handleDatesInvalidClose = () => {
-        setShowDatesInvalid(false)
+
+    const deleteDraft = async () => {
+        if (!draftID || !userToken) {
+            return;
+        }
+
+        await editFlight(userToken, {
+            ID: Number(draftID),
+            TakeoffDate: '',
+            ArrivalDate: '',
+            Status: 'Удалён',
+        })
     }
 
     return (
@@ -81,16 +110,6 @@ const BookPage: FC = () => {
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="success" onClick={handleSuccessClose}>
-                      Закрыть
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show = {showDatesInvalid} onHide={handleDatesInvalidClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Даты записаны не в том формате. Нужный формат: YYYY-MM-DD</Modal.Title>
-                </Modal.Header>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleDatesInvalidClose}>
                       Закрыть
                     </Button>
                 </Modal.Footer>
@@ -122,6 +141,7 @@ const BookPage: FC = () => {
                         <input
                             type="datetime-local"
                             ref={takeoffDateRef}
+                            defaultValue={takeoffDate?.slice(0, -4)}
                         />
                     </Col>
                     
@@ -134,13 +154,17 @@ const BookPage: FC = () => {
                         <input
                             type="datetime-local"
                             ref={arrivalDateRef}
+                            defaultValue={arrivalDate?.slice(0, -4)}
                         />
                     </Col>
                     
                 </Row>
             </Form>
-            <p></p>
             <Button onClick={bookRegion}>Забронировать!</Button>
+            <p></p>
+            <Button onClick={saveDraft}>Сохранить черновик</Button>
+            <p></p>
+            <Button onClick={deleteDraft}>Удалить черновик</Button>
             <p></p>
             <Button href="/drones-front/">Домой</Button>
         </>

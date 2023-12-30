@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import {useSelector } from "react-redux/es/hooks/useSelector";
-import { Button, ListGroup, ListGroupItem, Form, FormGroup, Modal, FormControl } from "react-bootstrap";
+import { Button, ListGroup, ListGroupItem, Form, Row, Col, Modal, } from "react-bootstrap";
 import cartSlice from "./store/cartSlice";
+import { useRef } from "react";
 
 import store, { useAppDispatch } from "./store/store";
 import { book } from "./modules/book";
@@ -11,8 +12,8 @@ interface InputChangeInterface {
 }
 
 const BookPage: FC = () => {
-    const [arrivalDate, setArrivalDate] = useState('')
-    const [takeoffDate, setTakeoffDate] = useState('')
+    const arrivalDateRef = useRef<any>(null)
+    const takeoffDateRef = useRef<any>(null)
 
     const [showSuccess, setShowSuccess] = useState(false)
     const [showError, setShowError] = useState(false)
@@ -35,9 +36,13 @@ const BookPage: FC = () => {
             return
         }
 
-        if (arrivalDate.match("\\d\\d\\d\\d-\\d\\d-\\d\\d") == null || takeoffDate.match("dddd-dd-dd")) {
-            setShowDatesInvalid(true)
-            return
+        let arrivalDate = arrivalDateRef.current.value
+        let takeoffDate = takeoffDateRef.current.value
+        if (arrivalDate) {
+            arrivalDate + ":00Z"
+        }
+        if (takeoffDate) {
+            takeoffDate += ":00Z"
         }
 
         const result = await book(regions, userToken, arrivalDate, takeoffDate)
@@ -95,7 +100,7 @@ const BookPage: FC = () => {
                 <h3>Выбранные регионы:</h3>
             }
             {regions?.length === 0 && 
-                <h4>Вы ещё не выбрали ни одного региона!</h4>
+                <h5>Вы ещё не выбрали ни одного региона.</h5>
             }
             <ListGroup style={{width: '500px'}}>
                 {regions?.map((regionName, regionID) => (
@@ -109,19 +114,30 @@ const BookPage: FC = () => {
             </ListGroup>
             <h4>Параметры бронирования:</h4>
             <Form style={{width: '500px'}}>
-                <FormGroup>
-                    <label htmlFor="takeoffDate">Время взлёта</label>
-                    <FormControl
-                        onChange={e => setTakeoffDate(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <label htmlFor="arrivalDate">Время прибытия</label>
-                    <FormControl
-                        onChange={e => setArrivalDate(e.target.value)}
-                    />
-                    <small>Формат даты: YYYY-MM-DD</small>
-                </FormGroup>
+                <Row>
+                    <Col>
+                        <label htmlFor="takeoffDate">Время взлёта</label>
+                    </Col>
+                    <Col>
+                        <input
+                            type="datetime-local"
+                            ref={takeoffDateRef}
+                        />
+                    </Col>
+                    
+                </Row>
+                <Row>
+                    <Col>
+                        <label htmlFor="arrivalDate">Время прибытия</label>
+                    </Col>
+                    <Col>
+                        <input
+                            type="datetime-local"
+                            ref={arrivalDateRef}
+                        />
+                    </Col>
+                    
+                </Row>
             </Form>
             <p></p>
             <Button onClick={bookRegion}>Забронировать!</Button>

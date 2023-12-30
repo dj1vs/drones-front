@@ -15,8 +15,8 @@ const FlightsPage: FC = () => {
 
 
     useEffect(() => {
-        var flights: Flight[] = []
         const loadFlights = async()  => {
+            var flights: Flight[] = []
             if (userToken !== undefined) {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString)
@@ -70,6 +70,13 @@ const FlightsPage: FC = () => {
         }
 
         loadFlights()
+
+        const intervalId = setInterval(() => {
+            loadFlights();
+        }, 5000);
+    
+        // Очистка интервала при размонтировании компонента
+        return () => clearInterval(intervalId);
     }, []);
 
     if (!userToken) {

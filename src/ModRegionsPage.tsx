@@ -17,23 +17,22 @@ const ModRegionsPage : FC = () => {
     const [regionsArray, setRegionsArray] = useState<string[][]>([])
     
     useEffect(() =>  {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString)
-        let regionName = urlParams.get('name_pattern')
-        let status = urlParams.get('status')
-        let district = urlParams.get('district')
-
-        if (regionName == null) {
-            regionName = "";
-        }
-        if (status == null) {
-            status = "";
-        }
-        if (district == null) {
-            district = "";
-        }
-
         const loadRegions = async()  => {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString)
+            let regionName = urlParams.get('name_pattern')
+            let status = urlParams.get('status')
+            let district = urlParams.get('district')
+
+            if (regionName == null) {
+                regionName = "";
+            }
+            if (status == null) {
+                status = "";
+            }
+            if (district == null) {
+                district = "";
+            }
             const regions = await getRegions(String(regionName), String(status), String(district))
 
             var arr: string[][] = []
@@ -52,8 +51,6 @@ const ModRegionsPage : FC = () => {
         }
 
         loadRegions()
-
-        
 
     }, [])
 

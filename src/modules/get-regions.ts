@@ -1,7 +1,7 @@
 import {Region} from './ds'
 import axios from 'axios';
 
-export const getRegions = async (namePattern = '', status='') : Promise<Region[]> => {
+export const getRegions = async (namePattern = '', status='', district='') : Promise<Region[]> => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -9,7 +9,7 @@ export const getRegions = async (namePattern = '', status='') : Promise<Region[]
     }
 
     return axios.get(
-        '/api/regions?name_pattern=' + String(namePattern) + '&status=' + String(status),
+        '/api/regions?name_pattern=' + String(namePattern) + '&status=' + String(status) + '&district=' + String(district),
         config)
         .then((response) => response.data)
         .catch(() => ([

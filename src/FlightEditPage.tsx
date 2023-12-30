@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
-import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
+import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, Modal, Row, Col, FormLabel } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
@@ -152,7 +152,7 @@ const FlightEditPage: FC = () => {
 
 
     return(
-        <>
+        <div style={{width: '600px'}}>
             <Modal show = {showError} onHide={handleErrorClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Произошла ошибка, полёт не был обновлён</Modal.Title>
@@ -185,10 +185,17 @@ const FlightEditPage: FC = () => {
                 ))
                 }
             </ListGroup>
-            <span>
-                <input ref={newRegionInputRef} onChange={handleNewRegionChange}></input>
-                <Button onClick={addRegion}>Добавить</Button>
-            </span>
+            <Row>
+                <Col>
+                    <FormLabel>Добавить регион:</FormLabel>
+                </Col>
+                <Col>
+                    <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>
+                </Col>
+                <Col>
+                    <Button onClick={addRegion}>Добавить</Button>
+                </Col>
+            </Row>
             <h4>Характеристики:</h4>
             <Form>
                 <FormGroup>
@@ -216,7 +223,7 @@ const FlightEditPage: FC = () => {
             <p></p>
             <Button href='/drones-front/'>Домой</Button>
             <p></p>
-        </>
+        </div>
     )
 
 }

@@ -25,17 +25,21 @@ const RegionsPage: FC = () => {
     useEffect(() => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
-        var regionName = urlParams.get('name_pattern')
-        var status = urlParams.get('status')
+        let regionName = urlParams.get('name_pattern')
+        let status = urlParams.get('status')
+        let district = urlParams.get('district') 
         if (regionName == null) {
             regionName = "";
         }
         if (status == null) {
             status = "";
         }
+        if (district == null) {
+            district = "";
+        }
 
         const loadRegions = async()  => {
-            const result = await getRegions(String(regionName), String(status))
+            const result = await getRegions(String(regionName), String(status), String(district))
             setRegions(result)
 
         }
@@ -71,15 +75,15 @@ const RegionsPage: FC = () => {
             <RegionsFilter></RegionsFilter>
             <p></p>
 
-            <Row xs={4} md={4} className='row row-cols-3 g-4'>
+            <Row xs={8} md={8} className='row row-cols-8 g-8'>
                 {regions.map((item, index) => (
-                    <Col key={index} > 
+                    <div className="col-2" key={index} > 
                         <RegionCard {...{
                              imageUrl: (item.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + item.ImageName?.toString()),
                              regionName: item.Name,
                              pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
                         }}></RegionCard>
-                    </Col>
+                    </div>
                 ))}
             </Row>
             

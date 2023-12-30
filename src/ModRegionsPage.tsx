@@ -19,17 +19,22 @@ const ModRegionsPage : FC = () => {
     useEffect(() =>  {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
-        var regionName = urlParams.get('name_pattern')
-        var status = urlParams.get('status')
+        let regionName = urlParams.get('name_pattern')
+        let status = urlParams.get('status')
+        let district = urlParams.get('district')
+
         if (regionName == null) {
             regionName = "";
         }
         if (status == null) {
             status = "";
         }
+        if (district == null) {
+            district = "";
+        }
 
         const loadRegions = async()  => {
-            const regions = await getRegions(String(regionName), String(status))
+            const regions = await getRegions(String(regionName), String(status), String(district))
 
             var arr: string[][] = []
             for (let region of regions) {

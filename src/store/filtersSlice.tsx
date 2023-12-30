@@ -7,6 +7,12 @@ const regionStatus = localStorage.getItem('regionStatus')
 const regionName = localStorage.getItem('regionName')
     ? localStorage.getItem('regionName')
     : '';
+
+const regionDistrict = localStorage.getItem('regionDistrict')
+    ? localStorage.getItem('regionDistrict')
+    : '';
+
+
 const flightStatus = localStorage.getItem('flightStatus')
     ? localStorage.getItem('flightStatus')
     : '';
@@ -24,6 +30,7 @@ const endDate = localStorage.getItem('endDate')
 const initialState = {
     regionStatus,
     regionName,
+    regionDistrict,
     flightStatus,
     startDate,
     endDate
@@ -38,9 +45,12 @@ const filtersSlice = createSlice({
             localStorage.setItem('regionStatus', payload)
         },
         setRegionName(state, {payload}) {
-            console.log('setRegionName got regionName: ' + payload)
             state.regionName = payload
             localStorage.setItem('regionName', payload)
+        },
+        setRegionDistrict(state, {payload}) {
+            state.regionDistrict = payload
+            localStorage.setItem('regionDistrict', payload)
         },
         setFlightStatus(state, {payload}) {
             state.flightStatus = payload

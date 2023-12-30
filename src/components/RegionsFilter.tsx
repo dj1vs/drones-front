@@ -1,103 +1,75 @@
-import { FC,  useState, useEffect } from "react";
-import { FormCheck, FormLabel, Form, Button, Row, Col} from "react-bootstrap";
-import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
+import { FC,  useEffect } from "react";
+import { FormLabel, Button, Row, FormSelect} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import store from "../store/store";
 import filtersSlice from "../store/filtersSlice";
 import { useAppDispatch } from "../store/store";
-
-interface InputChangeInterface {
-    target: HTMLInputElement;
-}
+import { useRef } from "react";
 
 const RegionsFilter: FC = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
-    const {regionName, regionStatus} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
+    const nameRef = useRef<any>(null)
+    const statusRef = useRef<any>(null)
+    const districtRef = useRef<any>(null)
 
-    const [name, setName] = useState('')
-    const [status, setStatus] = useState('')
-    const [statusClicked, setStatusClicked] = useState(false)
+    const {regionName, regionStatus, regionDistrict} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
+
 
     useEffect(() => {
         console.log('Filters page got regionName: ' + regionName)
     }, [])
 
     const applyFilters = () => {
+        let name = nameRef.current.value
+        let status = statusRef.current.value
+        let district = districtRef.current.value
+
         dispatch(filtersSlice.actions.setRegionName(name))
         dispatch(filtersSlice.actions.setRegionStatus(status))
-
+        dispatch(filtersSlice.actions.setRegionDistrict(district))
+        
+        
         let filterString = '?name_pattern=' + name
-        if (statusClicked) {
+        if (status) {
             filterString += '&status=' + status
+        }
+        
+        if (district) {
+            filterString += "&district=" + district
         }
         
         navigate('/drones-front/' + filterString)
         window.location.reload()
     }
 
-    const handleNameChange = (event: InputChangeInterface) => {
-        setName(event.target.value)
-    }
-
-    const handleActiveToggle = () => {
-        setStatus('Действует')
-        setStatusClicked(true);
-    }
-
-    const handleDisabledToggle = () => {
-        setStatus('Недоступен')
-        setStatusClicked(true)
-    }
-
-    const handleAllToggle = () => {
-        setStatus('')
-        setStatusClicked(true)
-    }
-
     return (
-        <div style={{border: '1px solid black'}}>
-        <Row>
-            <Col>
-                <Form>
+        <div>
+        <Row className="row justify-content-start">
+            <div className="col-2">
                     <FormLabel>Имя:</FormLabel>
-                    <input onChange={handleNameChange} defaultValue={regionName?.toString()}></input>
-                </Form>
-            </Col>
-            <Col>
-                <Form>
+            </div>
+            <div className="col-2">
+                    <input ref={nameRef} defaultValue={regionName?.toString()} className="form-control"></input>
+            </div>
+            <div className="col-2">
+                    <FormLabel>Округ:</FormLabel>
+            </div>
+            <div className="col-2">
+                    <input ref={districtRef} defaultValue={regionDistrict?.toString()} className="form-control"></input>
+            </div>
+            <div className="col-2">
                     <FormLabel>Статус региона:</FormLabel>
-                    <FormCheck>
-                        <FormCheckInput 
-                            defaultChecked={regionStatus?.toString() == "Действует"}
-                            type="radio"
-                            name="flexRadioDefault"
-                            onClick={handleActiveToggle}>
-                        </FormCheckInput>
-                        <FormLabel>Действует</FormLabel>
-                    </FormCheck>
-                    <FormCheck>
-                        <FormCheckInput
-                            defaultChecked={regionStatus?.toString() == "Недоступен"}
-                            type="radio"
-                            name="flexRadioDefault"
-                            onClick={handleDisabledToggle}>
-                        </FormCheckInput>
-                        <FormLabel>Недоступен</FormLabel>
-                    </FormCheck>
-                    <FormCheck>
-                        <FormCheckInput
-                            defaultChecked={regionStatus?.toString() == ""}
-                            type="radio"
-                            name="flexRadioDefault"
-                            onClick={handleAllToggle}>
-                        </FormCheckInput>
-                        <FormLabel>Все</FormLabel>
-                    </FormCheck>
-                </Form>
-            </Col>
+            </div>
+            <div className="col-2">
+                    <FormSelect ref={statusRef} defaultValue={regionStatus?.toString()}>
+                        <option>Действует</option>
+                        <option>Недоступен</option>
+                        <option>Все</option>
+                        div</FormSelect>
+            </div>
         </Row>
         <Button onClick={applyFilters}>Применить</Button>
         </div>

@@ -152,7 +152,7 @@ const FlightEditPage: FC = () => {
 
 
     return(
-        <div style={{width: '600px'}}>
+        <>
             <Modal show = {showError} onHide={handleErrorClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Произошла ошибка, полёт не был обновлён</Modal.Title>
@@ -173,31 +173,31 @@ const FlightEditPage: FC = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <h1>Редактирование полёта #{flight?.ID}</h1>
-            <h4>Регионы:</h4>
-            <ListGroup style={{width: '500px'}}>
-                {regionNames?.map((regionName, regionID) => (
-                    <ListGroupItem key={regionID}> {regionName}
-                        <span className="pull-right button-group" style={{float: 'right'}}>
-                            <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
-                        </span>
-                    </ListGroupItem>
-                ))
-                }
-            </ListGroup>
-            <Row>
-                <Col>
-                    <FormLabel>Добавить регион:</FormLabel>
-                </Col>
-                <Col>
-                    <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>
-                </Col>
-                <Col>
-                    <Button onClick={addRegion}>Добавить</Button>
-                </Col>
-            </Row>
-            <h4>Характеристики:</h4>
-            <Form>
+            <Form style={{width: '600px', marginLeft: 'auto', marginRight: 'auto'}}>
+                <h1>Редактирование полёта #{flight?.ID}</h1>
+                <h4>Регионы:</h4>
+                <ListGroup style={{width: '500px'}}>
+                    {regionNames?.map((regionName, regionID) => (
+                        <ListGroupItem key={regionID}> {regionName}
+                            <span className="pull-right button-group" style={{float: 'right'}}>
+                                <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
+                            </span>
+                        </ListGroupItem>
+                    ))
+                    }
+                </ListGroup>
+                <Row>
+                    <Col>
+                        <FormLabel>Добавить регион:</FormLabel>
+                    </Col>
+                    <Col>
+                        <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>
+                    </Col>
+                    <Col>
+                        <Button onClick={addRegion}>Добавить</Button>
+                    </Col>
+                </Row>
+                <h4>Характеристики:</h4>
                 <FormGroup>
                     <label htmlFor="statusInput">Статус</label>
                     <FormSelect id="statusInput" defaultValue={flight?.Status} ref={statusRef}>
@@ -216,14 +216,20 @@ const FlightEditPage: FC = () => {
                     <label htmlFor="arrivalDate">Время прибытия</label>
                     <FormControl id="arrivalDate" defaultValue={flight?.ArrivalDate} ref={arrivalDateRef}></FormControl>
                 </FormGroup>
+                <Row>
+                    <Button onClick={sendChanges}>Сохранить изменения</Button>
+                </Row>
+                <p></p>
+                <Row>
+                    <Button href='/drones-front/flights'>К полётам</Button>
+                </Row>
+                <p></p>
+                <Row>
+                    <Button href='/drones-front/'>Домой</Button>
+                </Row>
+                <p></p>
             </Form>
-            <Button onClick={sendChanges}>Сохранить изменения</Button>
-            <p></p>
-            <Button href='/drones-front/flights'>К полётам</Button>
-            <p></p>
-            <Button href='/drones-front/'>Домой</Button>
-            <p></p>
-        </div>
+        </>
     )
 
 }

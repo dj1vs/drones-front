@@ -12,6 +12,7 @@ const FlightsPage: FC = () => {
     const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const [flightsArray, setFlightsArray] = useState<string[][]>([])
+    const [usersArray, setUsersArray] = useState<string[]>([])
 
 
     useEffect(() => {
@@ -27,11 +28,14 @@ const FlightsPage: FC = () => {
 
                 flights = await getFlights(userToken?.toString(), status?.toString(), startDate?.toString(), endDate?.toString())
 
+                console.log(flights)
+
                 if (!userToken) {
                     return
                 }
 
-                var arr: string[][] = []
+                let arr: string[][] = []
+                let usersArr: string[] = []
                 for (let flight of flights) {
                     var flightArray:string[] = []
                     flightArray.push(flight.ID.toString())
@@ -60,11 +64,17 @@ const FlightsPage: FC = () => {
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
 
+                    if (flight.User["name"]) {
+                        usersArr.push(flight.User["name"])
+                    } else {
+                        usersArr.push('Пропуск')
+                    }
 
                     
                     arr.push(flightArray)
                 }
                 setFlightsArray(arr);
+                setUsersArray(usersArr);
             }
                 
         }
@@ -94,6 +104,9 @@ const FlightsPage: FC = () => {
             <Table>
                 <thead className='thead-dark'>
                     <tr>
+                        {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
+                            <th scope='col'>Создатель</th>
+                        }
                         <th scope='col'>ID</th>
                         <th scope='col'>Статус</th>
                         <th scope='col'>Регионы</th>
@@ -108,8 +121,10 @@ const FlightsPage: FC = () => {
                 <tbody>
                     {flightsArray.map((rowContent, rowID) => (
                         <tr key={rowID}>
+                            {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
+                                <td key={rowID}>{usersArray[rowID]}</td>
+                            }
                             {rowContent.map((val, rowID) => (
-
                                 <td key={rowID}>{val}</td>
                             ))
                             }

@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 
-import { Form,  Button,ListGroup, ListGroupItem,  FormLabel } from "react-bootstrap";
+import { Form,  Button,ListGroup, ListGroupItem,  FormLabel, Row } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
@@ -47,8 +47,8 @@ const FlightPage: FC = () => {
     }, [])
 
     return(
-        <div style={{width: '600px'}}>
-            <h1>Редактирование полёта #{flight?.ID}</h1>
+        <Form style={{width: '600px', marginRight: 'auto', marginLeft: 'auto'}}>
+            <h1>Информация о полёте #{flight?.ID}</h1>
             <h4>Регионы:</h4>
             <ListGroup style={{width: '500px'}}>
                 {regionNames?.map((regionName, regionID) => (
@@ -58,16 +58,22 @@ const FlightPage: FC = () => {
                 }
             </ListGroup>
             <h4>Характеристики:</h4>
-            <Form>
-                <FormLabel>Статус: {flight?.Status}</FormLabel>
-                <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
-                <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
-            </Form>
-            <Button href='/drones-front/flights'>К полётам</Button>
             <p></p>
-            <Button href='/drones-front/'>Домой</Button>
+            <FormLabel>Статус: {flight?.Status}</FormLabel>
             <p></p>
-        </div>
+            <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
+            <p></p>
+            <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
+            <p></p>
+            <Row>
+                <Button href='/drones-front/flights'>К полётам</Button>
+            </Row>
+            <p></p>
+            <Row>
+                <Button href='/drones-front/'>Домой</Button>
+            </Row>
+            <p></p>
+        </Form>
     )
 
 }

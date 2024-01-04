@@ -43,22 +43,22 @@ const RegionsFilter: FC = () => {
     return (
         <div>
         <Row className="row justify-content-start">
-            <div className="col-1">
+            <div className="col-2">
                     <FormLabel>Имя:</FormLabel>
             </div>
-            <div className="col-1">
+            <div className="col-2">
                     <input ref={nameRef} defaultValue={regionName?.toString()} className="form-control"></input>
             </div>
-            <div className="col-1">
+            <div className="col-2">
                     <FormLabel>Округ:</FormLabel>
             </div>
-            <div className="col-1">
+            <div className="col-2">
                     <input ref={districtRef} defaultValue={regionDistrict?.toString()} className="form-control"></input>
             </div>
-            <div className="col-1">
+            <div className="col-2">
                     <FormLabel>Статус региона:</FormLabel>
             </div>
-            <div className="col-1">
+            <div className="col-2">
                     <FormSelect ref={statusRef} defaultValue={regionStatus?.toString()}>
                         <option>Действует</option>
                         <option>Недоступен</option>

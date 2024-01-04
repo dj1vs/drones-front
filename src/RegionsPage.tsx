@@ -80,7 +80,7 @@ const RegionsPage: FC = () => {
 
             <Row xs={8} md={8} className='row row-cols-8 g-8'>
                 {regions.map((item, index) => (
-                    <div className="col-2" key={index} > 
+                    <div className="col-3" key={index} > 
                         <RegionCard {...{
                              imageUrl: (item.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + item.ImageName?.toString()),
                              regionName: item.Name,

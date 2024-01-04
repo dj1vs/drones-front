@@ -123,14 +123,15 @@ const RegionEditPage: FC = () =>{
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <div style={{width: '500px'}}>
+            <Form style={{width: '500px', marginRight: 'auto', marginLeft: 'auto', alignItems: 'center', justifyContent: 'center'}}>
+                <Row className="justify-content-center">
+                    <Card.Img
+                        style={{width: '200px'}}
+                        src={(region?.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + region?.ImageName)}
+                        variant="top"
+                        />
+                </Row>    
             
-            <h1>Редактирование региона</h1>
-            <Card.Img
-                src={(region?.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + region?.ImageName)}
-                variant="top"
-                />
-            <Form>
             <h2>{region?.Name}</h2>
                 <FormGroup>
                     <label htmlFor="status">Статус</label>
@@ -181,13 +182,17 @@ const RegionEditPage: FC = () =>{
                         </Col>
                     </Row>
                 </FormGroup>
-            </Form>
-            <Button onClick={sendChanges}>Сохранить изменения</Button>
             <p></p>
-            <Button href='/drones-front/'>Домой</Button>
+            <Row>
+                <Button onClick={sendChanges}>Сохранить изменения</Button>
+            </Row>
+            <p></p>
+            <Row>
+                <Button href='/drones-front/'>Домой</Button>
+            </Row>
             <p></p>
 
-        </div>
+        </Form>
         </>
         
     )

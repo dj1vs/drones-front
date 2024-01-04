@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useNavigate } from 'react-router-dom';
 
-import {Button, Spinner, Modal} from 'react-bootstrap'
+import {Button, Spinner, Modal, FormGroup, FormControl, Form, FormLabel, Row, Col} from 'react-bootstrap'
 
 import store, { useAppDispatch } from './store/store'
 import { loginUser, registerUser } from './modules/authActions';
@@ -58,7 +58,7 @@ const AuthPage: FC = () => {
 
     
     return (
-        <>
+        <div>
             <Modal show = {success && showRegisterModal && !loading} onHide={handleRegisterModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Регистрация прошла успешно!</Modal.Title>
@@ -69,26 +69,50 @@ const AuthPage: FC = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            
-            <h1>Вход</h1>
-            <p>Логин:</p>
-                <input
-                    value={login}
-                    onChange={handleLoginChange}
-                />
-            <p>Пароль:</p>
-                <input
-                    type='password'
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-            <p></p>
-            <Button onClick={sendLogin} disabled={loading}>Войти</Button>
-            <p></p>
-            <Button onClick={sendRegister} disabled={loading}>Регистрация</Button>
-            <p></p>
-            {loading ? <Spinner /> : ''}    
-        </>
+            <Form style={{width: '400px', marginLeft: 'auto', marginRight: 'auto'}}>
+                <h1>Вход в систему</h1>
+                <FormGroup>
+                    <Row>
+                        <Col>
+                            <FormLabel>Логин:</FormLabel>
+                        </Col>
+                        <Col>
+                            <input
+                                value={login}
+                                onChange={handleLoginChange}
+                                className="form-control"
+                            />
+                        </Col>   
+                    </Row>
+                </FormGroup>
+                <p></p>
+                <FormGroup>
+                    <Row>
+                        <Col>
+                            <FormLabel>Пароль:</FormLabel>
+                        </Col>
+                        <Col>
+                        <input
+                            type='password'
+                            value={password}
+                            onChange={handlePasswordChange}
+                            className="form-control"
+                        />
+                        </Col>
+                    </Row>
+                </FormGroup>
+                <p></p>
+                <Row>
+                    <Button onClick={sendLogin} disabled={loading}>Войти</Button>
+                </Row>
+                <p></p>
+                <Row>
+                    <Button onClick={sendRegister} disabled={loading}>Регистрация</Button>
+                </Row>
+                <p></p>
+                {loading ? <Spinner /> : ''}    
+            </Form>
+        </div>
        
         
     )

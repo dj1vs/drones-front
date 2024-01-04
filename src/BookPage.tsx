@@ -116,10 +116,10 @@ const BookPage: FC = () => {
             </Modal>
             <h1>Бронирование полёта</h1>
             {regions?.length !== 0 &&
-                <h3>Выбранные регионы:</h3>
+                <h3>Выбранные районы:</h3>
             }
             {regions?.length === 0 && 
-                <h5>Вы ещё не выбрали ни одного региона.</h5>
+                <h5>Вы ещё не выбрали ни одного района.</h5>
             }
             <ListGroup style={{width: '500px'}}>
                 {regions?.map((regionName, regionID) => (

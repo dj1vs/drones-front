@@ -49,7 +49,7 @@ const FlightPage: FC = () => {
     return(
         <Form style={{width: '600px', marginRight: 'auto', marginLeft: 'auto'}}>
             <h1>Информация о полёте #{flight?.ID}</h1>
-            <h4>Регионы:</h4>
+            <h4>Районы:</h4>
             <ListGroup style={{width: '500px'}}>
                 {regionNames?.map((regionName, regionID) => (
                     <ListGroupItem key={regionID}> {regionName}

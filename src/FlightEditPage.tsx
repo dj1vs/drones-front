@@ -175,7 +175,7 @@ const FlightEditPage: FC = () => {
             </Modal>
             <Form style={{width: '600px', marginLeft: 'auto', marginRight: 'auto'}}>
                 <h1>Редактирование полёта #{flight?.ID}</h1>
-                <h4>Регионы:</h4>
+                <h4>Районы:</h4>
                 <ListGroup style={{width: '500px'}}>
                     {regionNames?.map((regionName, regionID) => (
                         <ListGroupItem key={regionID}> {regionName}
@@ -188,7 +188,7 @@ const FlightEditPage: FC = () => {
                 </ListGroup>
                 <Row>
                     <Col>
-                        <FormLabel>Добавить регион:</FormLabel>
+                        <FormLabel>Добавить район:</FormLabel>
                     </Col>
                     <Col>
                         <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>

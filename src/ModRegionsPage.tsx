@@ -72,7 +72,7 @@ const ModRegionsPage : FC = () => {
         <>
             <Modal show = {booked} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Регион добавлен в корзину</Modal.Title>
+                    <Modal.Title>Район добавлен в корзину</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="success" onClick={() => {dispatch(cartSlice.actions.disableBooked())}}>
@@ -80,7 +80,7 @@ const ModRegionsPage : FC = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <h1>Регионы</h1>
+            <h1>Районы</h1>
             <RegionsFilter></RegionsFilter>
             <Table>
                 <thead className="thead-dark">

@@ -64,7 +64,7 @@ const FlightsPage: FC = () => {
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
 
-                    if (flight.User["name"]) {
+                    if (flight.User && flight.User["name"]) {
                         usersArr.push(flight.User["name"])
                     } else {
                         usersArr.push('Пропуск')
@@ -109,13 +109,16 @@ const FlightsPage: FC = () => {
                         }
                         <th scope='col'>ID</th>
                         <th scope='col'>Статус</th>
-                        <th scope='col'>Регионы</th>
+                        <th scope='col'>Районы</th>
                         <th scope='col'>Дата создания</th>
                         <th scope='col'>Дата обработки</th>
                         <th scope='col'>Дата завершения</th>
                         <th scope='col'>Время взлёта</th>
                         <th scope='col'>Время прибытия</th>
                         <th scope='col'></th>
+                        {(userRole?.toString() == '1') && 
+                        <th scope='col'></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -137,6 +140,9 @@ const FlightsPage: FC = () => {
                                 <td>
                                     <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Просмотр</Button>
                                 </td>
+                            }
+                            {(userRole?.toString() == '1') && 
+                            <Button variant='danger'> Отменить </Button>
                             }
                         </tr>
                     ))}

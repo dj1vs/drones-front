@@ -56,7 +56,7 @@ const RegionsFilter: FC = () => {
                     <input ref={districtRef} defaultValue={regionDistrict?.toString()} className="form-control"></input>
             </div>
             <div className="col-2">
-                    <FormLabel>Статус региона:</FormLabel>
+                    <FormLabel>Статус района:</FormLabel>
             </div>
             <div className="col-2">
                     <FormSelect ref={statusRef} defaultValue={regionStatus?.toString()}>

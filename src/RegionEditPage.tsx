@@ -105,7 +105,7 @@ const RegionEditPage: FC = () =>{
         <>
             <Modal show = {showError} onHide={handleErrorClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Произошла ошибка, регион не был обновлён</Modal.Title>
+                    <Modal.Title>Произошла ошибка, район не был обновлён</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleErrorClose}>
@@ -115,7 +115,7 @@ const RegionEditPage: FC = () =>{
             </Modal>
             <Modal show = {showSuccess} onHide={handleSuccessClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Редактирование региона прошло успешно!</Modal.Title>
+                    <Modal.Title>Редактирование района прошло успешно!</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="success" onClick={handleSuccessClose}>

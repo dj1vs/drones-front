@@ -55,7 +55,7 @@ const RegionsPage: FC = () => {
         dispatch(cartSlice.actions.disableBooked())
     }
 
-    if (userRole?.toString() == '2' || userRole?.toString() == '3') {
+    if (userToken && (userRole?.toString() == '2' || userRole?.toString() == '3')) {
         return (
             <ModRegionsPage></ModRegionsPage>
         )
@@ -66,7 +66,7 @@ const RegionsPage: FC = () => {
         <div>
             <Modal show = {booked} onHide={handleModalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Регион добавлен в корзину</Modal.Title>
+                    <Modal.Title>Район добавлен в корзину</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="success" onClick={() => {dispatch(cartSlice.actions.disableBooked())}}>
@@ -78,9 +78,9 @@ const RegionsPage: FC = () => {
             <RegionsFilter></RegionsFilter>
             <p></p>
 
-            <Row xs={8} md={8} className='row row-cols-8 g-8'>
+            <Row xs={4} md={4} className='row row-cols-4 g-4'>
                 {regions.map((item, index) => (
-                    <div className="col-3" key={index} > 
+                    <div className="col-4" key={index} > 
                         <RegionCard {...{
                              imageUrl: (item.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + item.ImageName?.toString()),
                              regionName: item.Name,

@@ -14,20 +14,20 @@ interface Props {
 const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
     const dispatch = useAppDispatch()
 
-    const {userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    const {userRole, userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const addRegionToCard = () => {
         dispatch(cartSlice.actions.addRegion(regionName))
     }
 
     return (
-        <Card style={{width:'250px'}}>
+        <Card style={{width:'300px'}}>
             <Card.Img style={{ width: '250px', height: '275px' }} variant="top" src={imageUrl}/>
             <Card.Body className='d-flex flex-column'>
                 <Card.Title className='mt-auto'> {regionName} </Card.Title>
                 <ButtonGroup className='text-center'>
                     <Button variant="info" href={pageUrl}>Подробнее</Button>
-                    {((userRole?.toString() == '2') || (userRole?.toString() == '3')) && 
+                    {(userToken && (userRole?.toString() == '2') || (userRole?.toString() == '3')) && 
                         <Button variant="warning" href={"/drones-front/region_edit?name=" + regionName}>Изменить</Button>
                     }
                     <Button variant="success" onClick={addRegionToCard}>В полёт</Button>

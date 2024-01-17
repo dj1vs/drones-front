@@ -51,7 +51,7 @@ const AuthPage: FC = () => {
  
     useEffect(() => {
         if (userToken && userName) {
-            navigate('/drones-front/account')
+            navigate('/drones-front/')
         }
     }, [navigate, userToken, userName])
 

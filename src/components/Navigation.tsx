@@ -4,13 +4,30 @@ import store from '../store/store'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Button } from 'react-bootstrap';
+
+import { logoutUser } from '../modules/authActions';
+import { useAppDispatch } from '../store/store';
+import { useNavigate } from 'react-router-dom';
 
 const Navigation: FC = () => {
-  const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+  const {userToken, userName} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+
+  const sendLogout = async() => {
+    if (userToken != null) {
+        dispatch(logoutUser(userToken))
+        navigate('/drones-front/')
+    }
+}
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/drones-front/">Маршруты БПЛА</Navbar.Brand>
+        <Nav.Link href="/drones-front/">Районы</Nav.Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -18,15 +35,16 @@ const Navigation: FC = () => {
             {!userToken &&
               <Nav.Link href="/drones-front/auth">Вход</Nav.Link>
             }
-            {userToken &&
-              <>
-                <Nav.Link href="/drones-front/account">Аккаунт</Nav.Link>
-                <Nav.Link href="/drones-front/book">Бронирование</Nav.Link>
-              </>
-            }
           </Nav>
         </Navbar.Collapse>
       </Container>
+      {userToken &&
+        <Navbar.Collapse className='justify-content-end'>
+          <Nav.Link href="/drones-front/book">Бронирование</Nav.Link>
+          <Nav.Item style={{marginLeft: '10px', marginRight: '10px', width: '170px'}}>Пользователь: {userName}</Nav.Item>
+          <Button onClick={sendLogout}>Выход</Button>
+        </Navbar.Collapse>
+      }
     </Navbar>
   );
 }

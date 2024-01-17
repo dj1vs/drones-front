@@ -12,8 +12,6 @@ const FlightsPage: FC = () => {
     const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const [flightsArray, setFlightsArray] = useState<string[][]>([])
-    const [usersArray, setUsersArray] = useState<string[]>([])
-
 
     useEffect(() => {
         const loadFlights = async()  => {
@@ -79,7 +77,6 @@ const FlightsPage: FC = () => {
                     arr.push(flightArray)
                 }
                 setFlightsArray(arr);
-                setUsersArray(usersArr);
             }
                 
         }

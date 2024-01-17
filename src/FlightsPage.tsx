@@ -64,8 +64,8 @@ const FlightsPage: FC = () => {
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
 
-                    if (flight.User && flight.User["name"]) {
-                        usersArr.push(flight.User["name"])
+                    if (flight.User && flight.User["Name"]) {
+                        usersArr.push(flight.User["Name"])
                     } else {
                         usersArr.push('Пропуск')
                     }

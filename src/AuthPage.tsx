@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useNavigate } from 'react-router-dom';
 
-import {Button, Spinner, Modal, FormGroup, FormControl, Form, FormLabel, Row, Col} from 'react-bootstrap'
+import {Button, Spinner, Modal, FormGroup, Form, FormLabel, Row, Col} from 'react-bootstrap'
 
 import store, { useAppDispatch } from './store/store'
 import { loginUser, registerUser } from './modules/authActions';

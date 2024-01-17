@@ -16,7 +16,7 @@ export interface Region {
 export interface User {
     UUID: string,
     Role: number,
-    Name: string,
+    name: string,
     Pass: string
 
 }

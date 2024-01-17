@@ -8,6 +8,8 @@ import { useAppDispatch } from "./store/store";
 import cartSlice from "./store/cartSlice";
 import RegionsFilter from "./components/RegionsFilter";
 
+import defaultImage from './assets/empty-region.png'
+
 const ModRegionsPage : FC = () => {
     const dispatch = useAppDispatch()
 
@@ -98,7 +100,7 @@ const ModRegionsPage : FC = () => {
                         <tr key={rowID}>
                             <td>
                                 <img 
-                                    src={(rowContent[0] == '' ? '/region_image/empty.webp' : "/region_image/" + rowContent[0])}
+                                    src={(rowContent[0] == '' ? defaultImage.toString() : "/region_image/" + rowContent[0])}
                                     style={{width: '100px'}}
                                 />
                             </td>

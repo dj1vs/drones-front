@@ -31,7 +31,9 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
                     {(userToken && (userRole?.toString() == '2') || (userRole?.toString() == '3')) && 
                         <Button variant="warning" href={"/drones-front/region_edit?name=" + regionName}>Изменить</Button>
                     }
-                    <Button variant="success" onClick={addRegionToCard}>В полёт</Button>
+                    { userToken &&
+                        <Button variant="success" onClick={addRegionToCard}>В полёт</Button>
+                    }
                 </ButtonGroup>
             </Card.Body>
         </Card>

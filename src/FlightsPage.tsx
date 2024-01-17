@@ -37,7 +37,16 @@ const FlightsPage: FC = () => {
                 let arr: string[][] = []
                 let usersArr: string[] = []
                 for (let flight of flights) {
-                    var flightArray:string[] = []
+                    let flightArray:string[] = []
+
+                    
+                    if (flight.User && flight.User["name"]) {
+                        flightArray.push(flight.User["name"])
+                    } else {
+                        flightArray.push('-')
+                    }
+
+
                     flightArray.push(flight.ID.toString())
                     flightArray.push(flight.Status)
 
@@ -64,11 +73,7 @@ const FlightsPage: FC = () => {
                     flightArray.push(flight.TakeoffDate)
                     flightArray.push(flight.ArrivalDate)
 
-                    if (flight.User && flight.User["Name"]) {
-                        usersArr.push(flight.User["Name"])
-                    } else {
-                        usersArr.push('Пропуск')
-                    }
+                   
 
                     
                     arr.push(flightArray)
@@ -117,16 +122,13 @@ const FlightsPage: FC = () => {
                         <th scope='col'>Время прибытия</th>
                         <th scope='col'></th>
                         {(userRole?.toString() == '1') && 
-                        <th scope='col'></th>
+                            <th scope='col'></th>
                         }
                     </tr>
                 </thead>
                 <tbody>
                     {flightsArray.map((rowContent, rowID) => (
                         <tr key={rowID}>
-                            {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
-                                <td key={rowID}>{usersArray[rowID]}</td>
-                            }
                             {rowContent.map((val, rowID) => (
                                 <td key={rowID}>{val}</td>
                             ))

@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 
 import './RegionsPage.css'
-import defaultImage from './assets/empty.webp'
+import defaultImage from './assets/empty-region.png'
 
 import { Region } from './modules/ds'
 import { GetRegionsResponse, getRegions } from './modules/get-regions';
@@ -41,10 +41,18 @@ const RegionsPage: FC = () => {
                 district = "";
             }
             const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(status), String(district))
-            setRegions(result.regions)
-            dispatch(cartSlice.actions.setTakeoffDate(result.draft_flight.TakeoffDate))
-            dispatch(cartSlice.actions.setArrivalDate(result.draft_flight.ArrivalDate))
-            dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
+            console.log(result)
+
+           if (result.regions) {
+               setRegions(result.regions)
+           }
+
+            if (result.draft_flight) {
+                dispatch(cartSlice.actions.setTakeoffDate(result.draft_flight.TakeoffDate))
+                dispatch(cartSlice.actions.setArrivalDate(result.draft_flight.ArrivalDate))
+                dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
+            }
+
             
 
         }

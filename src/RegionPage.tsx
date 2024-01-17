@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react'
 import {Button, Card} from 'react-bootstrap'
 
 import './RegionPage.css'
-import defaultImage from './assets/empty.webp'
+import defaultImage from './assets/empty-region.png'
 
 import {getRegionByName } from './modules/get-region'
 import {Region} from './modules/ds'
@@ -10,6 +10,7 @@ import {Region} from './modules/ds'
 const RegionPage: FC = () => {
 
     const [region, setRegion] = useState<Region>()
+    const [imageUrl, setImageUrl] = useState('/drones-front/src/assets/empty-region.png')
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -19,6 +20,12 @@ const RegionPage: FC = () => {
         const loadRegion = async () => {
             const result = await getRegionByName(String(regionName))
             setRegion(result)
+
+            if (region?.ImageName) {
+                setImageUrl("/region_image/" + region?.ImageName)
+            } else {
+                setImageUrl(defaultImage?.toString())
+            }
         }
     
         loadRegion()
@@ -28,7 +35,7 @@ const RegionPage: FC = () => {
     return (
         <div className='card_container'>
             <Card style={{width: '300px'}}>
-                <Card.Img src={(region?.ImageName == '' ? defaultImage?.toString() : "/region_image/" + region?.ImageName)} variant="top" />
+                <Card.Img src={imageUrl} variant="top" />
                 <Card.Body>
                     <p>{region?.Details}</p>
                     <p> <b>Статус: {region?.Status}</b></p>

@@ -14,9 +14,9 @@ export const getRegionByName = async  (regionName = ''): Promise<Region> => {
         .catch(() => (
             {
                 "ID": 1,
-                "District": "",
-                "Name": "пусто",
-                "Details": "Пустой район. Связи с бэкендом нет.",
+                "District": "Неизвестно",
+                "Name": "Пустой район",
+                "Details": "Не удалось получить данные о районе. Связи с бэкендом нет.",
                 "Status": "Действует",
                 "AreaKm": 0,
                 "Population": 0,

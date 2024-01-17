@@ -1,6 +1,8 @@
 import {FC, useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
+
 import './RegionsPage.css'
+import defaultImage from './assets/empty.webp'
 
 import { Region } from './modules/ds'
 import { GetRegionsResponse, getRegions } from './modules/get-regions';
@@ -82,7 +84,7 @@ const RegionsPage: FC = () => {
                 {regions.map((item, index) => (
                     <div className="col-4" key={index} > 
                         <RegionCard {...{
-                             imageUrl: (item.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + item.ImageName?.toString()),
+                             imageUrl: (item.ImageName == '' ? defaultImage?.toString() : "/region_image/" + item.ImageName?.toString()),
                              regionName: item.Name,
                              pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
                         }}></RegionCard>

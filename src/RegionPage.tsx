@@ -2,6 +2,7 @@ import {FC, useEffect, useState} from 'react'
 import {Button, Card} from 'react-bootstrap'
 
 import './RegionPage.css'
+import defaultImage from './assets/empty.webp'
 
 import {getRegionByName } from './modules/get-region'
 import {Region} from './modules/ds'
@@ -27,7 +28,7 @@ const RegionPage: FC = () => {
     return (
         <div className='card_container'>
             <Card style={{width: '300px'}}>
-                <Card.Img src={(region?.ImageName == '' ? '/region_image/empty.webp' : "/region_image/" + region?.ImageName)} variant="top" />
+                <Card.Img src={(region?.ImageName == '' ? defaultImage?.toString() : "/region_image/" + region?.ImageName)} variant="top" />
                 <Card.Body>
                     <p>{region?.Details}</p>
                     <p> <b>Статус: {region?.Status}</b></p>

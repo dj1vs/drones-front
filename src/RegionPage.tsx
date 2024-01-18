@@ -21,8 +21,8 @@ const RegionPage: FC = () => {
             const result = await getRegionByName(String(regionName))
             setRegion(result)
 
-            if (region?.ImageName) {
-                setImageUrl("/region_image/" + region?.ImageName)
+            if (result?.ImageName.toString()) {
+                setImageUrl("/region_image/" + result?.ImageName.toString())
             } else {
                 setImageUrl(defaultImage?.toString())
             }

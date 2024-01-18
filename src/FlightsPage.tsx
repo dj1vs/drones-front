@@ -36,12 +36,14 @@ const FlightsPage: FC = () => {
                 for (let flight of flights) {
                     let flightArray:string[] = []
 
-                    
-                    if (flight.User && flight.User["name"]) {
-                        flightArray.push(flight.User["name"])
-                    } else {
-                        flightArray.push('-')
+                    if (userRole?.toString() == '2') {
+                        if (flight.User && flight.User["name"]) {
+                            flightArray.push(flight.User["name"])
+                        } else {
+                            flightArray.push('-')
+                        }
                     }
+                    
 
 
                     flightArray.push(flight.ID.toString())

@@ -73,7 +73,7 @@ const RegionsPage: FC = () => {
 
     return (
 
-        <div>
+        <div >
             <Modal show = {booked} onHide={handleModalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Район добавлен в корзину</Modal.Title>

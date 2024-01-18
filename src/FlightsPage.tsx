@@ -141,7 +141,9 @@ const FlightsPage: FC = () => {
                                 </td>
                             }
                             {(userRole?.toString() == '1') && 
-                            <Button variant='danger'> Отменить </Button>
+                            <td>
+                                <Button variant='danger'> Отменить </Button>
+                            </td>
                             }
                         </tr>
                     ))}

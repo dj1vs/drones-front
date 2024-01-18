@@ -66,7 +66,7 @@ const RegionsFilter: FC = () => {
                         div</FormSelect>
             </div>
         </Row>
-        <Button onClick={applyFilters}>Применить</Button>
+        <Button onClick={applyFilters}>Поиск</Button>
         </div>
         
     )

@@ -7,6 +7,7 @@ import store from "../store/store";
 import filtersSlice from "../store/filtersSlice";
 import { useAppDispatch } from "../store/store";
 
+
 const FlightsFilter: FC = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -14,8 +15,12 @@ const FlightsFilter: FC = () => {
     const statusRef = useRef<any>(null)
     const startDateRef = useRef<any>(null)
     const endDateRef = useRef<any>(null)
+    const flightCreatorRef = useRef<any>(null)
 
-    const {flightStatus, startDate, endDate} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
+    const {flightStatus, startDate, endDate, flightCreator} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
+    const {userRole} = useSelector(
+        (state: ReturnType<typeof store.getState> ) => state.auth
+    )
 
     const applyFilters = () => {
         let status = statusRef.current.value
@@ -64,6 +69,19 @@ const FlightsFilter: FC = () => {
                             <option>Все</option>
                         </FormSelect>
                     </Col>
+                    {userRole?.toString() == '2' && 
+                        <>
+                        <Col>
+                            <FormLabel>Создатель:</FormLabel>
+                        </Col>
+                        <Col>
+                            <input
+                                defaultValue={flightCreator?.toString()}
+                                ref={flightCreatorRef}
+                            />
+                        </Col>
+                        </>
+                    }
                     <Col>
                         <FormLabel>Сформировано с:</FormLabel>
                     </Col>
@@ -86,7 +104,7 @@ const FlightsFilter: FC = () => {
                         />
                     </Col>
                 </Row>
-                <Button onClick={applyFilters}>Применить</Button>
+                <Button onClick={applyFilters}>Поиск</Button>
             </Form>
         </div>
     )

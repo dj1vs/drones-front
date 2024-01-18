@@ -114,7 +114,7 @@ const BookPage: FC = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <h1>Бронирование полёта</h1>
+            <h1>Корзина</h1>
             {regions?.length !== 0 &&
                 <h3>Выбранные районы:</h3>
             }

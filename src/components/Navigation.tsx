@@ -25,26 +25,33 @@ const Navigation: FC = () => {
 }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="secondary" expand="lg" color='grey'>
       <Container>
         <Nav.Link href="/drones-front/">Районы</Nav.Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/drones-front/flights">Полёты</Nav.Link>
-            {!userToken &&
-              <Nav.Link href="/drones-front/auth">Вход</Nav.Link>
-            }
-          </Nav>
+          {userToken &&
+            <Nav className="me-auto">
+              <Nav.Link href="/drones-front/flights">Полёты</Nav.Link>
+            </Nav>
+          }
         </Navbar.Collapse>
       </Container>
       {userToken &&
         <Navbar.Collapse className='justify-content-end'>
-          <Nav.Link href="/drones-front/book">Бронирование</Nav.Link>
+          <Nav.Link href="/drones-front/book">Корзина</Nav.Link>
           <Nav.Item style={{marginLeft: '10px', marginRight: '10px', width: '170px'}}>Пользователь: {userName}</Nav.Item>
           <Button onClick={sendLogout}>Выход</Button>
         </Navbar.Collapse>
       }
+      {!userToken &&
+          <Navbar.Collapse className='justify-content-end'>
+            <Nav.Link href="/drones-front/auth" style={{marginRight: '20px'}}>Вход</Nav.Link>
+            <Nav.Link href="/drones-front/auth" style={{marginRight: '20px'}}>Регистрация</Nav.Link>
+            
+            
+          </Navbar.Collapse>
+            }
     </Navbar>
   );
 }

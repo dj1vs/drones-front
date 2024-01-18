@@ -25,6 +25,10 @@ const endDate = localStorage.getItem('endDate')
     ? localStorage.getItem('endDate')
     : '';
 
+const flightCreator = localStorage.getItem('flightCreator')
+    ? localStorage.getItem('flightCreator')
+    : '';
+
 
 
 const initialState = {
@@ -33,7 +37,8 @@ const initialState = {
     regionDistrict,
     flightStatus,
     startDate,
-    endDate
+    endDate,
+    flightCreator
 }
 
 const filtersSlice = createSlice({
@@ -63,6 +68,10 @@ const filtersSlice = createSlice({
         setEndDate(state, {payload}) {
             state.endDate = payload
             localStorage.setItem('endDate', payload)
+        },
+        setFlightCreator(state, {payload}) {
+            state.flightCreator = payload
+            localStorage.setItem('flightCreator', payload)
         }
     }
 })

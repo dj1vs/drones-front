@@ -33,7 +33,6 @@ const FlightsPage: FC = () => {
                 }
 
                 let arr: string[][] = []
-                let usersArr: string[] = []
                 for (let flight of flights) {
                     let flightArray:string[] = []
 

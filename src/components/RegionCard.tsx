@@ -15,7 +15,7 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
     console.log(imageUrl)
     const dispatch = useAppDispatch()
 
-    const {userRole, userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const addRegionToCard = () => {
         dispatch(cartSlice.actions.addRegion(regionName))

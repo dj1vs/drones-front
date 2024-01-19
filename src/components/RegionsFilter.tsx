@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FormLabel, Button, Row, Col, Container, Collapse} from "react-bootstrap";
+import { FormLabel, Button, Row, Col, Container} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import store from "../store/store";
 import filtersSlice from "../store/filtersSlice";

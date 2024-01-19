@@ -22,7 +22,7 @@ const RegionPage: FC = () => {
             setRegion(result)
 
             if (result?.ImageName.toString()) {
-                setImageUrl("/region_image/" + result?.ImageName.toString())
+                setImageUrl(result?.ImageName.toString())
             } else {
                 setImageUrl(defaultImage?.toString())
             }

@@ -27,7 +27,7 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
             HeadEmail: "sozbk@uao.mos.ru",
             HeadPhone: "8 499 725 43 94",
             AverageHeightM: 174,
-            ImageName: "zyablikovo.png"
+            ImageName: "src/assets/zyablikovo.png"
         },
         {
             ID: 2,
@@ -41,13 +41,13 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
             HeadEmail: "vao-bog@mos.ru",
             HeadPhone: "8(499)162-52-61",
             AverageHeightM: 156,
-            ImageName: "bogorodskoye.png"
+            ImageName: "src/assets/bogorodskoye.png"
         },
         {
             ID: 3,
             District: "ЮВАО",
             Name: "Капотня",
-            Details: "район, расположенный в Юго-Восточном административном округе и соответствующее ему одноимённое внутригородское муниципальное образование в городе Москве. В течение долгого времени считался самым экологически неблагоприятным районом Москвы из-за нахождения тут Московского нефтеперерабатывающего завода, который в 2011 начал проведение масштабной экологической модернизации",
+            Details: "Район, расположенный в Юго-Восточном административном округе и соответствующее ему одноимённое внутригородское муниципальное образование в городе Москве. В течение долгого времени считался самым экологически неблагоприятным районом Москвы из-за нахождения тут Московского нефтеперерабатывающего завода, который в 2011 начал проведение масштабной экологической модернизации",
             Status: "Действует",
             AreaKm: '8.06',
             Population: 32717,
@@ -55,7 +55,7 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
             HeadEmail: "Uprava-Kapotnya@mos.ru",
             HeadPhone: "8 (495) 355-19-01",
             AverageHeightM: 83,
-            ImageName: "kapotnya.png"
+            ImageName: "src/assets/kapotnya.png"
         },];
 
     return axios.get(

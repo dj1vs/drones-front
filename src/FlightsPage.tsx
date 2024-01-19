@@ -1,30 +1,64 @@
 import { FC, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector'
-import { Table, Button} from 'react-bootstrap'
+import { Table, Button, Row, Col, Form, FormLabel, FormSelect} from 'react-bootstrap'
 
 import store from './store/store'
 import { getFlights } from './modules/get-flights'
 import { getFlightRegions } from './modules/get-flight-regions'
 import { Flight } from './modules/ds'
-import FlightsFilter from './components/FlightsFilter'
+import filtersSlice from './store/filtersSlice'
+import { useAppDispatch } from "./store/store";
+import { useRef } from "react";
+
 
 const FlightsPage: FC = () => {
     const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    const {flightStatus, startDate, endDate, flightCreator} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
 
     const [flightsArray, setFlightsArray] = useState<string[][]>([])
 
+    const dispatch = useAppDispatch()
+
+    const statusRef = useRef<any>(null)
+    const startDateRef = useRef<any>(null)
+    const endDateRef = useRef<any>(null)
+    const flightCreatorRef = useRef<any>(null)
+
     useEffect(() => {
+        const applyFilters = () => {
+            let status = statusRef.current.value
+            let startDate = startDateRef.current.value
+            let endDate = endDateRef.current.value
+            // let creator = flightCreatorRef.current.value
+    
+            if (startDate) {
+                startDate += ':00Z';
+            }
+    
+            if (endDate) {
+                endDate += ':00Z'
+            }
+    
+    
+            dispatch(filtersSlice.actions.setFlightStatus(status))
+            dispatch(filtersSlice.actions.setStartDate(startDate))
+            dispatch(filtersSlice.actions.setEndDate(endDate))
+            // dispatch(flitersSlice.actions.setFli) setFlightCreator
+            
+            if (status == "Все") {
+                status = ""
+            }
+        }
+
         const loadFlights = async()  => {
             var flights: Flight[] = []
             if (userToken !== undefined) {
-                const queryString = window.location.search;
-                const urlParams = new URLSearchParams(queryString)
-                let status = urlParams.get('status')
-                let startDate = urlParams.get('startDate')
-                let endDate = urlParams.get('endDate')
+                
+                if (flightStatus == null) { //todo
+                    return;
+                }
 
-
-                flights = await getFlights(userToken?.toString(), status?.toString(), startDate?.toString(), endDate?.toString())
+                flights = await getFlights(userToken?.toString(), flightStatus.toString(), startDate?.toString(), endDate?.toString()) // add flight creator
 
                 if (!userToken) {
                     return
@@ -106,6 +140,8 @@ const FlightsPage: FC = () => {
                 
         }
 
+        applyFilters()
+
         loadFlights()
 
         const intervalId = setInterval(() => {
@@ -127,7 +163,51 @@ const FlightsPage: FC = () => {
     return (
         <>
             <h1>Полёты</h1>
-            <FlightsFilter></FlightsFilter>
+            <div>
+            <Form>
+                <Row>
+                    <Col>
+                        <FormLabel>Статус:</FormLabel>
+                        <FormSelect ref={statusRef} defaultValue={flightStatus?.toString()}>
+                            <option>Черновик</option>
+                            <option>Удалён</option>
+                            <option>Сформирован</option>
+                            <option>Завершён</option>
+                            <option>Отклонён</option>
+                            <option>Все</option>
+                        </FormSelect>
+                    </Col>
+                    {userRole?.toString() == '2' && 
+                        <Col>
+                            <FormLabel>Создатель:</FormLabel>
+                            <input
+                                className="form-control"
+                                defaultValue={flightCreator?.toString()}
+                                ref={flightCreatorRef}
+                            />
+                        </Col>
+                    }
+                    <Col>
+                        <FormLabel>Сформировано с:</FormLabel>
+                        <input
+                            className="form-control"
+                            type="datetime-local"
+                            defaultValue={startDate?.toString().slice(0, -4)}
+                            ref={startDateRef}
+                        />
+                    </Col>
+                    <Col>
+                        <FormLabel>По:</FormLabel>
+                        <input
+                            className="form-control"
+                            type="datetime-local"
+                            defaultValue={endDate?.toString().slice(0, -4)}
+                            ref={endDateRef}
+                        />
+                    </Col>
+                </Row>
+            </Form>
+        </div>
             <p></p>
             <Table>
                 <thead className='thead-dark'>

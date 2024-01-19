@@ -12,6 +12,7 @@ import store from "./store/store";
 
 import { addRegionToDraft } from "./modules/add-region-to-draft";
 import { getRegionByName } from "./modules/get-region";
+import { removeRegionFromFlight } from "./modules/remove-region-from-flight";
 
 interface InputChangeInterface {
     target: HTMLInputElement;
@@ -58,22 +59,37 @@ const FlightPage: FC = () => {
         loadFlight()
     }, [])
 
-    const approve = () => {
+    const approve = async () => {
 
     }
 
-    const removeRegion = (removedRegionName: string) => {
-        return (event: React.MouseEvent) => {
-            if (!regionNames) {
-                return
-            }
-    
-            setRegionNames(regionNames.filter(function(regionName) {
-                return regionName !== removedRegionName
-            }))
+    const removeRegion = async(event: React.MouseEvent<HTMLButtonElement>) => {
+        let removedRegionName = event.currentTarget.id
 
-            event.preventDefault()
+        if (!regionNames || !userToken || !flight?.ID) {
+            return
         }
+
+        let result = await getRegionByName(removedRegionName)
+        if (!result.Name) {
+            return
+        }
+
+        let deletion_result = await removeRegionFromFlight(userToken, result.ID, flight?.ID)
+        if (deletion_result.status != 201) {
+            return
+        }
+
+
+
+        
+
+
+
+        setRegionNames(regionNames.filter(function(regionName) {
+            return regionName !== removedRegionName
+        }))
+
     }
 
     const handleNewRegionChange = (event: InputChangeInterface) => {
@@ -82,6 +98,10 @@ const FlightPage: FC = () => {
 
     const addRegion = async () => {
         if (!newRegion || !userToken) {
+            return
+        }
+
+        if (regionNames?.indexOf(newRegion) !== -1) {
             return
         }
 
@@ -122,7 +142,7 @@ const FlightPage: FC = () => {
                         {regionNames?.map((regionName, regionID) => (
                             <ListGroupItem key={regionID}> {regionName}
                                 <span className="pull-right button-group" style={{float: 'right'}}>
-                                    <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
+                                    <Button variant="danger" id={regionName} onClick={removeRegion}>Удалить</Button>
                                 </span>
                             </ListGroupItem>
                         ))

@@ -31,15 +31,6 @@ const FlightsPage: FC = () => {
             let endDate = endDateRef.current.value
             // let creator = flightCreatorRef.current.value
     
-            if (startDate) {
-                startDate += ':00Z';
-            }
-    
-            if (endDate) {
-                endDate += ':00Z'
-            }
-    
-    
             dispatch(filtersSlice.actions.setFlightStatus(status))
             dispatch(filtersSlice.actions.setStartDate(startDate))
             dispatch(filtersSlice.actions.setEndDate(endDate))
@@ -51,21 +42,27 @@ const FlightsPage: FC = () => {
         }
 
         const loadFlights = async()  => {
+
             applyFilters()
 
             let status = statusRef.current.value
             let startDate = startDateRef.current.value
             let endDate = endDateRef.current.value
 
+            if (status == "Все") {
+                status = ""
+            }
+
             var flights: Flight[] = []
-            if (userToken !== undefined) {
+            if (userToken) {
 
                 if (flightStatus == null) { //todo
                     return;
                 }
                 
-                console.log(userToken, flightStatus, startDate, endDate)
-                flights = await getFlights(userToken?.toString(), status, startDate, endDate) // add flight creator
+                console.log(status)
+                flights = await getFlights(userToken, status, startDate, endDate) // add flight creator
+                console.log(flights)
 
                 if (!userToken) {
                     return

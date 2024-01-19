@@ -1,20 +1,32 @@
 import { FC } from "react";
 
-import { useEffect, useState} from "react";
+import { useEffect, useState, useRef} from "react";
 import { useSelector } from "react-redux";
 
-import { Form,  Button,ListGroup, ListGroupItem,  FormLabel, Row } from "react-bootstrap";
+import { Col, Form,  Button,ListGroup, ListGroupItem,  FormLabel, Row } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
 import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
+
+import { addRegionToDraft } from "./modules/add-region-to-draft";
+import { getRegionByName } from "./modules/get-region";
+
+interface InputChangeInterface {
+    target: HTMLInputElement;
+  }
+
 const FlightPage: FC = () => {
 
-    const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    const {userToken, userName, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const [flight, setFlight] = useState<Flight>()
     const [regionNames, setRegionNames] = useState<string[]>()
+
+    const [newRegion, setNewRegion] = useState('')
+
+    const newRegionInputRef = useRef<any>(null)
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -46,17 +58,101 @@ const FlightPage: FC = () => {
         loadFlight()
     }, [])
 
+    const approve = () => {
+
+    }
+
+    const removeRegion = (removedRegionName: string) => {
+        return (event: React.MouseEvent) => {
+            if (!regionNames) {
+                return
+            }
+    
+            setRegionNames(regionNames.filter(function(regionName) {
+                return regionName !== removedRegionName
+            }))
+
+            event.preventDefault()
+        }
+    }
+
+    const handleNewRegionChange = (event: InputChangeInterface) => {
+        setNewRegion(event.target.value)
+    }
+
+    const addRegion = async () => {
+        if (!newRegion || !userToken) {
+            return
+        }
+
+        const result = await getRegionByName(newRegion)
+        if (!result.Name) {
+            return
+        }
+
+        const addition_result = await addRegionToDraft(userToken, result.ID);
+        if (addition_result.status != 200) {
+            return
+        }
+
+
+        if (!regionNames) {
+            setRegionNames([newRegion.toString()]);
+        }
+
+        if (regionNames === undefined) {
+            return;
+        }
+
+        setRegionNames(regionNames.concat([newRegion]))
+        setNewRegion('')
+
+        if (newRegionInputRef.current != null) {
+            newRegionInputRef.current.value = ""
+        }
+    }
+
     return(
         <Form style={{width: '600px', marginRight: 'auto', marginLeft: 'auto'}}>
             <h1>Информация о полёте #{flight?.ID}</h1>
             <h4>Районы:</h4>
-            <ListGroup style={{width: '500px'}}>
-                {regionNames?.map((regionName, regionID) => (
-                    <ListGroupItem key={regionID}> {regionName}
-                    </ListGroupItem>
-                ))
-                }
-            </ListGroup>
+            {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) &&
+                <>
+                    <ListGroup style={{width: '500px'}}>
+                        {regionNames?.map((regionName, regionID) => (
+                            <ListGroupItem key={regionID}> {regionName}
+                                <span className="pull-right button-group" style={{float: 'right'}}>
+                                    <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
+                                </span>
+                            </ListGroupItem>
+                        ))
+                        }
+                    </ListGroup>
+                    <Row>
+                        <Col>
+                            <FormLabel>Добавить район:</FormLabel>
+                        </Col>
+                        <Col>
+                            <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>
+                        </Col>
+                        <Col>
+                            <Button onClick={addRegion}>Добавить</Button>
+                        </Col>
+                    </Row>
+                </>
+            }
+            {
+
+            }
+            {!((flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2"))) && 
+                <ListGroup style={{width: '500px'}}>
+                    {regionNames?.map((regionName, regionID) => (
+                        <ListGroupItem key={regionID}> {regionName}
+                        </ListGroupItem>
+                    ))
+                    }
+                </ListGroup>
+            }
             <h4>Характеристики:</h4>
             <p></p>
             <FormLabel>Статус: {flight?.Status}</FormLabel>
@@ -64,15 +160,13 @@ const FlightPage: FC = () => {
             <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
             <p></p>
             <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
+            {(flight?.Status == "Черновик" && flight.User?.name == userName) &&
+                <Row>
+                    <p></p>
+                    <Button onClick={approve} variant="success">Сформировать</Button>
+                </Row>
+            }
             <p></p>
-            {/* <Row>
-                <Button>Подтвердить</Button>
-            </Row>
-            <p></p>
-            <Row>
-                <Button>Отменить</Button>
-            </Row>
-            <p></p> */}
             <Row>
                 <Button href='/drones-front/flights'>К полётам</Button>
             </Row>

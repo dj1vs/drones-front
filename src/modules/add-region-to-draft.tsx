@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export const addRegionToDraft = async(userToken = '', region_id : number): Promise<string> => {
+export const addRegionToDraft = async(userToken = '', region_id : number): Promise<AxiosResponse> => {
   const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -13,5 +13,5 @@ export const addRegionToDraft = async(userToken = '', region_id : number): Promi
     config
 
   )
-  .then((response) => response.data);
+  .then((response) => response);
 }

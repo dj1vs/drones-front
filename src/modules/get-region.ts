@@ -1,6 +1,10 @@
 import {Region} from './ds'
 import axios from 'axios';
 
+import kapotnyaImage from '../assets/kapotnya.png'
+import bogorodskoyeImage from '../assets/bogorodskoye.png'
+import zyablikovoImage from '../assets/zyablikovo.png'
+
 export const getRegionByName = async  (regionName = ''): Promise<Region> => {
     const config = {
         headers: {
@@ -25,7 +29,7 @@ export const getRegionByName = async  (regionName = ''): Promise<Region> => {
                     HeadEmail: "sozbk@uao.mos.ru",
                     HeadPhone: "8 499 725 43 94",
                     AverageHeightM: 174,
-                    ImageName: "src/assets/zyablikovo.png"
+                    ImageName: zyablikovoImage?.toString()
                 },
                 {
                     ID: 2,
@@ -39,7 +43,7 @@ export const getRegionByName = async  (regionName = ''): Promise<Region> => {
                     HeadEmail: "vao-bog@mos.ru",
                     HeadPhone: "8(499)162-52-61",
                     AverageHeightM: 156,
-                    ImageName: "src/assets/bogorodskoye.png"
+                    ImageName: bogorodskoyeImage?.toString()
                 },
                 {
                     ID: 3,
@@ -53,7 +57,7 @@ export const getRegionByName = async  (regionName = ''): Promise<Region> => {
                     HeadEmail: "Uprava-Kapotnya@mos.ru",
                     HeadPhone: "8 (495) 355-19-01",
                     AverageHeightM: 83,
-                    ImageName: "src/assets/kapotnya.png"
+                    ImageName: kapotnyaImage?.toString()
                 },];
         
                 for (let region of offline_regions) {

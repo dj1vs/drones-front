@@ -1,6 +1,10 @@
 import {Region, Flight} from './ds'
 import axios from 'axios';
 
+import kapotnyaImage from '../assets/kapotnya.png'
+import bogorodskoyeImage from '../assets/bogorodskoye.png'
+import zyablikovoImage from '../assets/zyablikovo.png'
+
 export interface GetRegionsResponse {
     regions: Region[],
     draft_flight: Flight,
@@ -27,7 +31,7 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
             HeadEmail: "sozbk@uao.mos.ru",
             HeadPhone: "8 499 725 43 94",
             AverageHeightM: 174,
-            ImageName: "src/assets/zyablikovo.png"
+            ImageName: zyablikovoImage?.toString()
         },
         {
             ID: 2,
@@ -41,7 +45,7 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
             HeadEmail: "vao-bog@mos.ru",
             HeadPhone: "8(499)162-52-61",
             AverageHeightM: 156,
-            ImageName: "src/assets/bogorodskoye.png"
+            ImageName: bogorodskoyeImage?.toString()
         },
         {
             ID: 3,
@@ -55,7 +59,7 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
             HeadEmail: "Uprava-Kapotnya@mos.ru",
             HeadPhone: "8 (495) 355-19-01",
             AverageHeightM: 83,
-            ImageName: "src/assets/kapotnya.png"
+            ImageName: kapotnyaImage?.toString()
         },];
 
     return axios.get(

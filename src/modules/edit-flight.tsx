@@ -1,7 +1,6 @@
-import {Flight} from './ds'
 import axios from 'axios';
 
-export const editFlight = async(userToken = '', flight: Flight): Promise<string> => {
+export const editFlight = async(userToken = '', flight_id: number, arrivalDate: string, takeoffDate: string): Promise<string> => {
   const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -11,10 +10,9 @@ export const editFlight = async(userToken = '', flight: Flight): Promise<string>
   return axios.put(
     '/api/flight/edit',
     {
-      flightID: flight.ID,
-      status: flight.Status,
-      arrivalDate: flight.ArrivalDate,
-      takeoffDate: flight.TakeoffDate,
+      flightID: flight_id,
+      arrivalDate: arrivalDate + ":00Z",
+      takeoffDate: takeoffDate + ":00Z",
     },
     config
 

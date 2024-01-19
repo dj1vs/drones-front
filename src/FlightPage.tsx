@@ -18,6 +18,7 @@ import { removeRegionFromFlight } from "./modules/remove-region-from-flight";
 import { approveFlight } from "./modules/approve-flight"
 
 import { useNavigate } from "react-router-dom";
+import { editFlight } from "./modules/edit-flight";
 
 interface InputChangeInterface {
     target: HTMLInputElement;
@@ -79,6 +80,8 @@ const FlightPage: FC = () => {
         if (!userToken || !flight?.ID) {
             return
         }
+
+
         const result = await approveFlight(userToken, flight?.ID)
         if (result.status == 200) {
             dispatch(cartSlice.actions.setTakeoffDate(null))
@@ -86,6 +89,21 @@ const FlightPage: FC = () => {
             dispatch(cartSlice.actions.setDraftID(null))
             navigate('/drones-front/flights')
         }
+
+
+        let arrivalDate = arrivalDateRef.current.value
+        let takeoffDate = arrivalDateRef.current.value
+
+        if (!arrivalDate) {
+            arrivalDate = ""
+        } 
+        if (!takeoffDate) {
+            takeoffDate = ""
+        }
+
+        await editFlight(userToken, flight?.ID, arrivalDate, takeoffDate)
+
+        
     }
 
     const removeRegion = async(event: React.MouseEvent<HTMLButtonElement>) => {

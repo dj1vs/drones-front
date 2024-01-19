@@ -1,43 +1,59 @@
 import { FC } from "react";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef} from "react";
 import { useSelector } from "react-redux";
 
-import { Container, Form, FormGroup, Button,ListGroup, ListGroupItem, Modal, Row, Col, FormLabel } from "react-bootstrap";
+import { Container,Col, Form,  Button,ListGroup, ListGroupItem,  FormLabel, Row } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
 import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
-import { setFlightRegions } from "./modules/set-flight-regions";
+import cartSlice from './store/cartSlice'
+import { useAppDispatch } from "./store/store";
+
+import { addRegionToDraft } from "./modules/add-region-to-draft";
+import { getRegionByName } from "./modules/get-region";
+import { removeRegionFromFlight } from "./modules/remove-region-from-flight";
+import { approveFlight } from "./modules/approve-flight"
+
+import { useNavigate } from "react-router-dom";
 import { editFlight } from "./modules/edit-flight";
+import { modApproveFlight } from "./modules/mod-approve-flight";
 
 interface InputChangeInterface {
     target: HTMLInputElement;
   }
 
 const FlightEditPage: FC = () => {
-    const newRegionInputRef = useRef<any>(null)
-    const takeoffDateRef = useRef<any>(null)
-    const arrivalDateRef = useRef<any>(null)
-    const statusRef = useRef<any>(null)
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
-    const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    
+    const {userToken, userName, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const [flight, setFlight] = useState<Flight>()
     const [regionNames, setRegionNames] = useState<string[]>()
+    const [wrongFlight, setWrongFlight] = useState(false)
+
     const [newRegion, setNewRegion] = useState('')
 
-    const [showSuccess, setShowSuccess] = useState(false)
-    const [showError, setShowError] = useState(false)
+    const newRegionInputRef = useRef<any>(null)
+    const takeoffDateRef = useRef<any>(null)
+    const arrivalDateRef = useRef<any>(null)
+
 
     useEffect(() => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
         const flightIdString = urlParams.get('flight_id')
 
+        if (!flightIdString || (flightIdString && !parseInt(flightIdString, 10))) {
+            setWrongFlight(true)
+        }
+
         const loadFlight = async () => {
-            if (flightIdString === null) {
+            if (!flightIdString) {
                 return
             }
             const flight = await getFlight(+flightIdString)
@@ -61,67 +77,105 @@ const FlightEditPage: FC = () => {
         loadFlight()
     }, [])
 
-    const sendChanges = async() => {
-        if (!userToken) {
-            return;
-        }
-
-        var flight_id = 0
-        var takeoffDate = ''
-        var arrivalDate = ''
-        var status = ''
-
-        if (flight?.ID !== undefined) {
-            flight_id = flight?.ID
-        }
-        if (takeoffDateRef.current != null) {
-            takeoffDate = takeoffDateRef.current.value
-        }
-        if (arrivalDateRef.current != null) {
-            arrivalDate = arrivalDateRef.current.value
-        }
-        if (statusRef.current != null) {
-            status = statusRef.current.value
-        }
-
-        await editFlight(userToken, {
-            ID: flight_id,
-            TakeoffDate: takeoffDate,
-            ArrivalDate: arrivalDate,
-            Status: status,
-        })
-
-
-        if (!regionNames || !userToken) {
-            return;
-        }
-        const regionsResult = await setFlightRegions(flight?.ID, regionNames, userToken)
-        if (regionsResult.status == 201) {
-            setShowSuccess(true)
-        } else {
-            setShowError(true)
-        }
-
-    }
-
-    const removeRegion = (removedRegionName: string) => {
-        return (event: React.MouseEvent) => {
-            if (!regionNames) {
-                return
-            }
-    
-            setRegionNames(regionNames.filter(function(regionName) {
-                return regionName !== removedRegionName
-            }))
-
-            event.preventDefault()
-        }
-    }
-
-    const addRegion = () => {
-        if (!newRegion) {
+    const approve = async () => {
+        if (!userToken || !flight?.ID) {
             return
         }
+
+
+        const result = await approveFlight(userToken, flight?.ID)
+        if (result.status == 200) {
+            dispatch(cartSlice.actions.setTakeoffDate(null))
+            dispatch(cartSlice.actions.setArrivalDate(null))
+            dispatch(cartSlice.actions.setDraftID(null))
+            navigate('/drones-front/flights')
+        }
+
+
+        let arrivalDate = arrivalDateRef.current.value
+        let takeoffDate = arrivalDateRef.current.value
+
+        if (!arrivalDate) {
+            arrivalDate = ""
+        } 
+        if (!takeoffDate) {
+            takeoffDate = ""
+        }
+
+        await editFlight(userToken, flight?.ID, arrivalDate, takeoffDate)
+
+        
+    }
+
+    const modConfirmTrue = async() => {
+        if (!userToken || !flight?.ID) {
+            return
+        }
+
+        const result = await modApproveFlight(userToken, flight?.ID, 'True')
+        if (result.status == 200) {
+            navigate('/drones-front/flights')
+        }
+    }
+
+    const modConfirmFalse = async() => {
+        if (!userToken || !flight?.ID) {
+            return
+        }
+
+        const result = await modApproveFlight(userToken, flight?.ID, 'False')
+        if (result.status == 200) {
+            navigate('/drones-front/flights')
+        }
+    }
+
+
+    const removeRegion = async(event: React.MouseEvent<HTMLButtonElement>) => {
+        let removedRegionName = event.currentTarget.id
+
+        if (!regionNames || !userToken || !flight?.ID) {
+            return
+        }
+
+        let result = await getRegionByName(removedRegionName)
+        if (!result.Name) {
+            return
+        }
+
+        let deletion_result = await removeRegionFromFlight(userToken, result.ID, flight?.ID)
+        if (deletion_result.status != 201) {
+            return
+        }
+
+        setRegionNames(regionNames.filter(function(regionName) {
+            return regionName !== removedRegionName
+        }))
+
+    }
+
+    const handleNewRegionChange = (event: InputChangeInterface) => {
+        setNewRegion(event.target.value)
+    }
+
+    const addRegion = async () => {
+        if (!newRegion || !userToken) {
+            return
+        }
+
+        if (regionNames?.indexOf(newRegion) !== -1) {
+            return
+        }
+
+        const result = await getRegionByName(newRegion)
+        if (!result.Name) {
+            return
+        }
+
+        const addition_result = await addRegionToDraft(userToken, result.ID);
+        if (addition_result.status != 200) {
+            return
+        }
+
 
         if (!regionNames) {
             setRegionNames([newRegion.toString()]);
@@ -139,112 +193,107 @@ const FlightEditPage: FC = () => {
         }
     }
 
-    const handleNewRegionChange = (event: InputChangeInterface) => {
-        setNewRegion(event.target.value)
+    if (wrongFlight) {
+        return (
+            <h1>Полёт не существует!</h1>
+        )
     }
-
-    const handleErrorClose= () => {
-        setShowError(false)
-    }
-    const handleSuccessClose = () => {
-        setShowSuccess(false)
-    }
-
 
     return(
-        <>
-            <Modal show = {showError} onHide={handleErrorClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Произошла ошибка, полёт не был обновлён</Modal.Title>
-                </Modal.Header>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleErrorClose}>
-                      Закрыть
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show = {showSuccess} onHide={handleSuccessClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Обновление полёта прошло успешно!</Modal.Title>
-                </Modal.Header>
-                <Modal.Footer>
-                    <Button variant="success" onClick={handleSuccessClose}>
-                      Закрыть
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <Form style={{width: '600px', marginLeft: 'auto', marginRight: 'auto'}}>
-                <h1>Редактирование полёта #{flight?.ID}</h1>
-                <h4>Районы:</h4>
+        <Form style={{width: '600px', marginRight: 'auto', marginLeft: 'auto'}}>
+            <h1>Информация о полёте #{flight?.ID}</h1>
+            <h4>Районы:</h4>
+            {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) &&
+                <>
+                    <ListGroup style={{width: '500px'}}>
+                        {regionNames?.map((regionName, regionID) => (
+                            <ListGroupItem key={regionID}> {regionName}
+                                <span className="pull-right button-group" style={{float: 'right'}}>
+                                    <Button variant="danger" id={regionName} onClick={removeRegion}>Удалить</Button>
+                                </span>
+                            </ListGroupItem>
+                        ))
+                        }
+                    </ListGroup>
+                    <Row>
+                        <Col>
+                            <FormLabel>Добавить район:</FormLabel>
+                        </Col>
+                        <Col>
+                            <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>
+                        </Col>
+                        <Col>
+                            <Button onClick={addRegion}>Добавить</Button>
+                        </Col>
+                    </Row>
+                </>
+            }
+            {
+
+            }
+            {!(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
                 <ListGroup style={{width: '500px'}}>
                     {regionNames?.map((regionName, regionID) => (
                         <ListGroupItem key={regionID}> {regionName}
-                            <span className="pull-right button-group" style={{float: 'right'}}>
-                                <Button variant="danger" onClick={removeRegion(regionName)}>Удалить</Button>
-                            </span>
                         </ListGroupItem>
                     ))
                     }
                 </ListGroup>
+            }
+            <h4>Характеристики:</h4>
+            <p></p>
+            <FormLabel>Статус: {flight?.Status}</FormLabel>
+            <p></p>
+            {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+                <>
+                    <FormLabel>Время взлёта:</FormLabel>
+                    <input
+                        type="datetime-local"
+                        className="form-control"
+                        ref={takeoffDateRef}
+                    />
+                    <FormLabel>Время прибытия:</FormLabel>
+                    <input
+                        type="datetime-local"
+                        className="form-control"
+                        ref={arrivalDateRef}
+                    />
+                </>
+            }
+            {!(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+                <>
+                    <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
+                    <p></p>
+                    <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
+                </>
+            }
+           
+            {(flight?.Status == "Черновик" && flight.User?.name == userName) &&
                 <Row>
-                    <Col>
-                        <FormLabel>Добавить район:</FormLabel>
-                    </Col>
-                    <Col>
-                        <input ref={newRegionInputRef} onChange={handleNewRegionChange} className="form-control"></input>
-                    </Col>
-                    <Col>
-                        <Button onClick={addRegion}>Добавить</Button>
-                    </Col>
+                    <p></p>
+                    <Button onClick={approve} variant="success">Сформировать</Button>
                 </Row>
-                <h4>Характеристики:</h4>
-                <FormGroup>
-                    <FormLabel>Статус: {flight?.Status}</FormLabel>
-                </FormGroup>
-                <FormGroup>
-                    <Col>
-                    <FormLabel htmlFor="takeoffDate">Время взлёта:</FormLabel>
-                    </Col>
-                    <Col>
-                    <FormLabel>{flight?.TakeoffDate.substring(0, flight?.TakeoffDate.indexOf('+')).replace('T', ' ')}</FormLabel>
-                    </Col>
-                </FormGroup>
-                <FormGroup>
-                    <Col>
-                    <FormLabel htmlFor="arrivalDate">Время прибытия:</FormLabel>
-                    </Col>
-                    <Col>
-                    <FormLabel>{flight?.ArrivalDate.substring(0, flight?.ArrivalDate.indexOf('+')).replace('T', ' ')}</FormLabel>
-                    </Col>
-                </FormGroup>
-                <Row>
-                    <Button onClick={sendChanges}>Сохранить изменения</Button>
-                </Row>
-                <p></p>
-                <Container>
+            }
+            <p></p>
+            <Container>
                     <Row>
                         <Col>
-                            <Button onClick={sendChanges} variant="danger" className="w-100">Отклонить</Button>
+                            <Button onClick={modConfirmFalse} variant="danger" className="w-100">Отклонить</Button>
                         </Col>
                         <Col>
-                            <Button onClick={sendChanges} variant="success" className="w-100">Одобрить</Button>
+                            <Button onClick={modConfirmTrue} variant="success" className="w-100">Одобрить</Button>
                         </Col>
                     </Row>
                 </Container>
-                <p></p>
-                <Row>
-                </Row>
-                <p></p>
-                <Row>
-                    <Button href='/drones-front/flights'>К полётам</Button>
-                </Row>
-                <p></p>
-                <Row>
-                    <Button href='/drones-front/'>Домой</Button>
-                </Row>
-                <p></p>
-            </Form>
-        </>
+            <Row>
+                <Button href='/drones-front/flights'>К полётам</Button>
+            </Row>
+            <p></p>
+            <Row>
+                <Button href='/drones-front/'>Домой</Button>
+            </Row>
+            <p></p>
+        </Form>
     )
 
 }

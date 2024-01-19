@@ -26,8 +26,6 @@ const FlightsPage: FC = () => {
 
                 flights = await getFlights(userToken?.toString(), status?.toString(), startDate?.toString(), endDate?.toString())
 
-                console.log(flights)
-
                 if (!userToken) {
                     return
                 }
@@ -61,16 +59,42 @@ const FlightsPage: FC = () => {
                     }
 
                     if (flight.DateCreated) {
-                        flightArray.push(flight.DateCreated)
+                        flight.DateCreated = flight.DateCreated.substring(0,  flight.DateCreated.indexOf('+'));
+                        flightArray.push(flight.DateCreated.replace('T', ' '))
                     }
                     if (flight.DateProcessed) {
-                        flightArray.push(flight.DateProcessed)
+                        if (flight.DateProcessed == "0001-01-01T00:00:00Z") {
+                            flightArray.push("-")
+                        } else {
+                            flight.DateProcessed = flight.DateProcessed.substring(0,  flight.DateProcessed.indexOf('+'));
+                            flightArray.push(flight.DateProcessed.replace('T', ' '))
+                        }
                     }
                     if (flight.DateFinished) {
-                        flightArray.push(flight.DateFinished)
+                        if (flight.DateFinished == "0001-01-01T00:00:00Z") {
+                            flightArray.push("-")
+                        } else {
+                            flight.DateFinished = flight.DateFinished.substring(0,  flight.DateFinished.indexOf('+'));
+                            flightArray.push(flight.DateFinished.replace('T', ' '))
+                        }
                     }
-                    flightArray.push(flight.TakeoffDate)
-                    flightArray.push(flight.ArrivalDate)
+
+                    if (flight.TakeoffDate) {
+                        if (flight.TakeoffDate == "0001-01-01T00:00:00Z") {
+                            flightArray.push("-")
+                        } else {
+                            flight.TakeoffDate = flight.TakeoffDate.substring(0,  flight.TakeoffDate.indexOf('+'));
+                            flightArray.push(flight.TakeoffDate.replace('T', ' '))
+                        }
+                    }
+                    if (flight.ArrivalDate) {
+                        if (flight.ArrivalDate == "0001-01-01T00:00:00Z") {
+                            flightArray.push("-")
+                        } else {
+                            flight.ArrivalDate = flight.ArrivalDate.substring(0,  flight.ArrivalDate.indexOf('+'));
+                            flightArray.push(flight.ArrivalDate.replace('T', ' '))
+                        }
+                    }
 
                    
 
@@ -86,7 +110,7 @@ const FlightsPage: FC = () => {
 
         const intervalId = setInterval(() => {
             loadFlights();
-        }, 5000);
+        }, 1000);
     
         // Очистка интервала при размонтировании компонента
         return () => clearInterval(intervalId);
@@ -117,8 +141,8 @@ const FlightsPage: FC = () => {
                         <th scope='col'>Дата создания</th>
                         <th scope='col'>Дата обработки</th>
                         <th scope='col'>Дата завершения</th>
-                        <th scope='col'>Время взлёта</th>
-                        <th scope='col'>Время прибытия</th>
+                        <th scope='col'>Дата взлёта</th>
+                        <th scope='col'>Дата прибытия</th>
                         <th scope='col'></th>
                         {(userRole?.toString() == '1') && 
                             <th scope='col'></th>

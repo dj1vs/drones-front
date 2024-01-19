@@ -10,6 +10,7 @@ import Navigation from './components/Navigation'
 import Breadcrumbs from './components/Breadcrumbs';
 import AuthPage from './AuthPage';
 import store from './store/store';
+import ModRegionsPage from './ModRegionsPage';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/drones-front/flights" Component={FlightsPage} />
           <Route path="/drones-front" Component={RegionsPage} />
+          <Route path="/drones-front/mod_regions" Component={ModRegionsPage} />
           <Route path="/drones-front/region" Component={RegionPage} />
           <Route path="/drones-front/flight" Component={FlightPage} />
           <Route path="/drones-front/auth" Component={AuthPage} />

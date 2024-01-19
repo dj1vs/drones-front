@@ -11,7 +11,7 @@ import { useAppDispatch } from '../store/store';
 import { useNavigate } from 'react-router-dom';
 
 const Navigation: FC = () => {
-  const {userToken, userName} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+  const {userToken, userName, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -29,6 +29,11 @@ const Navigation: FC = () => {
       <Container>
         <Nav.Link href="/drones-front/">Районы</Nav.Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        {userRole?.toString() == '2' &&
+            <Nav className="me-auto">
+              <Nav.Link href="/drones-front/mod_regions">Таблица районов</Nav.Link>
+            </Nav>
+          }
         <Navbar.Collapse id="basic-navbar-nav">
           {userToken &&
             <Nav className="me-auto">

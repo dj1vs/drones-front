@@ -28,9 +28,6 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
                 <Card.Title className='mt-auto'> {regionName} </Card.Title>
                 <ButtonGroup className='text-center'>
                     <Button variant="info" href={pageUrl}>Подробнее</Button>
-                    {(userToken && (userRole?.toString() == '2') || (userRole?.toString() == '3')) && 
-                        <Button variant="warning" href={"/drones-front/region_edit?name=" + regionName}>Изменить</Button>
-                    }
                     { userToken &&
                         <Button variant="success" onClick={addRegionToCard}>В полёт</Button>
                     }

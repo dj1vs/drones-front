@@ -21,24 +21,26 @@ const RegionsPage: FC = () => {
     const dispatch = useAppDispatch()
 
     const [regions, setRegions] = useState<Region[]>([])
-    const {booked, draftID} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
+    const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
     const {regionName, regionDistrict} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
 
     useEffect(() => {
         const loadRegions = async()  => {
             const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), 'Действует', String(regionDistrict))
-            console.log(result)
 
            if (result.regions) {
                setRegions(result.regions)
            }
 
-            if (result.draft_flight) {
+            if (result.draft_flight && result.draft_flight.ID != 0) {
+                console.log(result.draft_flight.ID)
                 dispatch(cartSlice.actions.setTakeoffDate(result.draft_flight.TakeoffDate))
                 dispatch(cartSlice.actions.setArrivalDate(result.draft_flight.ArrivalDate))
                 dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
-
-                console.log(draftID)
+            } else {
+                dispatch(cartSlice.actions.setTakeoffDate(null))
+                dispatch(cartSlice.actions.setArrivalDate(null))
+                dispatch(cartSlice.actions.setDraftID(null))
             }
 
         }

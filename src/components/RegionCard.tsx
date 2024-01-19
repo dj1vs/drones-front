@@ -7,6 +7,7 @@ import { addRegionToDraft } from '../modules/add-region-to-draft'
 
 import './RegionCard.css'
 import cartSlice from '../store/cartSlice'
+import { useNavigate } from 'react-router-dom'
 interface Props {
     imageUrl: string
     regionName: string
@@ -16,15 +17,17 @@ interface Props {
 
 const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl, regionID}) => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
-    const addRegionToCard = () => {
+    const addRegionToCard = async () => {
         if (!userToken) {
             return;
         }
         dispatch(cartSlice.actions.addRegion(regionName))
-        addRegionToDraft(userToken, regionID)
+        await addRegionToDraft(userToken, regionID)
+        navigate('/drones-front/')
     }
 
     return (

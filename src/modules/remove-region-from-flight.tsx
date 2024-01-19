@@ -7,12 +7,8 @@ export const removeRegionFromFlight = async(userToken: string, region_id : numbe
         'Authorization': 'Bearer ' + userToken,
       },
     }
-  return axios.put(
-    '/api/flight_to_region/delete/',
-    {
-        FlightID: flight_id,
-        RegionID: region_id
-    },
+  return axios.delete(
+    '/api/flight_to_region/delete?region_id=' + region_id + '&flight_id=' + flight_id,
     config
 
   )

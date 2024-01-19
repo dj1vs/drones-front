@@ -45,9 +45,7 @@ const Navigation: FC = () => {
       </Container>
       {userToken &&
         <Navbar.Collapse className='justify-content-end'>
-          {draftID && 
-            <Nav.Link href={"/drones-front/flight?flight_id=" + String(draftID)}>Корзина</Nav.Link>
-          }
+          <Nav.Link href={"/drones-front/flight?flight_id=" + String(draftID)}>Корзина</Nav.Link>
           <Nav.Item style={{marginLeft: '10px', marginRight: '10px', width: '170px'}}>Пользователь: {userName}</Nav.Item>
           <Button onClick={sendLogout}>Выход</Button>
         </Navbar.Collapse>

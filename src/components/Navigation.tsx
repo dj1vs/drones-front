@@ -25,7 +25,7 @@ const Navigation: FC = () => {
 }
 
   return (
-    <Navbar bg="secondary" expand="lg" color='grey'>
+    <Navbar expand="lg">
       <Container>
         <Nav.Link href="/drones-front/">Районы</Nav.Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

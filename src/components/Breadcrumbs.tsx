@@ -7,38 +7,43 @@ function Breadcrumbs() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString)
     const region_name = urlParams.get('region_name')
-    const name_pattern = urlParams.get('name_pattern')
     const name = urlParams.get('name')
+    const flight_id = urlParams.get('flight_id')
 
     return (
         <Breadcrumb>
-            {window.location.pathname == '/drones-front/' &&
-                <Breadcrumb.Item href="/drones-front/">Домашняя страница</Breadcrumb.Item>
+            {(window.location.pathname == "/drones-front/"
+            || window.location.pathname == "/drones-front/mod_regions"
+            || window.location.pathname == "/drones-front/region"
+            || window.location.pathname == "/drones-front/region_edit") &&
+                <Breadcrumb.Item href="/drones-front/">Районы</Breadcrumb.Item>
+            }
+            {(window.location.pathname == "/drones-front/region"
+            || window.location.pathname == "/drones-front/region_edit") &&
+                <Breadcrumb.Item active>{region_name ? region_name : name}</Breadcrumb.Item>
             }
             
             {window.location.pathname == '/drones-front/auth' &&
                 <Breadcrumb.Item>Вход</Breadcrumb.Item>
             }
+            {window.location.pathname == '/drones-front/register' &&
+                <Breadcrumb.Item>Регистрация</Breadcrumb.Item>
+            }
+
             {window.location.pathname == '/drones-front/account' &&
                 <Breadcrumb.Item>Аккаунт</Breadcrumb.Item>
             }
-            {window.location.pathname == '/drones-front/flights' &&
-                <Breadcrumb.Item>Полёты</Breadcrumb.Item>
+            {(window.location.pathname == '/drones-front/flights'
+            || window.location.pathname == '/drones-front/flight'
+            || window.location.pathname == '/drones-front/flight_edit') &&
+                <Breadcrumb.Item href="/drones-front/flights">Полёты</Breadcrumb.Item>
             }
-            {(region_name != null && name_pattern === null) || (name != null) && 
-                <>
-                    <Breadcrumb.Item active> Район </Breadcrumb.Item>
-                    <Breadcrumb.Item href = {window.location.search}>{region_name ? region_name : name}</Breadcrumb.Item>
-                </>
-            }
-            {(name_pattern != null && region_name === null) &&
-                <>
-                    <Breadcrumb.Item active> Поиск </Breadcrumb.Item>
-                    <Breadcrumb.Item href = {window.location.search}>{name_pattern}</Breadcrumb.Item>
-                </>
+            {(window.location.pathname == '/drones-front/flight'
+            || window.location.pathname == '/drones-front/flight_edit') &&
+                <Breadcrumb.Item active>{flight_id}</Breadcrumb.Item>
             }
             {window.location.pathname == '/drones-front/book' &&
-                <Breadcrumb.Item>Бронирование</Breadcrumb.Item>
+                <Breadcrumb.Item>Корзина</Breadcrumb.Item>
             }
         </Breadcrumb>
     );

@@ -67,9 +67,10 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
         config
         )
         .then((response) => response.data)
-        .catch(() => {
+        .catch(() => { // ЗАПУСКАЕТСЯ ТОЛЬКО КОГДА НЕТ СВЯЗИ С БЭКОМ
             let result_regions : Region[] = []
             for (const region of offline_regions) {
+                
                 if (region.Name.toLowerCase().indexOf(namePattern.toLowerCase()) == -1) {
                     continue;
                 }

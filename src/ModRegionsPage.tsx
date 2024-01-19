@@ -16,16 +16,14 @@ const ModRegionsPage : FC = () => {
 
     const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
     const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
-    const {regionName, regionDistrict, regionStatus} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
+    const {regionName, regionDistrict} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
     
     const [regionsArray, setRegionsArray] = useState<string[][]>([])
     
     useEffect(() =>  {
         const loadRegions = async()  => {
 
-            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(regionStatus), String(regionDistrict))
-
-            console.log(regionName, regionStatus, regionDistrict)
+            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), '', String(regionDistrict))
 
             if (result.regions) {
                 var arr: string[][] = []
@@ -45,7 +43,7 @@ const ModRegionsPage : FC = () => {
 
         loadRegions()
 
-    }, [regionName, regionDistrict, regionStatus])
+    }, [regionName, regionDistrict])
 
     const handleModalClose= () => {
         dispatch(cartSlice.actions.disableBooked())

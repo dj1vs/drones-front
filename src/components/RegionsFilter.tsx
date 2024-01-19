@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { FormLabel, Button, Row, FormSelect} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { FormLabel, Button, Row} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import store from "../store/store";
 import filtersSlice from "../store/filtersSlice";
@@ -8,26 +7,18 @@ import { useAppDispatch } from "../store/store";
 import { useRef } from "react";
 
 const RegionsFilter: FC = () => {
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
     const nameRef = useRef<any>(null)
-    const statusRef = useRef<any>(null)
     const districtRef = useRef<any>(null)
 
-    const {regionName, regionStatus, regionDistrict} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
+    const {regionName, regionDistrict} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
 
     const applyFilters = () => {
         let name = nameRef.current.value
-        let status = statusRef.current.value
         let district = districtRef.current.value
-
-        if (status == "Все") {
-            status = ""
-        }
         
         dispatch(filtersSlice.actions.setRegionName(name))
-        dispatch(filtersSlice.actions.setRegionStatus(status))
         dispatch(filtersSlice.actions.setRegionDistrict(district))
     }
 
@@ -45,16 +36,6 @@ const RegionsFilter: FC = () => {
             </div>
             <div className="col-2">
                     <input ref={districtRef} defaultValue={regionDistrict?.toString()} className="form-control"></input>
-            </div>
-            <div className="col-2">
-                    <FormLabel>Статус района:</FormLabel>
-            </div>
-            <div className="col-2">
-                    <FormSelect ref={statusRef} defaultValue={regionStatus?.toString()}>
-                        <option>Действует</option>
-                        <option>Недоступен</option>
-                        <option>Все</option>
-                        div</FormSelect>
             </div>
         </Row>
         <Button onClick={applyFilters}>Поиск</Button>

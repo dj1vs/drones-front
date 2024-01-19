@@ -7,7 +7,7 @@ import defaultImage from './assets/empty-region.png'
 import { Region } from './modules/ds'
 import { GetRegionsResponse, getRegions } from './modules/get-regions';
 
-import { Row, Modal, Button } from 'react-bootstrap'
+import { Row, Col, Modal, Button, Container } from 'react-bootstrap'
 import RegionCard from './components/RegionCard';
 import RegionsFilter from './components/RegionsFilter';
 
@@ -23,11 +23,11 @@ const RegionsPage: FC = () => {
 
     const [regions, setRegions] = useState<Region[]>([])
     const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
-    const {regionName, regionDistrict, regionStatus} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
+    const {regionName, regionDistrict} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
 
     useEffect(() => {
         const loadRegions = async()  => {
-            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(regionStatus), String(regionDistrict))
+            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), 'Действует', String(regionDistrict))
             console.log(result)
 
            if (result.regions) {
@@ -44,7 +44,8 @@ const RegionsPage: FC = () => {
 
         loadRegions()
 
-    }, [regionName, regionDistrict, regionStatus]);
+    }, [regionName, regionDistrict]);
+    
 
     const handleModalClose= () => {
         dispatch(cartSlice.actions.disableBooked())
@@ -73,17 +74,21 @@ const RegionsPage: FC = () => {
             <RegionsFilter></RegionsFilter>
             <p></p>
 
-            <Row xs={4} md={4} className='row row-cols-4 g-4'>
-                {regions.map((item, index) => (
-                    <div className="col-4" key={index} > 
-                        <RegionCard {...{
-                             imageUrl: (item.ImageName == '' ? defaultImage?.toString() : "/region_image/" + item.ImageName?.toString()),
-                             regionName: item.Name,
-                             pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
-                        }}></RegionCard>
-                    </div>
-                ))}
-            </Row>
+            <Container className="mt-5">
+                <Row xs={4} md={4} className='justify-content-center'>
+                    {regions.map((item, index) => (
+                        <Col key={index} md={3} className="mb-4"> 
+                            <RegionCard {...{
+                                 imageUrl: (item.ImageName == '' ? defaultImage?.toString() : "/region_image/" + item.ImageName?.toString()),
+                                 regionName: item.Name,
+                                 pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
+                            }}></RegionCard>
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
+
+            
             
             
 

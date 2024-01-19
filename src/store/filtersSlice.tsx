@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const regionStatus = localStorage.getItem('regionStatus')
-    ? localStorage.getItem('regionStatus')
-    : '';
-
 const regionName = localStorage.getItem('regionName')
     ? localStorage.getItem('regionName')
     : '';
@@ -32,7 +28,6 @@ const flightCreator = localStorage.getItem('flightCreator')
 
 
 const initialState = {
-    regionStatus,
     regionName,
     regionDistrict,
     flightStatus,
@@ -45,10 +40,6 @@ const filtersSlice = createSlice({
     name: 'filters',
     initialState,
     reducers: {
-        setRegionStatus(state, {payload}) {
-            state.regionStatus = payload
-            localStorage.setItem('regionStatus', payload)
-        },
         setRegionName(state, {payload}) {
             state.regionName = payload
             localStorage.setItem('regionName', payload)

@@ -22,8 +22,8 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
     }
 
     return (
-        <Card style={{width:'300px'}}>
-            <Card.Img style={{ width: '300px', height: '350px' }} variant="top" src={imageUrl}/>
+        <Card className="rounded border-primary">
+            <Card.Img className="card-img" variant="top" src={imageUrl}/>
             <Card.Body className='d-flex flex-column'>
                 <Card.Title className='mt-auto'> {regionName} </Card.Title>
                 <ButtonGroup className='text-center'>

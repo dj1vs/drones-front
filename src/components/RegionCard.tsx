@@ -27,6 +27,7 @@ const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl, regionID}) => {
         }
         dispatch(cartSlice.actions.addRegion(regionName))
         await addRegionToDraft(userToken, regionID)
+
         navigate('/drones-front/')
     }
 

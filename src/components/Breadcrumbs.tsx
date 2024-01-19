@@ -8,7 +8,10 @@ function Breadcrumbs() {
     const urlParams = new URLSearchParams(queryString)
     const region_name = urlParams.get('region_name')
     const name = urlParams.get('name')
-    const flight_id = urlParams.get('flight_id')
+    let flight_id = urlParams.get('flight_id')
+    if (!flight_id) {
+        flight_id = '-'
+    }
 
     return (
         <Breadcrumb>
@@ -40,7 +43,7 @@ function Breadcrumbs() {
             }
             {(window.location.pathname == '/drones-front/flight'
             || window.location.pathname == '/drones-front/flight_edit') &&
-                <Breadcrumb.Item active>{flight_id}</Breadcrumb.Item>
+                <Breadcrumb.Item active>{parseInt(flight_id, 10) ? flight_id : '-'}</Breadcrumb.Item>
             }
             {window.location.pathname == '/drones-front/book' &&
                 <Breadcrumb.Item>Корзина</Breadcrumb.Item>

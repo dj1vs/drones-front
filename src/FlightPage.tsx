@@ -32,6 +32,7 @@ const FlightPage: FC = () => {
 
     const [flight, setFlight] = useState<Flight>()
     const [regionNames, setRegionNames] = useState<string[]>()
+    const [wrongFlight, setWrongFlight] = useState(false)
 
     const [newRegion, setNewRegion] = useState('')
 
@@ -44,6 +45,10 @@ const FlightPage: FC = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString)
         const flightIdString = urlParams.get('flight_id')
+
+        if (!flightIdString || (flightIdString && !parseInt(flightIdString, 10))) {
+            setWrongFlight(true)
+        }
 
         const loadFlight = async () => {
             if (!flightIdString) {
@@ -146,9 +151,9 @@ const FlightPage: FC = () => {
         }
     }
 
-    if (!flight?.ID) {
+    if (wrongFlight) {
         return (
-            <h1>Полёт пуст!</h1>
+            <h1>Полёт не существует!</h1>
         )
     }
 

@@ -47,7 +47,7 @@ const RegionsPage: FC = () => {
 
         loadRegions()
 
-    }, [regionName, regionDistrict]);
+    }, [regionName, regionDistrict, booked]);
     
 
     const handleModalClose= () => {

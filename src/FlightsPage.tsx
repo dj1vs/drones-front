@@ -9,6 +9,8 @@ import { Flight } from './modules/ds'
 import filtersSlice from './store/filtersSlice'
 import { useAppDispatch } from "./store/store";
 import { useRef } from "react";
+import { deleteFlight } from './modules/delete-flight'
+import { useNavigate } from 'react-router-dom'
 
 
 const FlightsPage: FC = () => {
@@ -18,6 +20,7 @@ const FlightsPage: FC = () => {
     const [flightsArray, setFlightsArray] = useState<string[][]>([])
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const statusRef = useRef<any>(null)
     const startDateRef = useRef<any>(null)
@@ -148,7 +151,7 @@ const FlightsPage: FC = () => {
 
         const intervalId = setInterval(() => {
             loadFlights();
-        }, 1000);
+        }, 5000);
     
         // Очистка интервала при размонтировании компонента
         return () => clearInterval(intervalId);
@@ -160,6 +163,19 @@ const FlightsPage: FC = () => {
                 <h3> Для просмотра полётов вам необходимо войти в систему!</h3>
             </>
         )
+    }
+
+    const cancelFlight = async(event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log(event.currentTarget.id)
+        const flight_id = parseInt(event.currentTarget.id, 10)
+        if (!flight_id) {
+            return
+        }
+
+        const result = await deleteFlight(userToken, flight_id)
+        if (result.status == 200) {
+            navigate('/drones-front/flights')
+        }
     }
 
     return (
@@ -221,7 +237,7 @@ const FlightsPage: FC = () => {
             <Table>
                 <thead className='thead-dark'>
                     <tr>
-                        {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
+                        {(userRole?.toString() == '2') &&
                             <th scope='col'>Создатель</th>
                         }
                         <th scope='col'>ID</th>
@@ -257,7 +273,11 @@ const FlightsPage: FC = () => {
                             }
                             {(userRole?.toString() == '1') && 
                             <td>
-                                <Button variant='danger'> Отменить </Button>
+                                <Button variant='danger'
+                                id={flightsArray[rowID][Number((userRole?.toString() == '2'))]}
+                                onClick={cancelFlight}>
+                                    Отменить
+                                </Button>
                             </td>
                             }
                         </tr>

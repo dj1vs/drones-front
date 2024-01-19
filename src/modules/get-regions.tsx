@@ -1,9 +1,9 @@
 import {Region, Flight} from './ds'
 import axios from 'axios';
 
-import kapotnyaImage from '../assets/kapotnya.png'
-import bogorodskoyeImage from '../assets/bogorodskoye.png'
-import zyablikovoImage from '../assets/zyablikovo.png'
+import kapotnyaImage from '../assets/kapotnya.jpg'
+import bogorodskoyeImage from '../assets/bogorodskoye.jpg'
+import zyablikovoImage from '../assets/zyablikovo.jpg'
 
 export interface GetRegionsResponse {
     regions: Region[],

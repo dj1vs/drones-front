@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FormLabel, Button, Row} from "react-bootstrap";
+import { FormLabel, Button, Row, Col, Container, Collapse} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import store from "../store/store";
 import filtersSlice from "../store/filtersSlice";
@@ -24,21 +24,24 @@ const RegionsFilter: FC = () => {
 
     return (
         <div>
-        <Row className="row justify-content-start">
-            <div className="col-2">
-                    <FormLabel>Имя:</FormLabel>
-            </div>
-            <div className="col-2">
-                    <input ref={nameRef} defaultValue={regionName?.toString()} className="form-control"></input>
-            </div>
-            <div className="col-2">
-                    <FormLabel>Округ:</FormLabel>
-            </div>
-            <div className="col-2">
-                    <input ref={districtRef} defaultValue={regionDistrict?.toString()} className="form-control"></input>
-            </div>
-        </Row>
-        <Button onClick={applyFilters}>Поиск</Button>
+        <Container className="mt-3">
+            <Row xs={2} md={2} className="row justify-content-start">
+                <Col>
+                        <FormLabel>Название района:</FormLabel>
+                        <input ref={nameRef} defaultValue={regionName?.toString()} className="form-control"></input>
+                </Col>
+                <Col>
+                        <FormLabel>Округ:</FormLabel>
+                        <input ref={districtRef} defaultValue={regionDistrict?.toString()} className="form-control"></input>
+                </Col>
+                <Col className="justify-content-start">
+                    <Button onClick={applyFilters}>Поиск</Button>
+                </Col>
+                
+            </Row>
+        </Container>
+        
+        
         </div>
         
     )

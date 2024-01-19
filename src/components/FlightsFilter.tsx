@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import { Form, FormLabel, FormSelect, Row, Col, Button } from "react-bootstrap";
+import { Form, FormLabel, FormSelect, Row, Col, Button, Container } from "react-bootstrap";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import store from "../store/store";
@@ -53,13 +53,11 @@ const FlightsFilter: FC = () => {
 
 
     return (
-        <div style={{border: '1px solid black'}}>
+        <div>
             <Form>
                 <Row>
                     <Col>
                         <FormLabel>Статус:</FormLabel>
-                    </Col>
-                    <Col>
                         <FormSelect ref={statusRef} defaultValue={flightStatus?.toString()}>
                             <option>Черновик</option>
                             <option>Удалён</option>
@@ -70,23 +68,19 @@ const FlightsFilter: FC = () => {
                         </FormSelect>
                     </Col>
                     {userRole?.toString() == '2' && 
-                        <>
                         <Col>
                             <FormLabel>Создатель:</FormLabel>
-                        </Col>
-                        <Col>
                             <input
+                                className="form-control"
                                 defaultValue={flightCreator?.toString()}
                                 ref={flightCreatorRef}
                             />
                         </Col>
-                        </>
                     }
                     <Col>
                         <FormLabel>Сформировано с:</FormLabel>
-                    </Col>
-                    <Col>
                         <input
+                            className="form-control"
                             type="datetime-local"
                             defaultValue={startDate?.toString().slice(0, -4)}
                             ref={startDateRef}
@@ -94,17 +88,14 @@ const FlightsFilter: FC = () => {
                     </Col>
                     <Col>
                         <FormLabel>По:</FormLabel>
-                    </Col>
-                    <Col>
-                        <FormLabel></FormLabel>
                         <input
+                            className="form-control"
                             type="datetime-local"
                             defaultValue={endDate?.toString().slice(0, -4)}
                             ref={endDateRef}
                         />
                     </Col>
                 </Row>
-                <Button onClick={applyFilters}>Поиск</Button>
             </Form>
         </div>
     )

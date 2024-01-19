@@ -104,6 +104,7 @@ const FlightsPage: FC = () => {
         <>
             <h1>Полёты</h1>
             <FlightsFilter></FlightsFilter>
+            <p></p>
             <Table>
                 <thead className='thead-dark'>
                     <tr>

@@ -9,17 +9,25 @@ import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
 import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
+import cartSlice from './store/cartSlice'
+import { useAppDispatch } from "./store/store";
 
 import { addRegionToDraft } from "./modules/add-region-to-draft";
 import { getRegionByName } from "./modules/get-region";
 import { removeRegionFromFlight } from "./modules/remove-region-from-flight";
+import { approveFlight } from "./modules/approve-flight"
+
+import { useNavigate } from "react-router-dom";
 
 interface InputChangeInterface {
     target: HTMLInputElement;
   }
 
 const FlightPage: FC = () => {
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
+    
     const {userToken, userName, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const [flight, setFlight] = useState<Flight>()
@@ -28,6 +36,9 @@ const FlightPage: FC = () => {
     const [newRegion, setNewRegion] = useState('')
 
     const newRegionInputRef = useRef<any>(null)
+    const takeoffDateRef = useRef<any>(null)
+    const arrivalDateRef = useRef<any>(null)
+
 
     useEffect(() => {
         const queryString = window.location.search;
@@ -35,7 +46,7 @@ const FlightPage: FC = () => {
         const flightIdString = urlParams.get('flight_id')
 
         const loadFlight = async () => {
-            if (flightIdString === null) {
+            if (!flightIdString) {
                 return
             }
             const flight = await getFlight(+flightIdString)
@@ -60,7 +71,16 @@ const FlightPage: FC = () => {
     }, [])
 
     const approve = async () => {
-
+        if (!userToken || !flight?.ID) {
+            return
+        }
+        const result = await approveFlight(userToken, flight?.ID)
+        if (result.status == 200) {
+            dispatch(cartSlice.actions.setTakeoffDate(null))
+            dispatch(cartSlice.actions.setArrivalDate(null))
+            dispatch(cartSlice.actions.setDraftID(null))
+            navigate('/drones-front/flights')
+        }
     }
 
     const removeRegion = async(event: React.MouseEvent<HTMLButtonElement>) => {
@@ -79,12 +99,6 @@ const FlightPage: FC = () => {
         if (deletion_result.status != 201) {
             return
         }
-
-
-
-        
-
-
 
         setRegionNames(regionNames.filter(function(regionName) {
             return regionName !== removedRegionName
@@ -132,6 +146,12 @@ const FlightPage: FC = () => {
         }
     }
 
+    if (!flight?.ID) {
+        return (
+            <h1>Полёт пуст!</h1>
+        )
+    }
+
     return(
         <Form style={{width: '600px', marginRight: 'auto', marginLeft: 'auto'}}>
             <h1>Информация о полёте #{flight?.ID}</h1>
@@ -164,7 +184,7 @@ const FlightPage: FC = () => {
             {
 
             }
-            {!((flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2"))) && 
+            {!(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
                 <ListGroup style={{width: '500px'}}>
                     {regionNames?.map((regionName, regionID) => (
                         <ListGroupItem key={regionID}> {regionName}
@@ -177,9 +197,30 @@ const FlightPage: FC = () => {
             <p></p>
             <FormLabel>Статус: {flight?.Status}</FormLabel>
             <p></p>
-            <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
-            <p></p>
-            <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
+            {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+                <>
+                    <FormLabel>Время взлёта:</FormLabel>
+                    <input
+                        type="datetime-local"
+                        className="form-control"
+                        ref={takeoffDateRef}
+                    />
+                    <FormLabel>Время прибытия:</FormLabel>
+                    <input
+                        type="datetime-local"
+                        className="form-control"
+                        ref={arrivalDateRef}
+                    />
+                </>
+            }
+            {!(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+                <>
+                    <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
+                    <p></p>
+                    <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
+                </>
+            }
+           
             {(flight?.Status == "Черновик" && flight.User?.name == userName) &&
                 <Row>
                     <p></p>

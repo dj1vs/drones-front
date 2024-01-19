@@ -17,45 +17,45 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
     const offline_regions: Region[] =  [
         {
             ID: 1,
-            District: "",
-            Name: "Район #1",
-            Details: "",
+            District: "ЮАО",
+            Name: "Зябликово",
+            Details: "Район на юго-востоке Москвы, в Южном административном округе, и одноимённый муниципальный округ. Район и муниципальное образование названы по бывшей деревне Зябликово, включённой в состав Москвы в 1960 году.",
             Status: "Действует",
-            AreaKm: '0',
-            Population: 0,
-            HeadName: "",
-            HeadEmail: "",
-            HeadPhone: "",
-            AverageHeightM: 0,
-            ImageName: ""
+            AreaKm: '4.3795',
+            Population: 133651,
+            HeadName: "Князев Константин Игоревич",
+            HeadEmail: "sozbk@uao.mos.ru",
+            HeadPhone: "8 499 725 43 94",
+            AverageHeightM: 174,
+            ImageName: "zyablikovo.png"
         },
         {
             ID: 2,
-            District: "",
-            Name: "Район #2",
-            Details: "",
+            District: "ВАО",
+            Name: "Богородское",
+            Details: "Район в Восточном административном округе города Москвы, а также одноимённое внутригородское муниципальное образование.",
             Status: "Действует",
-            AreaKm: '0',
-            Population: 0,
-            HeadName: "",
-            HeadEmail: "",
-            HeadPhone: "",
-            AverageHeightM: 0,
-            ImageName: ""
+            AreaKm: '10.24',
+            Population: 108657,
+            HeadName: "Ланько Елена Борисовна",
+            HeadEmail: "vao-bog@mos.ru",
+            HeadPhone: "8(499)162-52-61",
+            AverageHeightM: 156,
+            ImageName: "bogorodskoye.png"
         },
         {
             ID: 3,
-            District: "",
-            Name: "Район #3",
-            Details: "",
+            District: "ЮВАО",
+            Name: "Капотня",
+            Details: "район, расположенный в Юго-Восточном административном округе и соответствующее ему одноимённое внутригородское муниципальное образование в городе Москве. В течение долгого времени считался самым экологически неблагоприятным районом Москвы из-за нахождения тут Московского нефтеперерабатывающего завода, который в 2011 начал проведение масштабной экологической модернизации",
             Status: "Действует",
-            AreaKm: '0',
-            Population: 0,
-            HeadName: "",
-            HeadEmail: "",
-            HeadPhone: "",
-            AverageHeightM: 0,
-            ImageName: ""
+            AreaKm: '8.06',
+            Population: 32717,
+            HeadName: "Орешкин Никита Александрович",
+            HeadEmail: "Uprava-Kapotnya@mos.ru",
+            HeadPhone: "8 (495) 355-19-01",
+            AverageHeightM: 83,
+            ImageName: "kapotnya.png"
         },];
 
     return axios.get(
@@ -66,9 +66,19 @@ export const getRegions = async (userToken = '', namePattern = '', status='', di
         .catch(() => {
             let result_regions : Region[] = []
             for (const region of offline_regions) {
-                if (region.Name.toLowerCase().indexOf(namePattern.toLowerCase()) !== -1) {
-                    result_regions.push(region);
+                if (region.Name.toLowerCase().indexOf(namePattern.toLowerCase()) == -1) {
+                    continue;
                 }
+
+                if (status != '' && region.Status != status) {
+                    continue;
+                }
+
+                if (district != '' && region.District.toLowerCase().indexOf(district.toLowerCase()) == -1) {
+                    continue;
+                }
+                
+                result_regions.push(region);
             }
 
             return {

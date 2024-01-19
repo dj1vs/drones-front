@@ -37,7 +37,6 @@ const RegionPage: FC = () => {
             <Card style={{width: '300px'}}>
                 <Card.Img src={imageUrl} variant="top" />
                 <Card.Body>
-                    <p>{region?.Details}</p>
                     <p> <b>Статус: {region?.Status}</b></p>
                     <p>Округ: {region?.District}</p>
                     <p> Площадь: {region?.AreaKm} км^2</p>
@@ -46,7 +45,7 @@ const RegionPage: FC = () => {
                     <p> Email главы управы: {region?.HeadEmail}</p>
                     <p> Телефон главы управы: {region?.HeadPhone}</p>
                     <p> Средняя высота: {region?.AverageHeightM}</p>
-                    <p>Описание района: {region?.Details}</p>
+                    <p>{region?.Details}</p>
                 </Card.Body>
                 <Card.Footer>
                     <Button href="/drones-front/">Домой</Button>

@@ -20,7 +20,6 @@ import './index.css'
 
 import { Provider } from 'react-redux';
 import FlightPage from './FlightPage';
-import BookPage from './BookPage';
 import FlightEditPage from './FlightEditPage';
 import RegionEditPage from './RegionEditPage';
 
@@ -38,7 +37,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/drones-front/flight" Component={FlightPage} />
           <Route path="/drones-front/auth" Component={AuthPage} />
           <Route path="/drones-front/register" Component={RegisterPage} />
-          <Route path="/drones-front/book" Component={BookPage} />
           <Route path="/drones-front/flight_edit" Component={FlightEditPage} />
           <Route path="/drones-front/region_edit" Component={RegionEditPage} />
         </Routes>

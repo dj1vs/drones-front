@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Navigation: FC = () => {
   const {userToken, userName, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+  const {draftID} = useSelector((state: ReturnType<typeof store.getState>) => state.cart)
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -44,7 +45,9 @@ const Navigation: FC = () => {
       </Container>
       {userToken &&
         <Navbar.Collapse className='justify-content-end'>
-          <Nav.Link href="/drones-front/book">Корзина</Nav.Link>
+          {draftID && 
+            <Nav.Link href={"/drones-front/flight?flight_id=" + String(draftID)}>Корзина</Nav.Link>
+          }
           <Nav.Item style={{marginLeft: '10px', marginRight: '10px', width: '170px'}}>Пользователь: {userName}</Nav.Item>
           <Button onClick={sendLogout}>Выход</Button>
         </Navbar.Collapse>

@@ -14,8 +14,6 @@ import RegionsFilter from './components/RegionsFilter';
 import store, { useAppDispatch } from './store/store';
 import cartSlice from './store/cartSlice';
 
-import { addRegionToDraft } from './modules/add-region-to-draft'
-
 
 const RegionsPage: FC = () => {
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
@@ -23,7 +21,7 @@ const RegionsPage: FC = () => {
     const dispatch = useAppDispatch()
 
     const [regions, setRegions] = useState<Region[]>([])
-    const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
+    const {booked, draftID} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
     const {regionName, regionDistrict} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
 
     useEffect(() => {
@@ -39,6 +37,8 @@ const RegionsPage: FC = () => {
                 dispatch(cartSlice.actions.setTakeoffDate(result.draft_flight.TakeoffDate))
                 dispatch(cartSlice.actions.setArrivalDate(result.draft_flight.ArrivalDate))
                 dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
+
+                console.log(draftID)
             }
 
         }

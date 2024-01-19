@@ -15,7 +15,6 @@ interface Props {
 }
 
 const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl, regionID}) => {
-    console.log(imageUrl)
     const dispatch = useAppDispatch()
 
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)

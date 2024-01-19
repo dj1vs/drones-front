@@ -65,6 +65,14 @@ const FlightPage: FC = () => {
             <p></p>
             <FormLabel>Время прибытия: {flight?.ArrivalDate}</FormLabel>
             <p></p>
+            {/* <Row>
+                <Button>Подтвердить</Button>
+            </Row>
+            <p></p>
+            <Row>
+                <Button>Отменить</Button>
+            </Row>
+            <p></p> */}
             <Row>
                 <Button href='/drones-front/flights'>К полётам</Button>
             </Row>

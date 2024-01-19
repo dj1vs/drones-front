@@ -275,7 +275,8 @@ const FlightEditPage: FC = () => {
                 </Row>
             }
             <p></p>
-            <Container>
+            {(flight?.Status == "Сформирован") &&
+                <Container>
                     <Row>
                         <Col>
                             <Button onClick={modConfirmFalse} variant="danger" className="w-100">Отклонить</Button>
@@ -285,6 +286,8 @@ const FlightEditPage: FC = () => {
                         </Col>
                     </Row>
                 </Container>
+            }
+            
             <Row>
                 <Button href='/drones-front/flights'>К полётам</Button>
             </Row>

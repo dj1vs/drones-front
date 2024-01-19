@@ -151,7 +151,7 @@ const FlightsPage: FC = () => {
 
         const intervalId = setInterval(() => {
             loadFlights();
-        }, 5000);
+        }, 1000);
     
         // Очистка интервала при размонтировании компонента
         return () => clearInterval(intervalId);

@@ -23,24 +23,11 @@ const RegionsPage: FC = () => {
 
     const [regions, setRegions] = useState<Region[]>([])
     const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
+    const {regionName, regionDistrict, regionStatus} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
 
     useEffect(() => {
         const loadRegions = async()  => {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString)
-            let regionName = urlParams.get('name_pattern')
-            let status = urlParams.get('status')
-            let district = urlParams.get('district') 
-            if (regionName == null) {
-                regionName = "";
-            }
-            if (status == null) {
-                status = "";
-            }
-            if (district == null) {
-                district = "";
-            }
-            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(status), String(district))
+            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(regionStatus), String(regionDistrict))
             console.log(result)
 
            if (result.regions) {
@@ -53,13 +40,11 @@ const RegionsPage: FC = () => {
                 dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
             }
 
-            
-
         }
 
         loadRegions()
 
-    }, []);
+    }, [regionName, regionDistrict, regionStatus]);
 
     const handleModalClose= () => {
         dispatch(cartSlice.actions.disableBooked())

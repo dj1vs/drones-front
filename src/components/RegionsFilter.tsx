@@ -22,22 +22,13 @@ const RegionsFilter: FC = () => {
         let status = statusRef.current.value
         let district = districtRef.current.value
 
+        if (status == "Все") {
+            status = ""
+        }
+        
         dispatch(filtersSlice.actions.setRegionName(name))
         dispatch(filtersSlice.actions.setRegionStatus(status))
         dispatch(filtersSlice.actions.setRegionDistrict(district))
-        
-        
-        let filterString = '?name_pattern=' + name
-        if (status) {
-            filterString += '&status=' + status
-        }
-        
-        if (district) {
-            filterString += "&district=" + district
-        }
-        
-        navigate('/drones-front/' + filterString)
-        window.location.reload()
     }
 
     return (

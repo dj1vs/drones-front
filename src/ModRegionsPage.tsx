@@ -3,10 +3,11 @@ import { Button, Table, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 import store from "./store/store";
-import { getRegions } from "./modules/get-regions";
 import { useAppDispatch } from "./store/store";
 import cartSlice from "./store/cartSlice";
 import RegionsFilter from "./components/RegionsFilter";
+
+import { GetRegionsResponse, getRegions } from './modules/get-regions';
 
 import defaultImage from './assets/empty-region.png'
 
@@ -15,45 +16,36 @@ const ModRegionsPage : FC = () => {
 
     const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
     const {booked} = useSelector((state: ReturnType<typeof store.getState> ) => state.cart)
+    const {regionName, regionDistrict, regionStatus} = useSelector((state: ReturnType<typeof store.getState> ) => state.filters)
     
     const [regionsArray, setRegionsArray] = useState<string[][]>([])
     
     useEffect(() =>  {
         const loadRegions = async()  => {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString)
-            let regionName = urlParams.get('name_pattern')
-            let status = urlParams.get('status')
-            let district = urlParams.get('district')
 
-            if (regionName == null) {
-                regionName = "";
-            }
-            if (status == null) {
-                status = "";
-            }
-            if (district == null) {
-                district = "";
-            }
-            const result = await getRegions(String(regionName), String(status), String(district))
+            const result : GetRegionsResponse = await getRegions(String(userToken), String(regionName), String(regionStatus), String(regionDistrict))
 
-            var arr: string[][] = []
-            for (let region of result.regions) {
-                var regionArray:string[] = []
-                regionArray.push(region.ImageName.toString())
-                regionArray.push(region.ID.toString())
-                regionArray.push(region.Name)
-                regionArray.push(region.Status)
+            console.log(regionName, regionStatus, regionDistrict)
 
-                arr.push(regionArray)
+            if (result.regions) {
+                var arr: string[][] = []
+                for (let region of result.regions) {
+                    var regionArray:string[] = []
+                    regionArray.push(region.ImageName.toString())
+                    regionArray.push(region.ID.toString())
+                    regionArray.push(region.Name)
+                    regionArray.push(region.Status)
+
+                    arr.push(regionArray)
+                }
+                setRegionsArray(arr);
             }
-            setRegionsArray(arr);
 
         }
 
         loadRegions()
 
-    }, [])
+    }, [regionName, regionDistrict, regionStatus])
 
     const handleModalClose= () => {
         dispatch(cartSlice.actions.disableBooked())

@@ -14,6 +14,8 @@ import RegionsFilter from './components/RegionsFilter';
 import store, { useAppDispatch } from './store/store';
 import cartSlice from './store/cartSlice';
 
+import { addRegionToDraft } from './modules/add-region-to-draft'
+
 
 const RegionsPage: FC = () => {
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
@@ -74,7 +76,8 @@ const RegionsPage: FC = () => {
                             <RegionCard {...{
                                  imageUrl: (item.ImageName == '' ? defaultImage?.toString() : "/region_image/" + item.ImageName?.toString()),
                                  regionName: item.Name,
-                                 pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
+                                 pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name,
+                                 regionID: item.ID
                             }}></RegionCard>
                         </Col>
                     ))}

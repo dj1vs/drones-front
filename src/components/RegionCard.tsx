@@ -3,22 +3,29 @@ import { useSelector } from 'react-redux'
 import {Button, ButtonGroup, Card} from 'react-bootstrap'
 import store, { useAppDispatch } from '../store/store'
 
+import { addRegionToDraft } from '../modules/add-region-to-draft'
+
 import './RegionCard.css'
 import cartSlice from '../store/cartSlice'
 interface Props {
     imageUrl: string
     regionName: string
     pageUrl: string
+    regionID: number
 }
 
-const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl}) => {
+const RegionCard: FC<Props> = ({ imageUrl, regionName, pageUrl, regionID}) => {
     console.log(imageUrl)
     const dispatch = useAppDispatch()
 
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
     const addRegionToCard = () => {
+        if (!userToken) {
+            return;
+        }
         dispatch(cartSlice.actions.addRegion(regionName))
+        addRegionToDraft(userToken, regionID)
     }
 
     return (

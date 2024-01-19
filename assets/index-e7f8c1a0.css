@@ -1,4 +1,4 @@
-@charset "UTF-8";.card{width:325px}.card-img{width:325px;height:350px}.card_container{display:flex;justify-content:center}.breadcrumb-item+.breadcrumb-item:before{content:">"!important}/*!
+@charset "UTF-8";.card_container{display:flex;justify-content:center}.breadcrumb-item+.breadcrumb-item:before{content:">"!important}/*!
 * Bootstrap  v5.3.2 (https://getbootstrap.com/)
 * Copyright 2011-2023 The Bootstrap Authors
 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)

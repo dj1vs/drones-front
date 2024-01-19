@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Button, Table, Modal } from "react-bootstrap";
+import {Container, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 import store from "./store/store";
@@ -72,7 +72,13 @@ const ModRegionsPage : FC = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <h1>Районы</h1>
+            <Container>
+                <Row className="justify-content-center">
+                  <Col xs="auto">
+                    <h1 className="text-center">Районы</h1>
+                  </Col>
+                </Row>
+            </Container>
             <RegionsFilter></RegionsFilter>
             <Table>
                 <thead className="thead-dark">

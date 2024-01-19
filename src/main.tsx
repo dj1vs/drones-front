@@ -4,6 +4,7 @@ import { BrowserRouter} from 'react-router-dom'
 import { Routes, Route } from 'react-router-dom';
 
 import RegionsPage from './RegionsPage'
+import RegisterPage from './RegisterPage';
 import RegionPage from './RegionPage'
 import FlightsPage from './FlightsPage'
 import Navigation from './components/Navigation'
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/drones-front/region" Component={RegionPage} />
           <Route path="/drones-front/flight" Component={FlightPage} />
           <Route path="/drones-front/auth" Component={AuthPage} />
+          <Route path="/drones-front/register" Component={RegisterPage} />
           <Route path="/drones-front/book" Component={BookPage} />
           <Route path="/drones-front/flight_edit" Component={FlightEditPage} />
           <Route path="/drones-front/region_edit" Component={RegionEditPage} />

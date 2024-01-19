@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
-import { Form, FormControl, FormGroup, Button, FormSelect, ListGroup, ListGroupItem, Modal, Row, Col, FormLabel } from "react-bootstrap";
+import { Container, Form, FormGroup, Button,ListGroup, ListGroupItem, Modal, Row, Col, FormLabel } from "react-bootstrap";
 
 import { getFlight } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
@@ -199,25 +199,40 @@ const FlightEditPage: FC = () => {
                 </Row>
                 <h4>Характеристики:</h4>
                 <FormGroup>
-                    <label htmlFor="statusInput">Статус</label>
-                    <FormSelect id="statusInput" defaultValue={flight?.Status} ref={statusRef}>
-                        <option>Черновик</option>
-                        <option>Удалён</option>
-                        <option>Сформирован</option>
-                        <option>Завершён</option>
-                        <option>Отклонён</option>
-                    </FormSelect>
+                    <FormLabel>Статус: {flight?.Status}</FormLabel>
                 </FormGroup>
                 <FormGroup>
-                    <label htmlFor="takeoffDate">Время взлёта</label>
-                    <FormControl id="takeoffDate" defaultValue={flight?.TakeoffDate} ref={takeoffDateRef}></FormControl>
+                    <Col>
+                    <FormLabel htmlFor="takeoffDate">Время взлёта:</FormLabel>
+                    </Col>
+                    <Col>
+                    <FormLabel>{flight?.TakeoffDate.substring(0, flight?.TakeoffDate.indexOf('+')).replace('T', ' ')}</FormLabel>
+                    </Col>
                 </FormGroup>
                 <FormGroup>
-                    <label htmlFor="arrivalDate">Время прибытия</label>
-                    <FormControl id="arrivalDate" defaultValue={flight?.ArrivalDate} ref={arrivalDateRef}></FormControl>
+                    <Col>
+                    <FormLabel htmlFor="arrivalDate">Время прибытия:</FormLabel>
+                    </Col>
+                    <Col>
+                    <FormLabel>{flight?.ArrivalDate.substring(0, flight?.ArrivalDate.indexOf('+')).replace('T', ' ')}</FormLabel>
+                    </Col>
                 </FormGroup>
                 <Row>
                     <Button onClick={sendChanges}>Сохранить изменения</Button>
+                </Row>
+                <p></p>
+                <Container>
+                    <Row>
+                        <Col>
+                            <Button onClick={sendChanges} variant="danger" className="w-100">Отклонить</Button>
+                        </Col>
+                        <Col>
+                            <Button onClick={sendChanges} variant="success" className="w-100">Одобрить</Button>
+                        </Col>
+                    </Row>
+                </Container>
+                <p></p>
+                <Row>
                 </Row>
                 <p></p>
                 <Row>

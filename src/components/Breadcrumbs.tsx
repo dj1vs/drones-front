@@ -9,11 +9,13 @@ function Breadcrumbs() {
     const region_name = urlParams.get('region_name')
     const name_pattern = urlParams.get('name_pattern')
     const name = urlParams.get('name')
-    const flight_id = urlParams.get('flight_id')
 
     return (
         <Breadcrumb>
-            <Breadcrumb.Item href="/drones-front/">Домашняя страница</Breadcrumb.Item>
+            {window.location.pathname == '/drones-front/' &&
+                <Breadcrumb.Item href="/drones-front/">Домашняя страница</Breadcrumb.Item>
+            }
+            
             {window.location.pathname == '/drones-front/auth' &&
                 <Breadcrumb.Item>Вход</Breadcrumb.Item>
             }
@@ -33,12 +35,6 @@ function Breadcrumbs() {
                 <>
                     <Breadcrumb.Item active> Поиск </Breadcrumb.Item>
                     <Breadcrumb.Item href = {window.location.search}>{name_pattern}</Breadcrumb.Item>
-                </>
-            }
-            { (flight_id) &&
-                <>
-                    <Breadcrumb.Item active> Заявка </Breadcrumb.Item>
-                    <Breadcrumb.Item href = {window.location.search}>{flight_id}</Breadcrumb.Item>
                 </>
             }
             {window.location.pathname == '/drones-front/book' &&

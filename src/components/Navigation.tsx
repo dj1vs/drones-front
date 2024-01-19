@@ -52,7 +52,7 @@ const Navigation: FC = () => {
       {!userToken &&
           <Navbar.Collapse className='justify-content-end'>
             <Nav.Link href="/drones-front/auth" style={{marginRight: '20px'}}>Вход</Nav.Link>
-            <Nav.Link href="/drones-front/auth" style={{marginRight: '20px'}}>Регистрация</Nav.Link>
+            <Nav.Link href="/drones-front/register" style={{marginRight: '20px'}}>Регистрация</Nav.Link>
             
             
           </Navbar.Collapse>

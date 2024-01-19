@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector'
-import { Table, Button, Row, Col, Form, FormLabel, FormSelect} from 'react-bootstrap'
+import { Container, Table, Button, Row, Col, Form, FormLabel, FormSelect} from 'react-bootstrap'
 
 import store from './store/store'
 import { getFlights } from './modules/get-flights'
@@ -51,14 +51,21 @@ const FlightsPage: FC = () => {
         }
 
         const loadFlights = async()  => {
+            applyFilters()
+
+            let status = statusRef.current.value
+            let startDate = startDateRef.current.value
+            let endDate = endDateRef.current.value
+
             var flights: Flight[] = []
             if (userToken !== undefined) {
-                
+
                 if (flightStatus == null) { //todo
                     return;
                 }
-
-                flights = await getFlights(userToken?.toString(), flightStatus.toString(), startDate?.toString(), endDate?.toString()) // add flight creator
+                
+                console.log(userToken, flightStatus, startDate, endDate)
+                flights = await getFlights(userToken?.toString(), status, startDate, endDate) // add flight creator
 
                 if (!userToken) {
                     return
@@ -140,8 +147,6 @@ const FlightsPage: FC = () => {
                 
         }
 
-        applyFilters()
-
         loadFlights()
 
         const intervalId = setInterval(() => {
@@ -162,7 +167,14 @@ const FlightsPage: FC = () => {
 
     return (
         <>
-            <h1>Полёты</h1>
+            <Container>
+                <Row className="justify-content-center">
+                  <Col xs="auto">
+                    <h1 className="text-center">Полёты</h1>
+                  </Col>
+                </Row>
+            </Container>
+            <p></p>
             <div>
             <Form>
                 <Row>
@@ -238,7 +250,7 @@ const FlightsPage: FC = () => {
                             }
                             {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
                                 <td>
-                                    <Button href={'/drones-front/flight_edit?flight_id=' + flightsArray[rowID][0]}>Изменить</Button>
+                                    <Button href={'/drones-front/flight_edit?flight_id=' + flightsArray[rowID][1]}>Изменить</Button>
                                 </td>
                             }
                             {(userRole?.toString() == '1') && 

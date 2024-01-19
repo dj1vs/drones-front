@@ -72,7 +72,7 @@ const RegionsPage: FC = () => {
                     {regions.map((item, index) => (
                         <Col key={index} md={3} className="mb-4"> 
                             <RegionCard {...{
-                                 imageUrl: (item.ImageName == '' ? defaultImage?.toString() : item.ImageName?.toString()),
+                                 imageUrl: (item.ImageName == '' ? defaultImage?.toString() : "/region_image/" + item.ImageName?.toString()),
                                  regionName: item.Name,
                                  pageUrl: window.location.href.split('?')[0] + "region?region_name=" + item.Name
                             }}></RegionCard>

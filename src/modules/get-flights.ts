@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-import {Flight} from './ds'
+import {FlightNoUser} from './ds'
 
-export const getFlights = async (userToken = '', status = '', startDate = '', endDate = ''): Promise<Flight[]> => {
+export const getFlights = async (userToken = '', status = '', startDate = '', endDate = ''): Promise<FlightNoUser[]> => {
     const config = {
         headers: {
             'Content-Type': 'application/json',

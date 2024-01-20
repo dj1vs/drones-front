@@ -4,7 +4,7 @@ import { Container, Table, Button, Row, Col, Form, FormLabel, FormSelect} from '
 
 import store from './store/store'
 import { getFlights } from './modules/get-flights'
-import { Flight } from './modules/ds'
+import { FlightNoUser } from './modules/ds'
 import filtersSlice from './store/filtersSlice'
 import { useAppDispatch } from "./store/store";
 import { useRef } from "react";
@@ -56,7 +56,7 @@ const FlightsPage: FC = () => {
                 status = ""
             }
 
-            var flights: Flight[] = []
+            var flights: FlightNoUser[] = []
             if (userToken) {
 
                 if (flightStatus == null) { //todo
@@ -76,8 +76,8 @@ const FlightsPage: FC = () => {
                     let flightArray:string[] = []
 
                     if (userRole?.toString() == '2') {
-                        if (flight.User && flight.User["name"]) {
-                            flightArray.push(flight.User["name"])
+                        if (flight.User && flight.User) {
+                            flightArray.push(flight.User)
                         } else {
                             flightArray.push('-')
                         }

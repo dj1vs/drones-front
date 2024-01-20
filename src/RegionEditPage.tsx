@@ -6,9 +6,11 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import store from "./store/store";
 import { editRegion } from "./modules/edit-region";
 import { sendImage } from "./modules/send-image";
+import { createRegion } from "./modules/create-region";
 
 const RegionEditPage: FC = () =>{
     const districtRef = useRef<any>(null)
+    const nameRef = useRef<any>(null)
     const detailsRef = useRef<any>(null)
     const statusRef = useRef<any>(null)
     const areaRef = useRef<any>(null)
@@ -22,6 +24,8 @@ const RegionEditPage: FC = () =>{
 
 
     const [region, setRegion] = useState<Region>()
+
+    const [newRegion, setNewRegion] = useState(false)
 
     const {userToken} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
@@ -37,13 +41,16 @@ const RegionEditPage: FC = () =>{
             const result = await getRegionByName(String(regionName))
             setRegion(result)
         }
-
-        loadRegion()
+        if (regionName != 'new') {
+            loadRegion()
+        } else {
+            setNewRegion(true)
+        }
         
     }, [])
 
     const sendChanges = async () => {
-        if (!userToken || region?.ID == undefined) {
+        if (!userToken) {
             return;
         }
 
@@ -56,34 +63,56 @@ const RegionEditPage: FC = () =>{
         var headEmail = headEmailRef.current.value
         var averageHeight = averageHeightRef.current.value
         var status = statusRef.current.value
+        var name = nameRef.current.value
 
-        const editResult = await editRegion(userToken,
-            {
-                ID: region?.ID,
-                District: district ? district : region?.District,
-                Details: details ? details : region?.Details,
-                AreaKm: area ? area : region?.AreaKm,
-                Population: population ? population : region?.Population,
-                HeadName: headName ? headName : region?.HeadName,
-                HeadPhone: headPhone ? headPhone : region?.HeadPhone,
-                HeadEmail: headEmail ? headEmail : region?.HeadEmail,
-                AverageHeightM: averageHeight ? averageHeight : region?.AverageHeightM,
-                ImageName: region?.ImageName,
-                Name: region?.Name,
-                Status: status ? status : region?.Status
-            });
+        const region_str = {
+            ID: region?.ID ? region?.ID : 0,
+            District: district ? district : region?.District,
+            Details: details ? details : region?.Details,
+            AreaKm: area ? area : region?.AreaKm,
+            Population: population ? population : region?.Population,
+            HeadName: headName ? headName : region?.HeadName,
+            HeadPhone: headPhone ? headPhone : region?.HeadPhone,
+            HeadEmail: headEmail ? headEmail : region?.HeadEmail,
+            AverageHeightM: averageHeight ? averageHeight : region?.AverageHeightM,
+            ImageName: region?.ImageName ? region?.ImageName : "",
+            Name: name ? name : region?.Name,
+            Status: status ? status : region?.Status
+        };
 
-        if (editResult.status == 201) {
-            setShowSuccess(true);
+        if (newRegion) {
+            const creationResult = await createRegion(userToken, region_str)
+
+            if (creationResult.status == 201) {
+                setShowSuccess(true);
+            } else {
+                setShowError(true);
+            }
+
+            const new_region = await getRegionByName(region_str.Name)
+            if (selectedFile) {
+                const imageResult = await sendImage(userToken, String(new_region.ID), selectedFile);
+    
+                console.log(imageResult.status)
+            }
+
         } else {
-            setShowError(true);
+            const editResult = await editRegion(userToken, region_str);
+
+            if (editResult.status == 201) {
+                setShowSuccess(true);
+            } else {
+                setShowError(true);
+            }
+    
+            if (selectedFile) {
+                const imageResult = await sendImage(userToken, String(region?.ID), selectedFile);
+    
+                console.log(imageResult.status)
+            }
         }
 
-        if (selectedFile) {
-            const imageResult = await sendImage(userToken, String(region?.ID), selectedFile);
-
-            console.log(imageResult.status)
-        }
+        
 
 
     }
@@ -132,7 +161,10 @@ const RegionEditPage: FC = () =>{
                         />
                 </Row>    
             
-            <h2>{region?.Name}</h2>
+                <FormGroup>
+                    <label htmlFor="status">Название</label>
+                    <FormControl id="name" defaultValue={region?.Name} ref={nameRef}></FormControl>
+                </FormGroup>
                 <FormGroup>
                     <label htmlFor="status">Статус</label>
                     <FormSelect id="status" defaultValue={region?.Status} ref={statusRef}>

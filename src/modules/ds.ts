@@ -33,4 +33,5 @@ export interface Flight {
     UserRefer?: string,
     Moderator?: User,
     User?: User 
+    AllowedHours?: string,
 }

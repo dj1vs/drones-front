@@ -220,6 +220,8 @@ const FlightPage: FC = () => {
             <p></p>
             <FormLabel>Статус: {flight?.Status}</FormLabel>
             <p></p>
+            <FormLabel>Разрешённое время полёта: {flight?.AllowedHours}</FormLabel>
+            <p></p>
             {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
                 <>
                     <FormLabel>Время взлёта:</FormLabel>

@@ -117,6 +117,9 @@ const ModRegionsPage : FC = () => {
                     ))}
                 </tbody>
             </Table>
+            <Button href="/drones-front/region_edit?name=new">
+                Создать регион
+            </Button>
 
         </>
     )

@@ -55,21 +55,14 @@ const FlightPage: FC = () => {
             if (!flightIdString) {
                 return
             }
-            const flight = await getFlight(+flightIdString)
-            setFlight(flight)
+            const result = await getFlight(+flightIdString)
+            setFlight(result.flight)
 
             if (userToken === null) {
                 return
             }
 
-            const regions = await getFlightRegions(+flightIdString, userToken)
-            var regionNames: string[] = []
-            if (regions) {
-                for (let region of regions) {
-                    regionNames.push(region.Name)
-                }
-                setRegionNames(regionNames)
-            }
+            setRegionNames(result.regions)
             
         }
 

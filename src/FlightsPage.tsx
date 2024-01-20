@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const FlightsPage: FC = () => {
-    const {userToken, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
+    const {userToken, userRole, userName} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
     const {flightStatus, startDate, endDate, flightCreator} = useSelector((state: ReturnType<typeof store.getState>) => state.filters)
 
     const [flightsArray, setFlightsArray] = useState<string[][]>([])
@@ -271,7 +271,7 @@ const FlightsPage: FC = () => {
                                     <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Просмотр</Button>
                                 </td>
                             }
-                            {(userRole?.toString() == '1') && 
+                            {(((userRole?.toString() == '1') || (userName == flightsArray[rowID][0])) && ((flightsArray[rowID][1 + Number(userRole?.toString() == '2')] == "Черновик") || (flightsArray[rowID][1 + Number(userRole?.toString() == '2')] == "Сформирован")) ) && 
                             <td>
                                 <Button variant='danger'
                                 id={flightsArray[rowID][Number((userRole?.toString() == '2'))]}

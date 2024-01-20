@@ -1,7 +1,12 @@
 import {Flight} from './ds'
 import axios from 'axios';
 
-export const getFlight = async  (id = 1): Promise<Flight> => {
+export interface getFlightResp {
+    flight: Flight,
+    regions: string[]
+}
+
+export const getFlight = async  (id = 1): Promise<getFlightResp> => {
     const config = {
         headers: {
             'Content-Type': 'application/json',

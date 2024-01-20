@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Col, Form,  Button,ListGroup, ListGroupItem,  FormLabel, Row } from "react-bootstrap";
 
 import { getFlight, getFlightResp } from "./modules/get-flight";
-import { Flight } from "./modules/ds";
+import { FlightNoUser } from "./modules/ds";
 import store from "./store/store";
 import cartSlice from './store/cartSlice'
 import { useAppDispatch } from "./store/store";
@@ -30,7 +30,7 @@ const FlightPage: FC = () => {
     
     const {userToken, userName, userRole} = useSelector((state: ReturnType<typeof store.getState>) => state.auth)
 
-    const [flight, setFlight] = useState<Flight>()
+    const [flight, setFlight] = useState<FlightNoUser>()
     const [regionNames, setRegionNames] = useState<string[]>()
     const [wrongFlight, setWrongFlight] = useState(false)
 
@@ -172,7 +172,7 @@ const FlightPage: FC = () => {
         <Form style={{width: '600px', marginRight: 'auto', marginLeft: 'auto'}}>
             <h1>Информация о полёте #{flight?.ID}</h1>
             <h4>Районы:</h4>
-            {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) &&
+            {(flight?.Status == "Черновик" && (flight.User == userName || userRole == "2")) &&
                 <>
                     <ListGroup style={{width: '500px'}}>
                         {regionNames?.map((regionName, regionID) => (
@@ -200,7 +200,7 @@ const FlightPage: FC = () => {
             {
 
             }
-            {!(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+            {!(flight?.Status == "Черновик" && (flight.User == userName || userRole == "2")) && 
                 <ListGroup style={{width: '500px'}}>
                     {regionNames?.map((regionName, regionID) => (
                         <ListGroupItem key={regionID}> {regionName}
@@ -215,7 +215,7 @@ const FlightPage: FC = () => {
             <p></p>
             <FormLabel>Разрешённое время полёта: {flight?.AllowedHours}</FormLabel>
             <p></p>
-            {(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+            {(flight?.Status == "Черновик" && (flight.User == userName || userRole == "2")) && 
                 <>
                     <FormLabel>Время взлёта:</FormLabel>
                     <input
@@ -231,7 +231,7 @@ const FlightPage: FC = () => {
                     />
                 </>
             }
-            {!(flight?.Status == "Черновик" && (flight.User?.name == userName || userRole == "2")) && 
+            {!(flight?.Status == "Черновик" && (flight.User == userName || userRole == "2")) && 
                 <>
                     <FormLabel>Время взлёта: {flight?.TakeoffDate}</FormLabel>
                     <p></p>
@@ -239,7 +239,7 @@ const FlightPage: FC = () => {
                 </>
             }
            
-            {(flight?.Status == "Черновик" && flight.User?.name == userName) &&
+            {(flight?.Status == "Черновик" && flight.User == userName) &&
                 <Row>
                     <p></p>
                     <Button onClick={approve} variant="success">Сформировать</Button>

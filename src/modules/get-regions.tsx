@@ -7,7 +7,7 @@ import zyablikovoImage from '../assets/zyablikovo.jpg'
 
 export interface GetRegionsResponse {
     regions: Region[],
-    draft_flight: Flight,
+    draft_flight: number,
 }
 
 export const getRegions = async (userToken = '', namePattern = '', status='', district='') : Promise<GetRegionsResponse> => {

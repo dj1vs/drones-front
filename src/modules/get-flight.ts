@@ -1,8 +1,8 @@
-import {Flight} from './ds'
+import {FlightNoUser} from './ds'
 import axios from 'axios';
 
 export interface getFlightResp {
-    Flight: Flight,
+    Flight: FlightNoUser,
     Regions: string[]
 }
 

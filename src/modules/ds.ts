@@ -35,3 +35,18 @@ export interface Flight {
     User?: User 
     AllowedHours?: string,
 }
+
+
+
+export interface FlightNoUser {
+    ID: number,
+    Status: string,
+    DateCreated: string,
+    DateProcessed: string,
+    DateFinished: string,
+    TakeoffDate: string,
+    ArrivalDate: string,
+    Moderator: string,
+    User: string 
+    AllowedHours: string,
+}

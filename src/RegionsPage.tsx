@@ -13,6 +13,7 @@ import RegionsFilter from './components/RegionsFilter';
 
 import store, { useAppDispatch } from './store/store';
 import cartSlice from './store/cartSlice';
+import { getFlight, getFlightResp } from './modules/get-flight'
 
 
 const RegionsPage: FC = () => {
@@ -32,11 +33,17 @@ const RegionsPage: FC = () => {
                setRegions(result.regions)
            }
 
-            if (result.draft_flight && result.draft_flight.ID != 0) {
-                console.log(result.draft_flight.ID)
-                dispatch(cartSlice.actions.setTakeoffDate(result.draft_flight.TakeoffDate))
-                dispatch(cartSlice.actions.setArrivalDate(result.draft_flight.ArrivalDate))
-                dispatch(cartSlice.actions.setDraftID(result.draft_flight.ID))
+           if (!result.draft_flight || !userToken) {
+                return;
+           }
+
+           const flight_result : getFlightResp = await getFlight(userToken, result.draft_flight)
+
+            if (flight_result.Flight && flight_result.Flight.ID != 0) {
+                console.log(flight_result.Flight.ID)
+                dispatch(cartSlice.actions.setTakeoffDate(flight_result.Flight.TakeoffDate))
+                dispatch(cartSlice.actions.setArrivalDate(flight_result.Flight.ArrivalDate))
+                dispatch(cartSlice.actions.setDraftID(flight_result.Flight.ID))
             } else {
                 dispatch(cartSlice.actions.setTakeoffDate(null))
                 dispatch(cartSlice.actions.setArrivalDate(null))

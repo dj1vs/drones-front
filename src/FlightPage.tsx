@@ -5,9 +5,8 @@ import { useSelector } from "react-redux";
 
 import { Col, Form,  Button,ListGroup, ListGroupItem,  FormLabel, Row } from "react-bootstrap";
 
-import { getFlight } from "./modules/get-flight";
+import { getFlight, getFlightResp } from "./modules/get-flight";
 import { Flight } from "./modules/ds";
-import { getFlightRegions } from "./modules/get-flight-regions";
 import store from "./store/store";
 import cartSlice from './store/cartSlice'
 import { useAppDispatch } from "./store/store";
@@ -52,17 +51,18 @@ const FlightPage: FC = () => {
         }
 
         const loadFlight = async () => {
-            if (!flightIdString) {
+            if (!flightIdString || !userToken) {
                 return
             }
-            const result = await getFlight(+flightIdString)
-            setFlight(result.flight)
+            const result : getFlightResp = await getFlight(userToken, +flightIdString)
+            console.log(result)
+            setFlight(result.Flight)
 
             if (userToken === null) {
                 return
             }
 
-            setRegionNames(result.regions)
+            setRegionNames(result.Regions)
             
         }
 
@@ -164,7 +164,7 @@ const FlightPage: FC = () => {
 
     if (wrongFlight) {
         return (
-            <h1>Полёт не существует!</h1>
+            <h1>Добавьте в полёт хотя бы один район!</h1>
         )
     }
 

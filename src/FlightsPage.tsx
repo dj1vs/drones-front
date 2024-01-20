@@ -4,13 +4,13 @@ import { Container, Table, Button, Row, Col, Form, FormLabel, FormSelect} from '
 
 import store from './store/store'
 import { getFlights } from './modules/get-flights'
-import { getFlightRegions } from './modules/get-flight-regions'
 import { Flight } from './modules/ds'
 import filtersSlice from './store/filtersSlice'
 import { useAppDispatch } from "./store/store";
 import { useRef } from "react";
 import { deleteFlight } from './modules/delete-flight'
 import { useNavigate } from 'react-router-dom'
+import { getFlight } from './modules/get-flight'
 
 
 const FlightsPage: FC = () => {
@@ -88,13 +88,11 @@ const FlightsPage: FC = () => {
                     flightArray.push(flight.ID.toString())
                     flightArray.push(flight.Status)
 
-                    const regions = await getFlightRegions(flight.ID, userToken)
+                    const flight_result = await getFlight(userToken, flight.ID)
+
+                    const regions = flight_result.Regions
                     if (regions) {
-                        const region_names = []
-                        for (let region of regions) {
-                            region_names.push(region.Name)
-                        }
-                        flightArray.push(region_names.toString().replace(new RegExp(',', 'g'), '\n'))
+                        flightArray.push(regions.toString().replace(new RegExp(',', 'g'), '\n'))
                     } else {
                         flightArray.push('')
                     }
@@ -261,12 +259,12 @@ const FlightsPage: FC = () => {
                                 <td key={rowID}>{val}</td>
                             ))
                             }
-                            {((userRole?.toString() == '2') || (userRole?.toString() == '3')) &&
+                            {((userRole?.toString() == '2') && ((flightsArray[rowID][1 + Number(userRole?.toString() == '2')] == "Черновик") || (flightsArray[rowID][1 + Number(userRole?.toString() == '2')] == "Сформирован"))) &&
                                 <td>
                                     <Button href={'/drones-front/flight_edit?flight_id=' + flightsArray[rowID][1]}>Изменить</Button>
                                 </td>
                             }
-                            {(userRole?.toString() == '1') && 
+                            {!(((userRole?.toString() == '2') && ((flightsArray[rowID][1 + Number(userRole?.toString() == '2')] == "Черновик") || (flightsArray[rowID][1 + Number(userRole?.toString() == '2')] == "Сформирован")))) &&
                                 <td>
                                     <Button href={'/drones-front/flight?flight_id=' + flightsArray[rowID][0]}>Просмотр</Button>
                                 </td>
